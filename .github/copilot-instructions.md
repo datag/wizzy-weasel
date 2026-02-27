@@ -1,4 +1,4 @@
-# Copilot Instructions – EduPlay Kids ("wizzy-weasel")
+# Copilot Instructions – "WizzyWeasel"
 
 ## Project Overview
 Browser-based SPA learning app for primary-school children. Key priorities: gamification, Offline-First via LocalStorage, and tablet-optimised touch UI.

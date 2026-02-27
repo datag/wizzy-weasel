@@ -19,7 +19,7 @@ const route = useRoute()
         :aria-label="t('nav.home')"
       >
         <span class="text-2xl">🦡</span>
-        <span class="hidden sm:inline">EduPlay Kids</span>
+        <span class="hidden sm:inline">WizzyWeasel</span>
       </RouterLink>
 
       <!-- Right side actions -->
