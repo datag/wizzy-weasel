@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "home": "Home",
+    "settings": "Settings",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen"
+  },
+  "dashboard": {
+    "greeting": "Hello, {name}! 👋",
+    "level": "Level {level}",
+    "xp": "{xp} XP",
+    "chooseGame": "Choose a Game",
+    "bestScore": "Best score: {score}",
+    "play": "Play"
+  },
+  "settings": {
+    "title": "Settings",
+    "profile": "Profile",
+    "yourName": "Your name",
+    "avatar": "Avatar",
+    "language": "Language",
+    "german": "German",
+    "english": "English",
+    "sound": "Sound effects",
+    "soundOn": "On",
+    "soundOff": "Off",
+    "openAiKey": "OpenAI API Key (optional)",
+    "save": "Save",
+    "saved": "Saved!",
+    "resetProgress": "Reset progress",
+    "resetConfirm": "Really reset? All progress will be lost!"
+  },
+  "game": {
+    "round": "Round {round}",
+    "score": "Score: {score}",
+    "correct": "Correct! +{xp} XP",
+    "wrong": "Wrong! −{stamina} heart",
+    "timeout": "Time's up! −{stamina} heart",
+    "gameOver": "Game Over!",
+    "finalScore": "Final score: {score}",
+    "playAgain": "Play again",
+    "backToMenu": "Back to menu",
+    "ready": "Ready?",
+    "go": "Go!",
+    "stamina": "Lives"
+  },
+  "directionQuix": {
+    "title": "Direction Quix",
+    "description": "React lightning-fast to direction prompts!",
+    "left": "left",
+    "right": "right",
+    "up": "up",
+    "down": "down"
+  },
+  "avatars": {
+    "pick": "Pick your avatar"
+  }
+}

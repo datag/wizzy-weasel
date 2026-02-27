@@ -1,0 +1,16 @@
+@import 'tailwindcss';
+
+@layer base {
+  html {
+    font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 overflow-x-hidden;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}

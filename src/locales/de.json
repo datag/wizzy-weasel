@@ -1,0 +1,58 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "settings": "Einstellungen",
+    "fullscreen": "Vollbild",
+    "exitFullscreen": "Vollbild beenden"
+  },
+  "dashboard": {
+    "greeting": "Hallo, {name}! 👋",
+    "level": "Level {level}",
+    "xp": "{xp} XP",
+    "chooseGame": "Wähle ein Spiel",
+    "bestScore": "Bestpunktzahl: {score}",
+    "play": "Spielen"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "profile": "Profil",
+    "yourName": "Dein Name",
+    "avatar": "Avatar",
+    "language": "Sprache",
+    "german": "Deutsch",
+    "english": "Englisch",
+    "sound": "Soundeffekte",
+    "soundOn": "An",
+    "soundOff": "Aus",
+    "openAiKey": "OpenAI API-Schlüssel (optional)",
+    "save": "Speichern",
+    "saved": "Gespeichert!",
+    "resetProgress": "Fortschritt zurücksetzen",
+    "resetConfirm": "Wirklich zurücksetzen? Alle Punkte gehen verloren!"
+  },
+  "game": {
+    "round": "Runde {round}",
+    "score": "Punkte: {score}",
+    "correct": "Richtig! +{xp} XP",
+    "wrong": "Falsch! −{stamina} Herz",
+    "timeout": "Zeit abgelaufen! −{stamina} Herz",
+    "gameOver": "Spiel vorbei!",
+    "finalScore": "Endpunktzahl: {score}",
+    "playAgain": "Nochmal spielen",
+    "backToMenu": "Zurück zum Menü",
+    "ready": "Bereit?",
+    "go": "Los!",
+    "stamina": "Leben"
+  },
+  "directionQuix": {
+    "title": "Direction Quix",
+    "description": "Reagiere blitzschnell auf die Richtungspfeile!",
+    "left": "links",
+    "right": "rechts",
+    "up": "oben",
+    "down": "unten"
+  },
+  "avatars": {
+    "pick": "Wähle deinen Avatar"
+  }
+}
