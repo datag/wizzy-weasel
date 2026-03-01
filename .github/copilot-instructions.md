@@ -64,3 +64,8 @@ The demo game is a directional-reaction test:
 - Difficulty increases each round: random prompt position, colour changes, shrinking time window.
 - **Scoring**: correct answer → +XP; wrong answer or timeout → −Stamina.
 - Stamina and XP are written to the `user` Pinia store (persisted).
+
+## Playwright / MCP
+- Playwright (via the MCP Playwright bridge) can be used to simulate user interactions and take screenshots of the running app for testing and visual checks.
+- The app runs locally during development at http://localhost:5173/; use the Playwright MCP tools (Playwright-browser_run_code or Playwright-browser_take_screenshot) to navigate to that URL, set a viewport (e.g., 1280x900), and save a full-page screenshot into the repository (for example: screenshot-localhost-5173.png).
+
