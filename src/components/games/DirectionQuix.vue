@@ -1,39 +1,19 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useUserStore, XP_PER_CORRECT, STAMINA_PENALTY } from '@/stores/user'
+import { useUserStore, XP_PER_CORRECT } from '@/stores/user'
 import { useGameStore } from '@/stores/game'
-import { storeToRefs } from 'pinia'
 import type { Direction, PromptMode, QuixRound } from '@/types/index'
 import AppButton from '@/components/ui/AppButton.vue'
-import { MAX_STAMINA } from '@/stores/user'
 
 const emit = defineEmits<{ (e: 'exit'): void }>()
 
 const { t } = useI18n()
 const userStore = useUserStore()
 const gameStore = useGameStore()
-const { stamina } = storeToRefs(userStore)
-
-// ─── Game state ───────────────────────────────────────────────
-type Phase = 'ready' | 'playing' | 'feedback' | 'gameover'
-const phase = ref<Phase>('ready')
-const currentRound = ref<QuixRound | null>(null)
-const feedbackMsg = ref('')
-const feedbackPositive = ref(true)
-const sessionScore = ref(0)
-const round = ref(0)
-let timer: ReturnType<typeof setTimeout> | null = null
-let progressTimer: ReturnType<typeof setInterval> | null = null
-const timeLeft = ref(0)
-const timeLimit = ref(0)
-const progressPct = computed(() => timeLimit.value > 0 ? (timeLeft.value / timeLimit.value) * 100 : 0)
-
-// ─── Swipe detection ─────────────────────────────────────────
-let touchStartX = 0
-let touchStartY = 0
 
 // ─── Constants ───────────────────────────────────────────────
+const MAX_LIVES = 5
 const DIRECTIONS: Direction[] = ['left', 'right', 'up', 'down']
 const PROMPT_COLORS = [
   'text-yellow-300', 'text-cyan-300', 'text-pink-300',
@@ -44,6 +24,25 @@ const EMOJI_MAP: Record<Direction, string> = {
 }
 const BASE_TIME = 3000   // ms for round 1
 const MIN_TIME = 600     // minimum time window
+
+// ─── Game state ───────────────────────────────────────────────
+type Phase = 'ready' | 'playing' | 'feedback' | 'gameover'
+const phase = ref<Phase>('ready')
+const currentRound = ref<QuixRound | null>(null)
+const feedbackMsg = ref('')
+const feedbackPositive = ref(true)
+const sessionScore = ref(0)
+const round = ref(0)
+const lives = ref(MAX_LIVES)
+let timer: ReturnType<typeof setTimeout> | null = null
+let progressTimer: ReturnType<typeof setInterval> | null = null
+const timeLeft = ref(0)
+const timeLimit = ref(0)
+const progressPct = computed(() => timeLimit.value > 0 ? (timeLeft.value / timeLimit.value) * 100 : 0)
+
+// ─── Swipe detection ─────────────────────────────────────────
+let touchStartX = 0
+let touchStartY = 0
 
 function getTimeLimit(r: number): number {
   return Math.max(MIN_TIME, BASE_TIME - r * 120)
@@ -70,6 +69,7 @@ function startGame() {
   gameStore.startGame('direction-quix')
   sessionScore.value = 0
   round.value = 0
+  lives.value = MAX_LIVES
   phase.value = 'playing'
   nextRound()
 }
@@ -106,17 +106,17 @@ function handleAnswer(direction: Direction | null) {
     feedbackMsg.value = t('game.correct', { xp: XP_PER_CORRECT })
     feedbackPositive.value = true
   } else {
-    userStore.loseStamina(STAMINA_PENALTY)
+    lives.value = Math.max(0, lives.value - 1)
     feedbackMsg.value = direction === null
-      ? t('game.timeout', { stamina: STAMINA_PENALTY })
-      : t('game.wrong', { stamina: STAMINA_PENALTY })
+      ? t('game.timeout')
+      : t('game.wrong')
     feedbackPositive.value = false
   }
 
   phase.value = 'feedback'
 
-  // Check game over (no stamina left)
-  if (stamina.value <= 0) {
+  // Check game over (no lives left)
+  if (lives.value <= 0) {
     setTimeout(() => {
       gameStore.endGame()
       phase.value = 'gameover'
@@ -204,10 +204,10 @@ function promptText(round: QuixRound): string {
         <div class="absolute top-0 left-0 right-0 z-10 px-5 pt-4 flex items-center justify-between">
           <div class="flex gap-0.5">
             <span
-              v-for="i in MAX_STAMINA"
+              v-for="i in MAX_LIVES"
               :key="i"
               class="text-xl transition-all"
-              :class="i <= stamina ? 'opacity-100' : 'opacity-20 grayscale'"
+              :class="i <= lives ? 'opacity-100' : 'opacity-20 grayscale'"
             >❤️</span>
           </div>
           <span class="text-white font-bold text-sm bg-white/10 rounded-full px-3 py-1">

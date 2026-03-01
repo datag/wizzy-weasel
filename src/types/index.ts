@@ -9,7 +9,7 @@ export interface User {
   avatar: string  // emoji character, e.g. '🦡'
   level: number
   xp: number
-  stamina: number  // 0–5
+  boost: number  // 0–5, global boost/power indicator (not used in game logic yet)
 }
 
 // Game configuration

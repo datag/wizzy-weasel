@@ -34,15 +34,15 @@
     "round": "Runde {round}",
     "score": "Punkte: {score}",
     "correct": "Richtig! +{xp} XP",
-    "wrong": "Falsch! −{stamina} Herz",
-    "timeout": "Zeit abgelaufen! −{stamina} Herz",
+    "wrong": "Falsch! −1 Leben",
+    "timeout": "Zeit abgelaufen! −1 Leben",
     "gameOver": "Spiel vorbei!",
     "finalScore": "Endpunktzahl: {score}",
     "playAgain": "Nochmal spielen",
     "backToMenu": "Zurück zum Menü",
     "ready": "Bereit?",
     "go": "Los!",
-    "stamina": "Leben"
+    "boost": "Boost"
   },
   "directionQuix": {
     "title": "Direction Quix",
