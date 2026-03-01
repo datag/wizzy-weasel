@@ -44,6 +44,16 @@
     "go": "Go!",
     "boost": "Boost"
   },
+  "missingLetter": {
+    "title": "Missing Letter",
+    "description": "Find the missing letter in the word!",
+    "check": "Check",
+    "timeLeft": "{seconds} seconds left",
+    "correct": "Correct! +{xp} XP",
+    "wrong": "Wrong!",
+    "missedWords": "Your mistakes:",
+    "placeholder": "Type the letter(s)…"
+  },
   "directionQuix": {
     "title": "Direction Quix",
     "description": "React lightning-fast to direction prompts!",

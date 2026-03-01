@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import DirectionQuix from '@/components/games/DirectionQuix.vue'
+import MissingLetter from '@/components/games/MissingLetter.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -17,6 +18,10 @@ function onExit() {
   <div class="fixed inset-0 bg-slate-900 overflow-hidden">
     <DirectionQuix
       v-if="gameId === 'direction-quix'"
+      @exit="onExit"
+    />
+    <MissingLetter
+      v-else-if="gameId === 'missing-letter'"
       @exit="onExit"
     />
     <!-- fallback for unknown games -->

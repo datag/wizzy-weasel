@@ -12,6 +12,14 @@ export const GAMES = [
     color: 'from-violet-500 to-purple-600',
     path: '/game/direction-quix',
   },
+  {
+    id: 'missing-letter',
+    titleKey: 'missingLetter.title',
+    descriptionKey: 'missingLetter.description',
+    icon: '📝',
+    color: 'from-emerald-500 to-teal-600',
+    path: '/game/missing-letter',
+  },
 ]
 
 const router = createRouter({

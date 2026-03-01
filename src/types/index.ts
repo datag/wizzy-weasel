@@ -31,3 +31,10 @@ export interface QuixRound {
   positionY: number
   timeLimit: number  // ms
 }
+
+// Missing Letter word entry
+export interface MissingLetterWord {
+  before: string    // text before the gap
+  solution: string  // the missing letter(s)
+  after: string     // text after the gap
+}

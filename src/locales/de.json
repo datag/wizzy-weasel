@@ -44,6 +44,16 @@
     "go": "Los!",
     "boost": "Boost"
   },
+  "missingLetter": {
+    "title": "Fehlender Buchstabe",
+    "description": "Finde den fehlenden Buchstaben im Wort!",
+    "check": "Prüfen",
+    "timeLeft": "noch {seconds} Sekunden",
+    "correct": "Richtig! +{xp} XP",
+    "wrong": "Falsch!",
+    "missedWords": "Deine Fehler:",
+    "placeholder": "Buchstabe(n) eingeben…"
+  },
   "directionQuix": {
     "title": "Direction Quix",
     "description": "Reagiere blitzschnell auf die Richtungspfeile!",
