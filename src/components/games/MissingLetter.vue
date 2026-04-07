@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUserStore, XP_PER_CORRECT } from '@/stores/user'
 import { useGameStore } from '@/stores/game'
@@ -56,6 +56,7 @@ function nextWord() {
   currentWord.value = queue.shift()!
   input.value = ''
   phase.value = 'playing'
+  nextTick(() => letterInput.value?.focus())
 }
 
 // ─── Game flow ────────────────────────────────────────────────
@@ -111,6 +112,8 @@ function submit() {
 }
 
 // ─── Input ───────────────────────────────────────────────────
+const letterInput = ref<HTMLInputElement | null>(null)
+
 function onKeyDown(e: KeyboardEvent) {
   if (e.key === 'Enter') submit()
 }
@@ -202,6 +205,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); stopCountd
         <!-- Input area (only while playing) -->
         <div v-if="phase === 'playing'" class="flex gap-3 w-full max-w-xs">
           <input
+            ref="letterInput"
             v-model="input"
             type="text"
             :placeholder="t('missingLetter.placeholder')"
