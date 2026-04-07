@@ -148,6 +148,8 @@ function onKeyDown(e: KeyboardEvent) {
 }
 
 // ─── Display helpers ─────────────────────────────────────────
+const hasInput = computed(() => input.value.trim().length > 0)
+
 function gapPlaceholder(word: MissingLetterWord): string {
   return '_'.repeat(Math.max(word.solution.length, 1))
 }
@@ -195,7 +197,11 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); stopCountd
       <div class="flex-1 min-h-0 flex flex-col items-center justify-center gap-6 px-6 overflow-y-auto">
 
         <!-- The word with gap -->
-        <div class="text-5xl sm:text-7xl font-black tracking-widest text-center leading-tight">
+        <div
+          class="text-5xl sm:text-7xl font-black tracking-widest text-center leading-tight"
+          :class="phase === 'playing' ? 'cursor-pointer' : ''"
+          @click="phase === 'playing' && letterInput?.focus()"
+        >
           <template v-if="phase === 'feedback-wrong' && feedbackWord">
             <span>{{ feedbackWord.before }}</span>
             <span class="bg-red-500 text-white rounded-lg px-2 mx-1">{{ feedbackWord.solution }}</span>
@@ -246,7 +252,11 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); stopCountd
           class="flex-1 min-w-0 bg-white/15 border-2 border-white/30 rounded-2xl px-4 py-3 text-white text-xl font-bold placeholder-white/30 outline-none focus:border-white/60 transition-colors text-center min-h-[56px]"
         />
         <button
-          class="bg-violet-500 hover:bg-violet-400 active:scale-95 transition-all rounded-2xl px-5 py-3 font-bold text-white text-lg min-h-[56px]"
+          :disabled="!hasInput"
+          class="transition-all rounded-2xl px-5 py-3 font-bold text-white text-lg min-h-[56px]"
+          :class="hasInput
+            ? 'bg-violet-500 hover:bg-violet-400 active:scale-95'
+            : 'bg-violet-500 opacity-40 cursor-not-allowed'"
           @click="submit"
         >
           {{ t('missingLetter.check') }}
