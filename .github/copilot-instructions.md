@@ -16,12 +16,12 @@ Browser-based SPA learning app for primary-school children. Key priorities: gami
 > Commands will follow standard Vite/Vue conventions once the project is scaffolded:
 
 ```bash
-npm install          # install dependencies
-npm run dev          # start dev server
-npm run build        # production build
-npm run preview      # preview production build
-npm run typecheck    # TypeScript check (vue-tsc --noEmit)
-npm run lint         # ESLint
+pnpm install          # install dependencies
+pnpm run dev          # start dev server
+pnpm run build        # production build
+pnpm run preview      # preview production build
+pnpm run typecheck    # TypeScript check (vue-tsc --noEmit)
+pnpm run lint         # ESLint
 ```
 
 ## Architecture
