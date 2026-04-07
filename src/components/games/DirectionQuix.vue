@@ -5,6 +5,7 @@ import { useUserStore, XP_PER_CORRECT } from '@/stores/user'
 import { useGameStore } from '@/stores/game'
 import type { Direction, PromptMode, QuixRound } from '@/types/index'
 import AppButton from '@/components/ui/AppButton.vue'
+import PauseModal from '@/components/ui/PauseModal.vue'
 
 const emit = defineEmits<{ (e: 'exit'): void }>()
 
@@ -39,6 +40,10 @@ let progressTimer: ReturnType<typeof setInterval> | null = null
 const timeLeft = ref(0)
 const timeLimit = ref(0)
 const progressPct = computed(() => timeLimit.value > 0 ? (timeLeft.value / timeLimit.value) * 100 : 0)
+
+// ─── Pause state ──────────────────────────────────────────────
+const isPaused = ref(false)
+let savedTimeLeft = 0
 
 // ─── Swipe detection ─────────────────────────────────────────
 let touchStartX = 0
@@ -134,8 +139,43 @@ function clearTimers() {
   if (progressTimer) { clearInterval(progressTimer); progressTimer = null }
 }
 
+// ─── Pause / Resume ───────────────────────────────────────────
+function pauseGame() {
+  if (phase.value !== 'playing' || isPaused.value) return
+  savedTimeLeft = timeLeft.value
+  clearTimers()
+  isPaused.value = true
+}
+
+function resumeGame() {
+  if (!isPaused.value) return
+  isPaused.value = false
+  timeLeft.value = savedTimeLeft
+
+  progressTimer = setInterval(() => {
+    timeLeft.value = Math.max(0, timeLeft.value - 50)
+  }, 50)
+
+  timer = setTimeout(() => {
+    handleAnswer(null)
+  }, savedTimeLeft)
+}
+
+function exitGame() {
+  clearTimers()
+  isPaused.value = false
+  gameStore.endGame()
+  emit('exit')
+}
+
 // ─── Input handling ───────────────────────────────────────────
 function onKeyDown(e: KeyboardEvent) {
+  if (e.key === 'Escape') {
+    e.preventDefault()
+    pauseGame()
+    return
+  }
+  if (isPaused.value) return
   const map: Record<string, Direction> = {
     ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down',
   }
@@ -152,6 +192,7 @@ function onTouchStart(e: TouchEvent) {
 }
 
 function onTouchEnd(e: TouchEvent) {
+  if (isPaused.value) return
   const dx = e.changedTouches[0].clientX - touchStartX
   const dy = e.changedTouches[0].clientY - touchStartY
   const absDx = Math.abs(dx)
@@ -299,6 +340,9 @@ function promptText(round: QuixRound): string {
         </div>
       </div>
     </Transition>
+
+    <!-- ── PAUSE modal ── -->
+    <PauseModal v-if="isPaused" @resume="resumeGame" @exit="exitGame" />
   </div>
 </template>
 

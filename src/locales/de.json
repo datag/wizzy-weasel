@@ -42,7 +42,10 @@
     "backToMenu": "Zurück zum Menü",
     "ready": "Bereit?",
     "go": "Los!",
-    "boost": "Boost"
+    "boost": "Boost",
+    "paused": "Pause",
+    "resume": "Weiterspielen",
+    "endGame": "Spiel beenden"
   },
   "missingLetter": {
     "title": "Fehlender Buchstabe",

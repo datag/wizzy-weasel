@@ -42,7 +42,10 @@
     "backToMenu": "Back to menu",
     "ready": "Ready?",
     "go": "Go!",
-    "boost": "Boost"
+    "boost": "Boost",
+    "paused": "Paused",
+    "resume": "Resume",
+    "endGame": "End Game"
   },
   "missingLetter": {
     "title": "Missing Letter",

@@ -6,6 +6,7 @@ import { useGameStore } from '@/stores/game'
 import type { MissingLetterWord } from '@/types/index'
 import { WORD_LISTS } from '@/data/missingLetterWords'
 import AppButton from '@/components/ui/AppButton.vue'
+import PauseModal from '@/components/ui/PauseModal.vue'
 
 const emit = defineEmits<{ (e: 'exit'): void }>()
 
@@ -23,6 +24,9 @@ const sessionScore = ref(0)
 const input = ref('')
 const feedbackWord = ref<MissingLetterWord | null>(null)
 const missedWords = ref<MissingLetterWord[]>([])
+
+// ─── Pause state ──────────────────────────────────────────────
+const isPaused = ref(false)
 
 // ─── Timer ────────────────────────────────────────────────────
 const timeLeft = ref(GAME_DURATION)
@@ -84,6 +88,25 @@ function stopCountdown() {
   if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null }
 }
 
+function pauseGame() {
+  if (!['playing', 'feedback-correct', 'feedback-wrong'].includes(phase.value) || isPaused.value) return
+  stopCountdown()
+  isPaused.value = true
+}
+
+function resumeGame() {
+  if (!isPaused.value) return
+  isPaused.value = false
+  if (phase.value === 'playing') startCountdown()
+}
+
+function exitGame() {
+  stopCountdown()
+  isPaused.value = false
+  gameStore.endGame()
+  emit('exit')
+}
+
 function endGame() {
   stopCountdown()
   gameStore.endGame()
@@ -115,6 +138,12 @@ function submit() {
 const letterInput = ref<HTMLInputElement | null>(null)
 
 function onKeyDown(e: KeyboardEvent) {
+  if (e.key === 'Escape') {
+    e.preventDefault()
+    pauseGame()
+    return
+  }
+  if (isPaused.value) return
   if (e.key === 'Enter') submit()
 }
 
@@ -128,7 +157,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); stopCountd
 </script>
 
 <template>
-  <div class="w-full h-full select-none text-white flex flex-col">
+  <div class="relative w-full h-full select-none text-white flex flex-col">
 
     <!-- ── READY screen ── -->
     <Transition name="fade">
@@ -254,6 +283,9 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); stopCountd
         </div>
       </div>
     </Transition>
+
+    <!-- ── PAUSE modal ── -->
+    <PauseModal v-if="isPaused" @resume="resumeGame" @exit="exitGame" />
 
   </div>
 </template>
