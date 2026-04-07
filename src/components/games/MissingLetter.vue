@@ -192,7 +192,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); stopCountd
       </div>
 
       <!-- Word display -->
-      <div class="flex-1 flex flex-col items-center justify-center gap-8 px-6">
+      <div class="flex-1 min-h-0 flex flex-col items-center justify-center gap-6 px-6 overflow-y-auto">
 
         <!-- The word with gap -->
         <div class="text-5xl sm:text-7xl font-black tracking-widest text-center leading-tight">
@@ -230,27 +230,27 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); stopCountd
             {{ t('missingLetter.wrong') }}
           </div>
         </Transition>
+      </div>
 
-        <!-- Input area (only while playing) -->
-        <div v-if="phase === 'playing'" class="flex gap-3 w-full max-w-xs">
-          <input
-            ref="letterInput"
-            v-model="input"
-            type="text"
-            :placeholder="t('missingLetter.placeholder')"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-            class="flex-1 bg-white/15 border-2 border-white/30 rounded-2xl px-4 py-3 text-white text-xl font-bold placeholder-white/30 outline-none focus:border-white/60 transition-colors text-center min-h-[56px]"
-          />
-          <button
-            class="bg-violet-500 hover:bg-violet-400 active:scale-95 transition-all rounded-2xl px-5 py-3 font-bold text-white text-lg min-h-[56px]"
-            @click="submit"
-          >
-            {{ t('missingLetter.check') }}
-          </button>
-        </div>
+      <!-- Input area — pinned at bottom so it's always visible -->
+      <div v-if="phase === 'playing'" class="flex-shrink-0 flex gap-3 w-full max-w-xs mx-auto px-6 pb-6 pt-3">
+        <input
+          ref="letterInput"
+          v-model="input"
+          type="text"
+          :placeholder="t('missingLetter.placeholder')"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          class="flex-1 min-w-0 bg-white/15 border-2 border-white/30 rounded-2xl px-4 py-3 text-white text-xl font-bold placeholder-white/30 outline-none focus:border-white/60 transition-colors text-center min-h-[56px]"
+        />
+        <button
+          class="bg-violet-500 hover:bg-violet-400 active:scale-95 transition-all rounded-2xl px-5 py-3 font-bold text-white text-lg min-h-[56px]"
+          @click="submit"
+        >
+          {{ t('missingLetter.check') }}
+        </button>
       </div>
     </template>
 
