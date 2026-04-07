@@ -6,7 +6,7 @@ import Settings from '@/views/Settings.vue'
 export { GAMES } from '@/games/index'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', component: Dashboard },
     { path: '/game/:id', component: GameView },
