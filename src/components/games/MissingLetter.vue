@@ -228,7 +228,7 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); stopCountd
     <!-- ── GAME OVER screen ── -->
     <Transition name="fade">
       <div v-if="phase === 'gameover'" class="flex flex-col items-center h-full gap-5 px-6 pt-8 pb-6 overflow-y-auto">
-        <div class="text-6xl">⏱️</div>
+        <div class="text-6xl">🏁</div>
         <h2 class="text-4xl font-extrabold">{{ t('game.gameOver') }}</h2>
         <p class="text-2xl font-bold text-yellow-300">{{ t('game.finalScore', { score: sessionScore }) }}</p>
 

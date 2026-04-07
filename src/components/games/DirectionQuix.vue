@@ -290,7 +290,7 @@ function promptText(round: QuixRound): string {
     <!-- ── GAME OVER screen ── -->
     <Transition name="fade">
       <div v-if="phase === 'gameover'" class="flex flex-col items-center justify-center h-full gap-6 text-white px-6">
-        <div class="text-7xl">💀</div>
+        <div class="text-7xl">👾</div>
         <h2 class="text-4xl font-extrabold">{{ t('game.gameOver') }}</h2>
         <p class="text-2xl font-bold text-yellow-300">{{ t('game.finalScore', { score: sessionScore }) }}</p>
         <div class="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
