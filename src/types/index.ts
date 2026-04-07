@@ -1,3 +1,5 @@
+import type { Component } from 'vue'
+
 // Directions
 export type Direction = 'left' | 'right' | 'up' | 'down'
 
@@ -18,8 +20,9 @@ export interface GameConfig {
   titleKey: string        // i18n key
   descriptionKey: string  // i18n key
   icon: string            // emoji
-  color: string           // Tailwind bg class
+  color: string           // Tailwind gradient classes
   path: string
+  component: Component
 }
 
 // Direction-Quix round state

@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useUserStore, XP_PER_LEVEL } from '@/stores/user'
 import { useGameStore } from '@/stores/game'
-import { GAMES } from '@/router/index'
+import { GAMES } from '@/games/index'
 import AppCard from '@/components/ui/AppCard.vue'
 import AppButton from '@/components/ui/AppButton.vue'
 
