@@ -65,7 +65,9 @@ The demo game is a directional-reaction test:
 - **Scoring**: correct answer → +XP; wrong answer or timeout → −Stamina.
 - Stamina and XP are written to the `user` Pinia store (persisted).
 
-## Playwright / MCP
-- Playwright (via the MCP Playwright bridge) can be used to simulate user interactions and take screenshots of the running app for testing and visual checks.
-- The app runs locally during development at http://localhost:5173/; use the Playwright MCP tools (Playwright-browser_run_code or Playwright-browser_take_screenshot) to navigate to that URL, set a viewport (e.g., 1280x900), and save a full-page screenshot into the repository (for example: screenshot-localhost-5173.png).
+## Test with browser automation
 
+* You may use MCP for Chrome-Devtools (preferred) or Playwright.
+* If you create screenshots for visual inspections, save them to a temporary location – not in the repository.
+* The app runs locally during development at http://localhost:5173/. Depending on the task you may set the viewport (desktop, tablet, mobile).
+* Use sparingly, as this task is token-intensive. Use it primarily for debugging and verifying complex changes.
