@@ -6,6 +6,7 @@ import { useGameStore } from '@/stores/game'
 import { useMysticalTimesTableStore } from '@/stores/mysticalTimesTable'
 import type { TimesTableQuestion } from '@/types/index'
 import AppButton from '@/components/ui/AppButton.vue'
+import PauseModal from '@/components/ui/PauseModal.vue'
 
 const emit = defineEmits<{ (e: 'exit'): void }>()
 
@@ -30,6 +31,8 @@ const ROLL_ANIMALS = [
 // ─── Phase ────────────────────────────────────────────────────
 type Phase = 'config' | 'disclaimer' | 'playing' | 'feedback' | 'chance-roll' | 'code-reveal' | 'summary'
 const phase = ref<Phase>('config')
+// ─── Pause state ──────────────────────────────────────────────
+const isPaused = ref(false)
 
 // ─── Config phase ─────────────────────────────────────────────
 const factorsInput = ref(mttStore.factorsDisplay)
@@ -123,7 +126,7 @@ function nextQuestion() {
 }
 
 function submitAnswer() {
-  if (phase.value !== 'playing' || !question.value) return
+  if (phase.value !== 'playing' || !question.value || isPaused.value) return
   const userAnswer = parseInt(answer.value, 10)
   if (isNaN(userAnswer)) return   // ignore empty / non-numeric submission
   const correct = userAnswer === correctAnswer.value
@@ -187,6 +190,26 @@ function restartGame() {
   factorsInput.value = mttStore.factorsDisplay
 }
 
+// ─── Pause / Resume ───────────────────────────────────────────
+function pauseGame() {
+  if (phase.value !== 'playing' || isPaused.value) return
+  isPaused.value = true
+}
+
+function resumeGame() {
+  if (!isPaused.value) return
+  isPaused.value = false
+  if (phase.value === 'playing' && !isMobile.value) {
+    nextTick(() => inputRef.value?.focus())
+  }
+}
+
+function exitGame() {
+  isPaused.value = false
+  gameStore.endGame()
+  emit('exit')
+}
+
 // ─── Numpad (mobile) ──────────────────────────────────────────
 const NUMPAD_ROWS = [
   ['7', '8', '9'],
@@ -196,7 +219,7 @@ const NUMPAD_ROWS = [
 ] as const
 
 function handleNumpadKey(key: string) {
-  if (phase.value !== 'playing') return
+  if (phase.value !== 'playing' || isPaused.value) return
   if (key === '⌫') {
     answer.value = answer.value.slice(0, -1)
   } else if (key === '✓') {
@@ -208,6 +231,14 @@ function handleNumpadKey(key: string) {
 
 // ─── Keyboard support ─────────────────────────────────────────
 function onKeyDown(e: KeyboardEvent) {
+  if (e.key === 'Escape') {
+    e.preventDefault()
+    if (phase.value === 'playing' && !isPaused.value) {
+      pauseGame()
+    }
+    return
+  }
+  if (isPaused.value) return
   if (phase.value === 'playing' && e.key === 'Enter') {
     e.preventDefault()
     submitAnswer()
@@ -451,6 +482,7 @@ onUnmounted(() => {
       </div>
     </Transition>
 
+  <PauseModal v-if="isPaused" @resume="resumeGame" @exit="exitGame" />
   </div>
 </template>
 
