@@ -58,11 +58,17 @@ const wrongCorrectAnswer = ref(0)   // stored separately so template can highlig
 const unlockedCode = ref('')
 const chanceRollKey = ref(0)        // bumped to restart the animal animation
 
+// ─── Mobile detection (touch primary input) ───────────────────
+const isMobile = ref(false)
+let mq: MediaQueryList | null = null
+
+function onMqChange(e: MediaQueryListEvent) { isMobile.value = e.matches }
+
 // ─── Auto-focus input ─────────────────────────────────────────
 const inputRef = ref<HTMLInputElement | null>(null)
 
 watch([phase, questionIndex], async () => {
-  if (phase.value === 'playing') {
+  if (phase.value === 'playing' && !isMobile.value) {
     await nextTick()
     inputRef.value?.focus()
   }
@@ -181,6 +187,25 @@ function restartGame() {
   factorsInput.value = mttStore.factorsDisplay
 }
 
+// ─── Numpad (mobile) ──────────────────────────────────────────
+const NUMPAD_ROWS = [
+  ['7', '8', '9'],
+  ['4', '5', '6'],
+  ['1', '2', '3'],
+  ['⌫', '0', '✓'],
+] as const
+
+function handleNumpadKey(key: string) {
+  if (phase.value !== 'playing') return
+  if (key === '⌫') {
+    answer.value = answer.value.slice(0, -1)
+  } else if (key === '✓') {
+    submitAnswer()
+  } else if (answer.value.length < 3) {
+    answer.value += key
+  }
+}
+
 // ─── Keyboard support ─────────────────────────────────────────
 function onKeyDown(e: KeyboardEvent) {
   if (phase.value === 'playing' && e.key === 'Enter') {
@@ -189,8 +214,16 @@ function onKeyDown(e: KeyboardEvent) {
   }
 }
 
-onMounted(() => window.addEventListener('keydown', onKeyDown))
-onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
+onMounted(() => {
+  window.addEventListener('keydown', onKeyDown)
+  mq = window.matchMedia('(pointer: coarse)')
+  isMobile.value = mq.matches
+  mq.addEventListener('change', onMqChange)
+})
+onUnmounted(() => {
+  window.removeEventListener('keydown', onKeyDown)
+  mq?.removeEventListener('change', onMqChange)
+})
 </script>
 
 <template>
@@ -283,7 +316,9 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             <span class="term-number" :class="termParts.c === '?' ? 'term-unknown' : 'term-known'">{{ termParts.c }}</span>
           </div>
 
+          <!-- Desktop: native input -->
           <input
+            v-if="!isMobile"
             ref="inputRef"
             v-model="answer"
             type="text"
@@ -295,9 +330,32 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
             @keydown.enter.prevent="submitAnswer"
           />
 
-          <AppButton size="lg" full-width @click="submitAnswer">
+          <AppButton v-if="!isMobile" size="lg" full-width @click="submitAnswer">
             {{ t('mysticalTimesTable.question.confirm') }}
           </AppButton>
+
+          <!-- Mobile: custom answer display + numpad (no system keyboard) -->
+          <template v-else>
+            <div class="answer-display" :class="{ 'has-value': answer.length > 0 }">
+              <span v-if="answer.length === 0" class="answer-placeholder">
+                {{ t('mysticalTimesTable.question.inputPlaceholder') }}
+              </span>
+              <span v-else>{{ answer }}</span>
+              <span class="cursor-blink">|</span>
+            </div>
+
+            <div class="numpad-grid">
+              <template v-for="row in NUMPAD_ROWS" :key="row.join('')">
+                <button
+                  v-for="key in row"
+                  :key="key"
+                  class="numpad-btn"
+                  :class="key === '✓' ? 'numpad-confirm' : key === '⌫' ? 'numpad-delete' : ''"
+                  @click="handleNumpadKey(key)"
+                >{{ key }}</button>
+              </template>
+            </div>
+          </template>
         </div>
       </div>
     </Transition>
@@ -481,5 +539,85 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 @keyframes pulse-unknown {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.55; }
+}
+
+/* ── Custom numpad (mobile) ─────────────────────────────────── */
+.answer-display {
+  width: 100%;
+  max-width: 20rem;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 1rem;
+  background: rgba(255,255,255,0.12);
+  border: 2px solid rgba(255,255,255,0.2);
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  padding: 0 1.25rem;
+}
+.answer-placeholder {
+  color: rgba(255,255,255,0.4);
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+.answer-display.has-value {
+  border-color: rgba(251, 191, 36, 0.5);
+}
+.cursor-blink {
+  color: #fbbf24;
+  animation: blink 1s step-start infinite;
+  line-height: 1;
+  font-weight: 300;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.numpad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 20rem;
+}
+.numpad-btn {
+  min-height: 58px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  border-radius: 0.875rem;
+  background: rgba(255,255,255,0.12);
+  border: 2px solid rgba(255,255,255,0.18);
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  transition: background 0.1s, transform 0.08s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.numpad-btn:active {
+  background: rgba(255,255,255,0.25);
+  transform: scale(0.94);
+}
+.numpad-confirm {
+  background: rgba(34, 197, 94, 0.3);
+  border-color: rgba(34, 197, 94, 0.5);
+  color: #bbf7d0;
+}
+.numpad-confirm:active {
+  background: rgba(34, 197, 94, 0.5);
+}
+.numpad-delete {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+}
+.numpad-delete:active {
+  background: rgba(239, 68, 68, 0.4);
 }
 </style>
