@@ -1,22 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Maximize2, Minimize2 } from 'lucide-vue-next'
+import { useFullscreen } from '@/composables/useFullscreen'
 
 const { t } = useI18n()
-const isFullscreen = ref(false)
-
-document.addEventListener('fullscreenchange', () => {
-  isFullscreen.value = !!document.fullscreenElement
-})
-
-function toggle() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen()
-  } else {
-    document.exitFullscreen()
-  }
-}
+const { isFullscreen, toggle } = useFullscreen()
 </script>
 
 <template>
