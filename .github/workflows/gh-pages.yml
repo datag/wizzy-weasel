@@ -47,7 +47,7 @@ jobs:
       run: pnpm run typecheck
 
     - name: Build the project
-      run: pnpm exec vite build --base=/wizzy-weasel/
+      run: pnpm exec vite build --base=/${{ github.event.repository.name }}/
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v4
