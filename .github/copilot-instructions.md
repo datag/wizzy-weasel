@@ -40,6 +40,9 @@ src/
 └── types/           # TypeScript interfaces (User, GameConfig, …)
 ```
 
+### Routes
+- Take `import.meta.env.BASE_URL` into account when defining absolute routes, as the configured Vite base URL could be both `/` or `/wizzy-weasel/`.
+
 ### State & Persistence
 - All user data lives in **LocalStorage via Pinia stores** — no backend.
 - `user` store: name, avatar, level, XP, stamina.

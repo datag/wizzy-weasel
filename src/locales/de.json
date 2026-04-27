@@ -65,6 +65,12 @@
     "up": "oben",
     "down": "unten"
   },
+  "update": {
+    "title": "Neue Version verfügbar",
+    "body": "Eine neue Version von WizzyWeasel ist bereit. Möchtest du jetzt neu laden?",
+    "confirm": "Ja, neu laden",
+    "dismiss": "Nein, nicht jetzt"
+  },
   "avatars": {
     "pick": "Wähle deinen Avatar"
   },

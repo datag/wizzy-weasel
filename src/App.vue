@@ -4,12 +4,17 @@ import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import Navbar from '@/components/layout/Navbar.vue'
 import { useFullscreen } from '@/composables/useFullscreen'
+import { useUpdateCheck } from '@/composables/useUpdateCheck'
+import UpdateOverlay from '@/components/ui/UpdateOverlay.vue'
 
 const route = useRoute()
 const isGameView = computed(() => route.path.startsWith('/game/'))
 
 // ─── Long-press fullscreen gesture ───────────────────────────
 const { toggle } = useFullscreen()
+
+// ─── Production update check ─────────────────────────────────
+const { updateAvailable } = useUpdateCheck()
 
 const LONG_PRESS_MS = 600
 const MOVE_THRESHOLD_PX = 12
@@ -94,6 +99,9 @@ onUnmounted(() => {
         :style="{ left: `${ripple.x}px`, top: `${ripple.y}px` }"
       />
     </Transition>
+
+    <!-- Production update overlay -->
+    <UpdateOverlay v-if="updateAvailable" @dismiss="updateAvailable = false" />
   </div>
 </template>
 

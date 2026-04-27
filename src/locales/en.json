@@ -65,6 +65,12 @@
     "up": "up",
     "down": "down"
   },
+  "update": {
+    "title": "New version available",
+    "body": "A new version of WizzyWeasel is ready. Do you want to reload now?",
+    "confirm": "Yes, reload",
+    "dismiss": "No, not yet"
+  },
   "avatars": {
     "pick": "Pick your avatar"
   },
