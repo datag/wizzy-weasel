@@ -218,12 +218,12 @@ const NUMPAD_ROWS = [
   ['⌫', '0', '✓'],
 ] as const
 
-function handleNumpadKey(key: string) {
+// Immediate-response handler for touch devices: react on first contact
+function handleNumpadPointerDown(key: string) {
   if (phase.value !== 'playing' || isPaused.value) return
+  if (key === '✓') return
   if (key === '⌫') {
     answer.value = answer.value.slice(0, -1)
-  } else if (key === '✓') {
-    submitAnswer()
   } else if (answer.value.length < 3) {
     answer.value += key
   }
@@ -377,13 +377,21 @@ onUnmounted(() => {
 
             <div class="numpad-grid">
               <template v-for="row in NUMPAD_ROWS" :key="row.join('')">
-                <button
-                  v-for="key in row"
-                  :key="key"
-                  class="numpad-btn"
-                  :class="key === '✓' ? 'numpad-confirm' : key === '⌫' ? 'numpad-delete' : ''"
-                  @click="handleNumpadKey(key)"
-                >{{ key }}</button>
+                <!-- Submit answer button listens on click/tap, while digits/correct buttons already on pointer down -->
+                <template v-for="key in row" :key="key">
+                  <button
+                    v-if="key === '✓'"
+                    class="numpad-btn numpad-confirm"
+                    @click="submitAnswer"
+                  >{{ key }}</button>
+
+                  <button
+                    v-else
+                    class="numpad-btn"
+                    :class="key === '⌫' ? 'numpad-delete' : ''"
+                    @pointerdown.prevent="handleNumpadPointerDown(key)"
+                  >{{ key }}</button>
+                </template>
               </template>
             </div>
           </template>
