@@ -67,5 +67,48 @@
   },
   "avatars": {
     "pick": "Pick your avatar"
+  },
+  "mysticalTimesTable": {
+    "title": "Mystical Times Table",
+    "description": "Conquer the times tables – if you dare!",
+    "config": {
+      "title": "Your Factors",
+      "factorsLabel": "Which numbers (a) do you want to practise?",
+      "factorsPlaceholder": "e.g. 1, 2, 3, 4, 5",
+      "factorsHint": "Comma-separated numbers from 1–10. Leave empty = all.",
+      "start": "Enter the Adventure ✨"
+    },
+    "disclaimer": {
+      "title": "⚠️ Mystical Warning ⚠️",
+      "body": "Whosoever passes through this gate enters the realm of ancient numbers. The mystical cat Numerica guards five secret codes that unlock a surprise in the real world. These codes appear only to the worthy – and they must be noted by hand, in writing. No screenshot, no photo. Only ink on paper.\n\nThe dangers are real. Your mind will be tested. Your pen must be ready.\n\nAre you prepared for this trial?",
+      "codesHint": "🔮 5 secret codes · 🐱 guarded by Numerica · ✍️ write them by hand",
+      "accept": "I am ready. I accept the dangers."
+    },
+    "question": {
+      "findProduct": "What is {a} · {b} ?",
+      "findFactor": "Which number is missing?  {a} · ? = {c}",
+      "inputPlaceholder": "Your answer…",
+      "confirm": "Confirm",
+      "progress": "Question {current} of {total}"
+    },
+    "feedback": {
+      "correct": "✅ Correct! +{xp} XP",
+      "wrongPrefix": "❌ Wrong! The answer was:",
+      "wrong": "❌ Wrong! The answer was: {answer}"
+    },
+    "code": {
+      "title": "🌟 Secret Code Unlocked! 🌟",
+      "body": "The mystical cat Numerica nods in approval. You have earned this code:",
+      "writeItDown": "✍️ Write this code on PAPER right NOW! It is not saved and will vanish shortly.",
+      "continue": "I have written it down – continue!"
+    },
+    "summary": {
+      "title": "Round Complete!",
+      "score": "Your score: {score}",
+      "correct": "Correct: {count}",
+      "wrong": "Wrong: {count}",
+      "playAgain": "Play again",
+      "backToMenu": "Back to menu"
+    }
   }
 }

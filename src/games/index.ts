@@ -20,4 +20,13 @@ export const GAMES: GameConfig[] = [
     path: '/game/missing-letter',
     component: defineAsyncComponent(() => import('@/components/games/MissingLetter.vue')),
   },
+  {
+    id: 'mystical-times-table',
+    titleKey: 'mysticalTimesTable.title',
+    descriptionKey: 'mysticalTimesTable.description',
+    icon: '🔮',
+    color: 'from-indigo-500 to-purple-700',
+    path: '/game/mystical-times-table',
+    component: defineAsyncComponent(() => import('@/components/games/MysticalTimesTable.vue')),
+  },
 ]

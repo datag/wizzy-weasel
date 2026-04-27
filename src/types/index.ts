@@ -41,3 +41,13 @@ export interface MissingLetterWord {
   solution: string  // the missing letter(s)
   after: string     // text after the gap
 }
+
+// Mystical Times Table question
+export type TimesTableQuestionType = 'find-product' | 'find-factor'
+
+export interface TimesTableQuestion {
+  questionType: TimesTableQuestionType
+  factorA: number
+  factorB: number
+  product: number   // factorA * factorB
+}

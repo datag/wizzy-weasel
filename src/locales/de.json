@@ -67,5 +67,48 @@
   },
   "avatars": {
     "pick": "Wähle deinen Avatar"
+  },
+  "mysticalTimesTable": {
+    "title": "Mystical Times Table",
+    "description": "Bezwinge das kleine Einmaleins – wenn du es wagst!",
+    "config": {
+      "title": "Deine Faktoren",
+      "factorsLabel": "Welche Zahlen (a) möchtest du üben?",
+      "factorsPlaceholder": "z. B. 1, 2, 3, 4, 5",
+      "factorsHint": "Komma-getrennte Zahlen von 1–10. Leer lassen = alle.",
+      "start": "Weiter ins Abenteuer ✨"
+    },
+    "disclaimer": {
+      "title": "⚠️ Mystische Warnung ⚠️",
+      "body": "Wer dieses Tor durchschreitet, tritt in das Reich der alten Zahlen ein. Die mystische Katze Numerica bewacht fünf geheime Codes, die in der realen Welt eine Überraschung freischalten. Diese Codes erscheinen nur den Würdigen – und sie müssen eigenhändig und handschriftlich notiert werden. Kein Screenshot, kein Foto. Nur Tinte auf Papier.\n\nDie Gefahren sind real. Dein Geist wird gefordert. Dein Stift muss bereit sein.\n\nBist du dieser Prüfung gewachsen?",
+      "codesHint": "🔮 5 geheime Codes · 🐱 bewacht von Numerica · ✍️ handschriftlich notieren",
+      "accept": "Ich bin bereit. Ich akzeptiere die Gefahren."
+    },
+    "question": {
+      "findProduct": "Was ist {a} · {b} ?",
+      "findFactor": "Welche Zahl fehlt?  {a} · ? = {c}",
+      "inputPlaceholder": "Deine Antwort…",
+      "confirm": "Bestätigen",
+      "progress": "Aufgabe {current} von {total}"
+    },
+    "feedback": {
+      "correct": "✅ Richtig! +{xp} XP",
+      "wrongPrefix": "❌ Falsch! Richtig wäre:",
+      "wrong": "❌ Falsch! Richtig wäre: {answer}"
+    },
+    "code": {
+      "title": "🌟 Geheimer Code freigeschaltet! 🌟",
+      "body": "Die mystische Katze Numerica nickt anerkennend. Du hast dir diesen Code verdient:",
+      "writeItDown": "✍️ Schreibe diesen Code JETZT auf Papier! Er wird nicht gespeichert und verschwindet gleich.",
+      "continue": "Ich habe ihn notiert – weiter!"
+    },
+    "summary": {
+      "title": "Runde beendet!",
+      "score": "Deine Punkte: {score}",
+      "correct": "Richtig: {count}",
+      "wrong": "Falsch: {count}",
+      "playAgain": "Nochmal spielen",
+      "backToMenu": "Zurück zum Menü"
+    }
   }
 }
