@@ -49,6 +49,29 @@ jobs:
     - name: Build the project
       run: pnpm exec vite build --base=/${{ github.event.repository.name }}/
 
+    - name: Create 404.html
+      run: |
+        cat <<EOF >dist/404.html
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <title>Seite nicht gefunden</title>
+            <style>
+                body { font-family: sans-serif; text-align: center; padding: 50px; }
+                a { color: #24292e; text-decoration: none; font-weight: bold; border: 1px solid #d1d5da; padding: 10px 20px; border-radius: 6px; }
+                a:hover { background-color: #f6f8fa; }
+            </style>
+        </head>
+        <body>
+            <h1>404 - Hoppla!</h1>
+            <p>Die gewünschte Seite wurde nicht gefunden.</p>
+            <br>
+            <a href="/${{ github.event.repository.name }}/">Zurück zur Startseite</a>
+        </body>
+        </html>
+        EOF
+
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v4
       with:
