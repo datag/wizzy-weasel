@@ -17,7 +17,7 @@ const mttStore = useMysticalTimesTableStore()
 // ─── Constants ────────────────────────────────────────────────
 const QUESTIONS_PER_ROUND = 20
 const CODE_TRIGGER_STREAK = 5
-const CODE_PROBABILITY = 0.1
+const CODE_PROBABILITY = 0.05
 const CODES = ['XAB5CAT', 'POL2DOG', 'YUT8SHEEP', 'EUR9BIRD', 'AMZ3COW'] as const
 const ROLL_ANIMALS = [
   { emoji: '🐶', sx: '-35vmin', sy: '-30vmin' },
