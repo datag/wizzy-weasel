@@ -115,6 +115,18 @@
       "wrong": "Falsch: {count}",
       "playAgain": "Nochmal spielen",
       "backToMenu": "Zurück zum Menü"
+    },
+    "redeemCodes": {
+      "buttonLabel": "🪙 Codes einlösen",
+      "title": "🔐 Geheimcodes einlösen",
+      "subtitle": "Gib alle 5 geheimen Codes in beliebiger Reihenfolge ein.",
+      "codePlaceholder": "Code {n}",
+      "submit": "Einlösen",
+      "cancel": "Abbrechen",
+      "wrong": "❌ Leider falsch. Überprüfe deine Codes!",
+      "correctTitle": "🌟 Alle Codes korrekt! 🌟",
+      "masterCodeLabel": "Mastercode:",
+      "masterCodeParentInstruction": "🎁 Zeig diesen Mastercode deinen Eltern – du hast dir eine Überraschung verdient!"
     }
   }
 }

@@ -29,7 +29,7 @@ const ROLL_ANIMALS = [
 ] as const
 
 // ─── Phase ────────────────────────────────────────────────────
-type Phase = 'config' | 'disclaimer' | 'playing' | 'feedback' | 'chance-roll' | 'code-reveal' | 'summary'
+type Phase = 'config' | 'disclaimer' | 'playing' | 'feedback' | 'chance-roll' | 'code-reveal' | 'summary' | 'redeem-codes'
 const phase = ref<Phase>('config')
 // ─── Pause state ──────────────────────────────────────────────
 const isPaused = ref(false)
@@ -45,6 +45,99 @@ function applyConfig() {
   }
   factorsInput.value = mttStore.factorsDisplay
   phase.value = 'disclaimer'
+}
+
+// ─── Redeem Codes ─────────────────────────────────────────────
+const MASTER_CODE = 'LEARN4TW'
+const codeInputs = ref<string[]>(['', '', '', '', ''])
+const codeStatuses = ref<Array<'idle' | 'animating' | 'correct' | 'incorrect' | 'duplicate'>>(['idle', 'idle', 'idle', 'idle', 'idle'])
+const redeemResult = ref<'idle' | 'wrong' | 'correct'>('idle')
+const masterCodeRevealed = ref('')
+let masterCodeTimer: ReturnType<typeof setTimeout> | null = null
+const codeInputRefs = ref<(HTMLInputElement | null)[]>([null, null, null, null, null])
+const submitBtnRef = ref<HTMLButtonElement | null>(null)
+
+function setCodeInputRef(el: unknown, i: number) {
+  codeInputRefs.value[i] = el as HTMLInputElement | null
+}
+
+function openRedeemScreen() {
+  codeInputs.value = ['', '', '', '', '']
+  codeStatuses.value = ['idle', 'idle', 'idle', 'idle', 'idle']
+  redeemResult.value = 'idle'
+  masterCodeRevealed.value = ''
+  phase.value = 'redeem-codes'
+  nextTick(() => codeInputRefs.value[0]?.focus())
+}
+
+function cancelRedeem() {
+  if (masterCodeTimer) clearTimeout(masterCodeTimer)
+  phase.value = 'config'
+}
+
+function handleCodeInput(index: number) {
+  // Clear validation state while the user is actively typing; also clear wrong banner
+  if (redeemResult.value === 'wrong') redeemResult.value = 'idle'
+  codeStatuses.value[index] = codeInputs.value[index].trim() !== '' ? 'animating' : 'idle'
+  if (codeInputs.value[index].trim() !== '') {
+    setTimeout(() => {
+      if (codeStatuses.value[index] === 'animating') codeStatuses.value[index] = 'idle'
+    }, 300)
+  }
+}
+
+function revalidateStatuses() {
+  codeInputs.value.forEach((raw, i) => {
+    const val = normalizeCode(raw)
+    if (val === '') { codeStatuses.value[i] = 'idle'; return }
+    if (!(CODES as readonly string[]).includes(val)) { codeStatuses.value[i] = 'incorrect'; return }
+    const isDup = codeInputs.value.some((other, j) => j !== i && normalizeCode(other) === val)
+    codeStatuses.value[i] = isDup ? 'duplicate' : 'correct'
+  })
+}
+
+function handleCodeBlur(index: number) {
+  const val = normalizeCode(codeInputs.value[index])
+  if (val === '') { codeStatuses.value[index] = 'idle'; return }
+  // Validate this box first, then revalidate all to update duplicate highlights
+  codeStatuses.value[index] = (CODES as readonly string[]).includes(val) ? 'correct' : 'incorrect'
+  revalidateStatuses()
+}
+
+function handleCodeEnter(index: number) {
+  if (index < codeInputs.value.length - 1) {
+    codeInputRefs.value[index + 1]?.focus()
+  } else {
+    submitBtnRef.value?.focus()
+  }
+}
+
+function normalizeCode(code: string): string {
+  return code.replace(/\s+/g, '').toUpperCase()
+}
+
+function submitCodes() {
+  const entered = codeInputs.value.map(normalizeCode)
+  const expected = new Set([...CODES])
+  const allCorrect = entered.every(c => expected.has(c as typeof CODES[number]))
+    && new Set(entered).size === CODES.length
+
+  if (!allCorrect) {
+    redeemResult.value = 'wrong'
+    return
+  }
+
+  redeemResult.value = 'correct'
+  masterCodeRevealed.value = ''
+  let i = 0
+  function revealNext() {
+    if (i < MASTER_CODE.length) {
+      masterCodeRevealed.value += MASTER_CODE[i]
+      i++
+      masterCodeTimer = setTimeout(revealNext, 180)
+    }
+  }
+  masterCodeTimer = setTimeout(revealNext, 400)
 }
 
 // ─── Game state ───────────────────────────────────────────────
@@ -254,6 +347,7 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('keydown', onKeyDown)
   mq?.removeEventListener('change', onMqChange)
+  if (masterCodeTimer) clearTimeout(masterCodeTimer)
 })
 </script>
 
@@ -281,6 +375,7 @@ onUnmounted(() => {
         </div>
 
         <AppButton size="lg" @click="applyConfig">{{ t('mysticalTimesTable.config.start') }}</AppButton>
+        <AppButton variant="secondary" size="sm" @click="openRedeemScreen">{{ t('mysticalTimesTable.redeemCodes.buttonLabel') }}</AppButton>
         <button class="text-white/50 text-sm underline" @click="emit('exit')">{{ t('game.backToMenu') }}</button>
       </div>
     </Transition>
@@ -490,6 +585,94 @@ onUnmounted(() => {
       </div>
     </Transition>
 
+    <!-- ── REDEEM CODES phase ── -->
+    <Transition name="fade">
+      <div v-if="phase === 'redeem-codes'" class="flex flex-col items-center justify-center min-h-full gap-6 px-6 py-10 text-center">
+        <div class="text-6xl">🔐</div>
+        <h2 class="text-3xl font-extrabold text-amber-300">{{ t('mysticalTimesTable.redeemCodes.title') }}</h2>
+        <p class="text-white/70 text-base max-w-sm">{{ t('mysticalTimesTable.redeemCodes.subtitle') }}</p>
+
+        <!-- Code inputs -->
+        <div v-if="redeemResult !== 'correct'" class="w-full max-w-sm flex flex-col gap-3">
+          <div
+            v-for="(_, i) in codeInputs"
+            :key="i"
+            class="code-input-wrapper"
+            :class="{
+              'code-input-animating': codeStatuses[i] === 'animating',
+              'code-input-correct':   codeStatuses[i] === 'correct',
+              'code-input-incorrect': codeStatuses[i] === 'incorrect',
+              'code-input-duplicate': codeStatuses[i] === 'duplicate',
+            }"
+          >
+            <input
+              :ref="(el) => setCodeInputRef(el, i)"
+              v-model="codeInputs[i]"
+              type="text"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              :placeholder="t('mysticalTimesTable.redeemCodes.codePlaceholder', { n: i + 1 })"
+              class="code-input-field w-full rounded-xl bg-white/10 px-4 py-3 text-white placeholder-white/35 focus:outline-none text-base font-mono tracking-wider text-center uppercase"
+              style="min-height: 48px"
+              @input="handleCodeInput(i)"
+              @blur="handleCodeBlur(i)"
+              @keydown.enter.prevent="handleCodeEnter(i)"
+            />
+          </div>
+        </div>
+
+        <!-- Wrong result (inline feedback, no retry button — submit button below stays) -->
+        <Transition name="shake-in">
+          <div
+            v-if="redeemResult === 'wrong'"
+            class="redeem-wrong flex flex-col items-center gap-2"
+          >
+            <span class="text-5xl">❌</span>
+            <p class="text-rose-300 font-semibold text-base">{{ t('mysticalTimesTable.redeemCodes.wrong') }}</p>
+          </div>
+        </Transition>
+
+        <!-- Correct result: master code typewriter reveal -->
+        <Transition name="fade">
+          <div v-if="redeemResult === 'correct'" class="flex flex-col items-center gap-5 w-full max-w-sm">
+            <div class="text-4xl animate-bounce">🌟</div>
+            <h3 class="text-2xl font-extrabold text-amber-300">{{ t('mysticalTimesTable.redeemCodes.correctTitle') }}</h3>
+            <p class="text-white/60 text-sm">{{ t('mysticalTimesTable.redeemCodes.masterCodeLabel') }}</p>
+            <div class="bg-amber-400 text-indigo-950 font-mono font-black text-4xl sm:text-5xl rounded-2xl px-8 py-6 shadow-2xl tracking-widest border-4 border-amber-200 min-w-[14ch] text-center" style="min-height: 5rem">
+              <span
+                v-for="(char, ci) in masterCodeRevealed.split('')"
+                :key="ci"
+                class="master-code-char"
+                :style="{ animationDelay: `${ci * 20}ms` }"
+              >{{ char }}</span>
+              <span v-if="masterCodeRevealed.length < 8" class="master-code-cursor">|</span>
+            </div>
+            <div class="bg-amber-500/15 border border-amber-400/30 rounded-2xl px-5 py-4 w-full">
+              <p class="text-amber-100 font-semibold text-sm text-center leading-relaxed">{{ t('mysticalTimesTable.redeemCodes.masterCodeParentInstruction') }}</p>
+            </div>
+          </div>
+        </Transition>
+
+        <!-- Action buttons: always visible until success -->
+        <div v-if="redeemResult !== 'correct'" class="flex flex-col gap-3 w-full max-w-sm mt-2">
+          <button
+            ref="submitBtnRef"
+            class="redeem-submit-btn w-full min-h-[64px] px-8 text-lg font-bold rounded-2xl transition-all active:scale-95"
+            :disabled="codeInputs.some(c => c.trim() === '')"
+            @click="submitCodes"
+          >
+            {{ t('mysticalTimesTable.redeemCodes.submit') }}
+          </button>
+          <button class="text-white/50 text-sm underline" @click="cancelRedeem">← {{ t('mysticalTimesTable.redeemCodes.cancel') }}</button>
+        </div>
+        <div v-else class="mt-2">
+          <button class="text-white/50 text-sm underline" @click="cancelRedeem">← {{ t('game.backToMenu') }}</button>
+        </div>
+      </div>
+    </Transition>
+
   <PauseModal v-if="isPaused" @resume="resumeGame" @exit="exitGame" />
   </div>
 </template>
@@ -659,5 +842,89 @@ onUnmounted(() => {
 }
 .numpad-delete:active {
   background: rgba(239, 68, 68, 0.4);
+}
+
+/* ── Redeem codes screen ─────────────────────────────────────── */
+.code-input-wrapper {
+  transition: transform 0.2s ease;
+}
+.code-input-field {
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.code-input-field:focus {
+  border-color: rgba(251, 191, 36, 0.8);
+}
+.code-input-correct .code-input-field {
+  border-color: rgba(74, 222, 128, 0.85) !important;
+  background: rgba(74, 222, 128, 0.08) !important;
+}
+.code-input-incorrect .code-input-field {
+  border-color: rgba(248, 113, 113, 0.9) !important;
+  background: rgba(239, 68, 68, 0.08) !important;
+}
+.code-input-duplicate .code-input-field {
+  border-color: rgba(250, 204, 21, 0.9) !important;
+  background: rgba(234, 179, 8, 0.08) !important;
+}
+.code-input-animating {
+  animation: code-bounce 0.3s ease-out;
+}
+@keyframes code-bounce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.06); }
+  70%  { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+/* Shake for wrong result */
+.redeem-wrong {
+  animation: shake 0.4s ease-out;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-10px); }
+  40%       { transform: translateX(10px); }
+  60%       { transform: translateX(-7px); }
+  80%       { transform: translateX(7px); }
+}
+
+/* Master code char fade-in */
+.master-code-char {
+  display: inline-block;
+  animation: char-pop 0.2s ease-out both;
+}
+@keyframes char-pop {
+  from { opacity: 0; transform: scale(0.5) translateY(-8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.master-code-cursor {
+  display: inline-block;
+  color: rgba(30, 27, 75, 0.6);
+  animation: blink 0.8s step-start infinite;
+  font-weight: 300;
+}
+
+/* shake-in transition for wrong result */
+.shake-in-enter-active { animation: shake 0.4s ease-out; }
+.shake-in-leave-active { transition: opacity 0.2s; }
+.shake-in-leave-to { opacity: 0; }
+
+/* Redeem submit button */
+.redeem-submit-btn {
+  background: rgb(124, 58, 237); /* violet-600 */
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+.redeem-submit-btn:hover:not(:disabled) {
+  background: rgb(109, 40, 217); /* violet-700 */
+}
+.redeem-submit-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.7);
+}
+.redeem-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>

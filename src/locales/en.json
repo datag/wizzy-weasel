@@ -115,6 +115,18 @@
       "wrong": "Wrong: {count}",
       "playAgain": "Play again",
       "backToMenu": "Back to menu"
+    },
+    "redeemCodes": {
+      "buttonLabel": "🪙 Redeem codes",
+      "title": "🔐 Redeem Secret Codes",
+      "subtitle": "Enter all 5 secret codes in any order.",
+      "codePlaceholder": "Code {n}",
+      "submit": "Redeem",
+      "cancel": "Cancel",
+      "wrong": "❌ Not quite right. Check your codes!",
+      "correctTitle": "🌟 All codes correct! 🌟",
+      "masterCodeLabel": "Master code:",
+      "masterCodeParentInstruction": "🎁 Show this master code to your parents – you've earned a surprise!"
     }
   }
 }
