@@ -128,5 +128,60 @@
       "masterCodeLabel": "Master code:",
       "masterCodeParentInstruction": "🎁 Show this master code to your parents – you've earned a surprise!"
     }
+  },
+  "mysticalDivisionOracle": {
+    "title": "Mystical Division Oracle",
+    "description": "Master the division oracle – if you dare!",
+    "config": {
+      "title": "Your Divisors",
+      "divisorsLabel": "Which divisors do you want to practise?",
+      "divisorsPlaceholder": "e.g. 1, 2, 3, 4, 5",
+      "divisorsHint": "Comma-separated numbers from 1–10. Leave empty = all.",
+      "start": "Enter the Adventure ✨"
+    },
+    "disclaimer": {
+      "title": "⚠️ Mystical Warning ⚠️",
+      "body": "Whosoever passes through this gate enters the realm of ancient divisions. The mystical division oracle guards five secret codes that unlock a surprise in the real world. These codes appear only to the worthy – and they must be noted by hand, in writing. No screenshot, no photo. Only ink on paper.\n\nThe dangers are real. Your mind will be tested. Your pen must be ready.\n\nAre you prepared for this trial?",
+      "codesHint": "🔮 5 secret codes · ✨ revealed by the oracle · ✍️ write them by hand",
+      "accept": "I am ready. I accept the dangers."
+    },
+    "question": {
+      "findDividend": "Which number is missing?  ? ÷ {b} = {c}",
+      "findDivisor": "Which number is missing?  {a} ÷ ? = {c}",
+      "inputPlaceholder": "Your answer…",
+      "confirm": "Confirm",
+      "progress": "Question {current} of {total}"
+    },
+    "feedback": {
+      "correct": "✅ Correct! +{xp} XP",
+      "wrongPrefix": "❌ Wrong! The answer was:",
+      "wrong": "❌ Wrong! The answer was: {answer}"
+    },
+    "code": {
+      "title": "🌟 Secret Code Unlocked! 🌟",
+      "body": "The mystical division oracle glows in approval. You have earned this code:",
+      "writeItDown": "✍️ Write this code on PAPER right NOW! It is not saved and will vanish shortly.",
+      "continue": "I have written it down – continue!"
+    },
+    "summary": {
+      "title": "Round Complete!",
+      "score": "Your score: {score}",
+      "correct": "Correct: {count}",
+      "wrong": "Wrong: {count}",
+      "playAgain": "Play again",
+      "backToMenu": "Back to menu"
+    },
+    "redeemCodes": {
+      "buttonLabel": "🪙 Redeem codes",
+      "title": "🔐 Redeem Secret Codes",
+      "subtitle": "Enter all 5 secret codes in any order.",
+      "codePlaceholder": "Code {n}",
+      "submit": "Redeem",
+      "cancel": "Cancel",
+      "wrong": "❌ Not quite right. Check your codes!",
+      "correctTitle": "🌟 All codes correct! 🌟",
+      "masterCodeLabel": "Master code:",
+      "masterCodeParentInstruction": "🎁 Show this master code to your parents – you've earned a surprise!"
+    }
   }
 }

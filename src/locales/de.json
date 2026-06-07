@@ -128,5 +128,60 @@
       "masterCodeLabel": "Mastercode:",
       "masterCodeParentInstruction": "🎁 Zeig diesen Mastercode deinen Eltern – du hast dir eine Überraschung verdient!"
     }
+  },
+  "mysticalDivisionOracle": {
+    "title": "Mystical Division Oracle",
+    "description": "Bezwinge das Division-Orakel – wenn du es wagst!",
+    "config": {
+      "title": "Deine Divisoren",
+      "divisorsLabel": "Welche Divisoren möchtest du üben?",
+      "divisorsPlaceholder": "z. B. 1, 2, 3, 4, 5",
+      "divisorsHint": "Komma-getrennte Zahlen von 1–10. Leer lassen = alle.",
+      "start": "Weiter ins Abenteuer ✨"
+    },
+    "disclaimer": {
+      "title": "⚠️ Mystische Warnung ⚠️",
+      "body": "Wer dieses Tor durchschreitet, tritt in das Reich der alten Divisionen ein. Das mystische Division-Orakel bewacht fünf geheime Codes, die in der realen Welt eine Überraschung freischalten. Diese Codes erscheinen nur den Würdigen – und sie müssen eigenhändig und handschriftlich notiert werden. Kein Screenshot, kein Foto. Nur Tinte auf Papier.\n\nDie Gefahren sind real. Dein Geist wird gefordert. Dein Stift muss bereit sein.\n\nBist du dieser Prüfung gewachsen?",
+      "codesHint": "🔮 5 geheime Codes · ✨ vom Orakel offenbart · ✍️ handschriftlich notieren",
+      "accept": "Ich bin bereit. Ich akzeptiere die Gefahren."
+    },
+    "question": {
+      "findDividend": "Welche Zahl fehlt?  ? ÷ {b} = {c}",
+      "findDivisor": "Welche Zahl fehlt?  {a} ÷ ? = {c}",
+      "inputPlaceholder": "Deine Antwort…",
+      "confirm": "Bestätigen",
+      "progress": "Aufgabe {current} von {total}"
+    },
+    "feedback": {
+      "correct": "✅ Richtig! +{xp} XP",
+      "wrongPrefix": "❌ Falsch! Richtig wäre:",
+      "wrong": "❌ Falsch! Richtig wäre: {answer}"
+    },
+    "code": {
+      "title": "🌟 Geheimer Code freigeschaltet! 🌟",
+      "body": "Das mystische Division-Orakel leuchtet anerkennend. Du hast dir diesen Code verdient:",
+      "writeItDown": "✍️ Schreibe diesen Code JETZT auf Papier! Er wird nicht gespeichert und verschwindet gleich.",
+      "continue": "Ich habe ihn notiert – weiter!"
+    },
+    "summary": {
+      "title": "Runde beendet!",
+      "score": "Deine Punkte: {score}",
+      "correct": "Richtig: {count}",
+      "wrong": "Falsch: {count}",
+      "playAgain": "Nochmal spielen",
+      "backToMenu": "Zurück zum Menü"
+    },
+    "redeemCodes": {
+      "buttonLabel": "🪙 Codes einlösen",
+      "title": "🔐 Geheimcodes einlösen",
+      "subtitle": "Gib alle 5 geheimen Codes in beliebiger Reihenfolge ein.",
+      "codePlaceholder": "Code {n}",
+      "submit": "Einlösen",
+      "cancel": "Abbrechen",
+      "wrong": "❌ Leider falsch. Überprüfe deine Codes!",
+      "correctTitle": "🌟 Alle Codes korrekt! 🌟",
+      "masterCodeLabel": "Mastercode:",
+      "masterCodeParentInstruction": "🎁 Zeig diesen Mastercode deinen Eltern – du hast dir eine Überraschung verdient!"
+    }
   }
 }

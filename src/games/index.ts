@@ -29,4 +29,13 @@ export const GAMES: GameConfig[] = [
     path: '/game/mystical-times-table',
     component: defineAsyncComponent(() => import('@/components/games/MysticalTimesTable.vue')),
   },
+  {
+    id: 'mystical-division-oracle',
+    titleKey: 'mysticalDivisionOracle.title',
+    descriptionKey: 'mysticalDivisionOracle.description',
+    icon: '✨',
+    color: 'from-cyan-500 to-blue-600',
+    path: '/game/mystical-division-oracle',
+    component: defineAsyncComponent(() => import('@/components/games/MysticalDivisionOracle.vue')),
+  },
 ]

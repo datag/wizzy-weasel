@@ -51,3 +51,13 @@ export interface TimesTableQuestion {
   factorB: number
   product: number   // factorA * factorB
 }
+
+// Mystical Division Oracle question
+export type DivisionQuestionType = 'find-dividend' | 'find-divisor'
+
+export interface DivisionQuestion {
+  questionType: DivisionQuestionType
+  dividend: number
+  divisor: number
+  quotient: number   // dividend / divisor (always clean division)
+}
