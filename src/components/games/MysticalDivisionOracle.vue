@@ -640,7 +640,7 @@ onUnmounted(() => {
             <div class="text-4xl animate-bounce">🌟</div>
             <h3 class="text-2xl font-extrabold text-amber-300">{{ t('mysticalDivisionOracle.redeemCodes.correctTitle') }}</h3>
             <p class="text-white/60 text-sm">{{ t('mysticalDivisionOracle.redeemCodes.masterCodeLabel') }}</p>
-            <div class="bg-amber-400 text-indigo-950 font-mono font-black text-4xl sm:text-5xl rounded-2xl px-8 py-6 shadow-2xl tracking-widest border-4 border-amber-200 min-w-[14ch] text-center" style="min-height: 5rem">
+            <div class="bg-amber-400 text-indigo-950 font-mono font-black text-4xl rounded-2xl px-8 py-6 shadow-2xl tracking-widest border-4 border-amber-200 min-w-[14ch] text-center" style="min-height: 5rem">
               <span
                 v-for="(char, ci) in masterCodeRevealed.split('')"
                 :key="ci"
