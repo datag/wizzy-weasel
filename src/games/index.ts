@@ -30,15 +30,6 @@ export const GAMES: GameConfig[] = [
     component: defineAsyncComponent(() => import('@/components/games/MysticalTimesTable.vue')),
   },
   {
-    id: 'it-hardware-quiz',
-    titleKey: 'itHardwareQuiz.title',
-    descriptionKey: 'itHardwareQuiz.description',
-    icon: '💻',
-    color: 'from-sky-500 to-blue-600',
-    path: '/game/it-hardware-quiz',
-    component: defineAsyncComponent(() => import('@/components/games/ItHardwareQuiz.vue')),
-  },
-  {
     id: 'mystical-division-oracle',
     titleKey: 'mysticalDivisionOracle.title',
     descriptionKey: 'mysticalDivisionOracle.description',
@@ -46,5 +37,14 @@ export const GAMES: GameConfig[] = [
     color: 'from-cyan-500 to-blue-600',
     path: '/game/mystical-division-oracle',
     component: defineAsyncComponent(() => import('@/components/games/MysticalDivisionOracle.vue')),
+  },
+  {
+    id: 'it-hardware-quiz',
+    titleKey: 'itHardwareQuiz.title',
+    descriptionKey: 'itHardwareQuiz.description',
+    icon: '💻',
+    color: 'from-sky-500 to-blue-600',
+    path: '/game/it-hardware-quiz',
+    component: defineAsyncComponent(() => import('@/components/games/ItHardwareQuiz.vue')),
   },
 ]
