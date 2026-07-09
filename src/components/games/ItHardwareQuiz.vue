@@ -218,11 +218,19 @@ function answerClass(index: number): string {
       </div>
 
       <!-- HUD -->
-      <div class="flex items-center justify-between px-4 sm:px-5 pt-2 sm:pt-3 pb-1 flex-shrink-0">
-        <span class="text-sm font-semibold text-white/70">
+      <div class="flex items-center gap-2 px-2 sm:px-3 pt-2 sm:pt-3 pb-1 flex-shrink-0">
+        <!-- Pause button -->
+        <button
+          class="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white text-base"
+          :title="t('game.paused')"
+          @click="pauseGame"
+        >
+          ⏸
+        </button>
+        <span class="flex-1 text-sm font-semibold text-white/70 text-center">
           {{ t('itHardwareQuiz.questionOf', { current: questionIndex + 1, total: totalQuestions }) }}
         </span>
-        <span class="text-sm font-bold bg-white/10 rounded-full px-3 py-1">
+        <span class="flex-shrink-0 text-sm font-bold bg-white/10 rounded-full px-3 py-1">
           {{ t('game.score', { score: sessionScore }) }}
         </span>
       </div>
@@ -329,16 +337,6 @@ function answerClass(index: number): string {
         </div>
       </div>
     </Transition>
-
-    <!-- Pause button (top-right, playing phase) -->
-    <button
-      v-if="phase === 'playing' || phase === 'feedback-correct' || phase === 'feedback-wrong'"
-      class="absolute top-3 right-3 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white text-lg"
-      :title="t('game.paused')"
-      @click="pauseGame"
-    >
-      ⏸
-    </button>
 
     <!-- ── PAUSE modal ── -->
     <PauseModal v-if="isPaused" @resume="resumeGame" @exit="exitGame" />
