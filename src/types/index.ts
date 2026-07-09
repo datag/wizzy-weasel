@@ -61,3 +61,25 @@ export interface DivisionQuestion {
   divisor: number
   quotient: number   // dividend / divisor (always clean division)
 }
+
+// IT Hardware Quiz
+export interface HardwareAnswer {
+  textKey: string   // i18n key for answer text
+  correct: boolean
+}
+
+export interface HardwareQuestion {
+  id: string
+  questionKey: string          // i18n key for question text
+  type: 'single' | 'multiple'
+  correctCount?: number        // only for multiple-choice
+  answers: HardwareAnswer[]    // always 5 entries
+}
+
+export interface HardwareItem {
+  id: string
+  nameKey: string        // i18n key for hardware name
+  image: string          // path to SVG placeholder
+  emoji: string
+  questions: HardwareQuestion[]
+}
