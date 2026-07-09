@@ -181,7 +181,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'keyboard',
     nameKey: 'itHardwareQuiz.hardware.keyboard',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Computer_monitor.jpg',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/5/54/Hintergrundbeleuchtete_Computer-Tastatur_%28no_name%29_2022-09-03_Mattes.jpg',
     emoji: '⌨️',
     questions: [
       {
