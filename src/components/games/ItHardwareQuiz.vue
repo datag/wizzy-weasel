@@ -166,7 +166,7 @@ onUnmounted(() => window.removeEventListener('keydown', onKeyDown))
 
 // ─── Style helpers ────────────────────────────────────────────
 function answerClass(index: number): string {
-  const base = 'w-full text-left px-4 py-3 rounded-2xl font-semibold text-base transition-all min-h-[52px] border-2 '
+  const base = 'w-full text-left px-3 sm:px-4 py-2 sm:py-3 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-base transition-all min-h-[44px] sm:min-h-[52px] border-2 '
 
   if (phase.value === 'playing') {
     if (isMultiple.value) {
@@ -218,7 +218,7 @@ function answerClass(index: number): string {
       </div>
 
       <!-- HUD -->
-      <div class="flex items-center justify-between px-5 pt-3 pb-1 flex-shrink-0">
+      <div class="flex items-center justify-between px-4 sm:px-5 pt-2 sm:pt-3 pb-1 flex-shrink-0">
         <span class="text-sm font-semibold text-white/70">
           {{ t('itHardwareQuiz.questionOf', { current: questionIndex + 1, total: totalQuestions }) }}
         </span>
@@ -228,32 +228,32 @@ function answerClass(index: number): string {
       </div>
 
       <!-- Main content -->
-      <div v-if="current" class="flex-1 min-h-0 flex flex-col items-center gap-4 px-4 pb-4 overflow-y-auto">
+      <div v-if="current" class="flex-1 min-h-0 flex flex-col items-center gap-2 sm:gap-4 px-4 pb-2 sm:pb-4 overflow-hidden">
 
         <!-- Hardware image + name -->
-        <div class="flex flex-col items-center gap-2 pt-2 flex-shrink-0">
+        <div class="flex flex-col items-center gap-1 sm:gap-2 pt-1 sm:pt-2 flex-shrink-0">
           <img
             :key="questionIndex"
             :src="current.hardware.image"
             :alt="t(current.hardware.nameKey)"
-            class="w-40 h-28 sm:w-56 sm:h-40 object-cover rounded-2xl shadow-lg"
+            class="w-28 h-20 sm:w-56 sm:h-40 object-cover rounded-xl sm:rounded-2xl shadow-lg"
             draggable="false"
           />
-          <span class="text-xl font-extrabold tracking-wide">{{ t(current.hardware.nameKey) }}</span>
+          <span class="text-base sm:text-xl font-extrabold tracking-wide">{{ t(current.hardware.nameKey) }}</span>
         </div>
 
         <!-- Question -->
-        <p class="text-center text-lg font-bold text-white/90 max-w-lg leading-snug flex-shrink-0">
+        <p class="text-center text-sm sm:text-lg font-bold text-white/90 max-w-lg leading-snug flex-shrink-0">
           {{ t(current.question.questionKey) }}
         </p>
 
         <!-- Multiple choice hint -->
-        <p v-if="isMultiple" class="text-sm text-violet-300 font-semibold -mt-2 flex-shrink-0">
+        <p v-if="isMultiple" class="text-xs sm:text-sm text-violet-300 font-semibold -mt-1 sm:-mt-2 flex-shrink-0">
           {{ t('itHardwareQuiz.correctCount', { count: current.question.correctCount }) }}
         </p>
 
         <!-- Answer buttons -->
-        <div class="w-full max-w-lg flex flex-col gap-2 flex-shrink-0">
+        <div class="w-full max-w-lg flex flex-col gap-1.5 sm:gap-2 flex-shrink-0">
           <button
             v-for="(answer, idx) in current.question.answers"
             :key="idx"
@@ -281,10 +281,10 @@ function answerClass(index: number): string {
 
         <!-- Feedback message -->
         <Transition name="pop">
-          <div v-if="phase === 'feedback-correct'" class="text-2xl font-extrabold text-green-300 flex-shrink-0">
+          <div v-if="phase === 'feedback-correct'" class="text-xl sm:text-2xl font-extrabold text-green-300 flex-shrink-0">
             {{ t('itHardwareQuiz.correct', { xp: XP_PER_CORRECT }) }}
           </div>
-          <div v-else-if="phase === 'feedback-wrong'" class="text-2xl font-extrabold text-red-300 flex-shrink-0">
+          <div v-else-if="phase === 'feedback-wrong'" class="text-xl sm:text-2xl font-extrabold text-red-300 flex-shrink-0">
             {{ t('itHardwareQuiz.wrong') }}
           </div>
         </Transition>
@@ -292,7 +292,7 @@ function answerClass(index: number): string {
         <!-- Submit button (multiple choice only, playing phase) -->
         <div v-if="isMultiple && phase === 'playing'" class="flex-shrink-0 w-full max-w-lg">
           <AppButton
-            size="lg"
+            size="md"
             full-width
             :disabled="!canSubmit"
             @click="submitAnswer"
@@ -303,7 +303,7 @@ function answerClass(index: number): string {
 
         <!-- Next button (feedback phase) -->
         <div v-if="phase === 'feedback-correct' || phase === 'feedback-wrong'" class="flex-shrink-0 w-full max-w-lg">
-          <AppButton size="lg" full-width @click="nextQuestion">
+          <AppButton size="md" full-width @click="nextQuestion">
             {{ t('itHardwareQuiz.next') }} →
           </AppButton>
         </div>
