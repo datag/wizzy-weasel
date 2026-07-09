@@ -8,7 +8,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'access-point',
     nameKey: 'itHardwareQuiz.hardware.access-point',
-    image: `${import.meta.env.BASE_URL}hardware/access-point.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/5/58/Access_Point_UniFi.jpg',
     emoji: '📡',
     questions: [
       {
@@ -40,7 +40,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'ssd',
     nameKey: 'itHardwareQuiz.hardware.ssd',
-    image: `${import.meta.env.BASE_URL}hardware/ssd.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/Vertex_2_Solid_State_Drive_by_OCZ-top_oblique_PNr%C2%B00307.jpg',
     emoji: '💾',
     questions: [
       {
@@ -85,7 +85,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'switch',
     nameKey: 'itHardwareQuiz.hardware.switch',
-    image: `${import.meta.env.BASE_URL}hardware/switch.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/a/a2/Netgear_Gigabit_Switch_5-port.jpg',
     emoji: '🔀',
     questions: [
       {
@@ -117,7 +117,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'psu',
     nameKey: 'itHardwareQuiz.hardware.psu',
-    image: `${import.meta.env.BASE_URL}hardware/psu.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e9/ATX-Netzteil.jpg',
     emoji: '🔌',
     questions: [
       {
@@ -149,7 +149,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'monitor',
     nameKey: 'itHardwareQuiz.hardware.monitor',
-    image: `${import.meta.env.BASE_URL}hardware/monitor.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Computer_monitor.jpg',
     emoji: '🖥️',
     questions: [
       {
@@ -181,7 +181,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'keyboard',
     nameKey: 'itHardwareQuiz.hardware.keyboard',
-    image: `${import.meta.env.BASE_URL}hardware/keyboard.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/a/a4/Computer_monitor.jpg',
     emoji: '⌨️',
     questions: [
       {
@@ -214,7 +214,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'mouse',
     nameKey: 'itHardwareQuiz.hardware.mouse',
-    image: `${import.meta.env.BASE_URL}hardware/mouse.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/0/01/Razer_DeathAdder_Elite-front_oblique-ar_16to10-fs_PNr%C2%B00465.jpg',
     emoji: '🖱️',
     questions: [
       {
@@ -246,7 +246,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'router',
     nameKey: 'itHardwareQuiz.hardware.router',
-    image: `${import.meta.env.BASE_URL}hardware/router.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/7/7d/Fritz%21Box_7590-7409.jpg',
     emoji: '📶',
     questions: [
       {
@@ -278,7 +278,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'cpu',
     nameKey: 'itHardwareQuiz.hardware.cpu',
-    image: `${import.meta.env.BASE_URL}hardware/cpu.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/a/a7/Intel_pentium4_1.5ghz_willamette_socek423.jpg',
     emoji: '🧠',
     questions: [
       {
@@ -323,7 +323,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'ram',
     nameKey: 'itHardwareQuiz.hardware.ram',
-    image: `${import.meta.env.BASE_URL}hardware/ram.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/4/43/KVR400X64C3AK2_-_2G.jpg',
     emoji: '⚡',
     questions: [
       {
@@ -367,7 +367,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'gpu',
     nameKey: 'itHardwareQuiz.hardware.gpu',
-    image: `${import.meta.env.BASE_URL}hardware/gpu.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/4/45/EVGA_GeForce_GTX_590.jpg',
     emoji: '🎮',
     questions: [
       {
@@ -399,7 +399,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'usb-stick',
     nameKey: 'itHardwareQuiz.hardware.usb-stick',
-    image: `${import.meta.env.BASE_URL}hardware/usb-stick.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/e/e1/USB_Stick_2_GB.jpg',
     emoji: '🔑',
     questions: [
       {
@@ -431,7 +431,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'webcam',
     nameKey: 'itHardwareQuiz.hardware.webcam',
-    image: `${import.meta.env.BASE_URL}hardware/webcam.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Hp_web_camera_closeup.jpg',
     emoji: '📷',
     questions: [
       {
@@ -464,7 +464,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'printer',
     nameKey: 'itHardwareQuiz.hardware.printer',
-    image: `${import.meta.env.BASE_URL}hardware/printer.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/Canon_S520_ink_jet_printer.jpg',
     emoji: '🖨️',
     questions: [
       {
@@ -497,7 +497,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'headset',
     nameKey: 'itHardwareQuiz.hardware.headset',
-    image: `${import.meta.env.BASE_URL}hardware/headset.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Plantronics_headset.jpg',
     emoji: '🎧',
     questions: [
       {
@@ -529,7 +529,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'hdd',
     nameKey: 'itHardwareQuiz.hardware.hdd',
-    image: `${import.meta.env.BASE_URL}hardware/hdd.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Western_Digital_WD2500BB_Hard_Disk_A.jpg',
     emoji: '💿',
     questions: [
       {
@@ -574,7 +574,7 @@ export const HARDWARE_ITEMS: HardwareItem[] = [
   {
     id: 'speaker',
     nameKey: 'itHardwareQuiz.hardware.speaker',
-    image: `${import.meta.env.BASE_URL}hardware/speaker.svg`,
+    image: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Kompakt_Lautsprecher_Boxen.jpg',
     emoji: '🔊',
     questions: [
       {
