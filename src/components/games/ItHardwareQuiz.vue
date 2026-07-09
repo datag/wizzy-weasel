@@ -233,6 +233,7 @@ function answerClass(index: number): string {
         <!-- Hardware image + name -->
         <div class="flex flex-col items-center gap-2 pt-2 flex-shrink-0">
           <img
+            :key="questionIndex"
             :src="current.hardware.image"
             :alt="t(current.hardware.nameKey)"
             class="w-40 h-28 sm:w-56 sm:h-40 object-cover rounded-2xl shadow-lg"
