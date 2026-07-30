@@ -607,5 +607,36 @@
       "masterCodeLabel": "Mastercode:",
       "masterCodeParentInstruction": "🎁 Zeig diesen Mastercode deinen Eltern – du hast dir eine Überraschung verdient!"
     }
+  },
+  "bundeslaenderQuiz": {
+    "title": "Bundesländer-Quiz",
+    "description": "Erkenne alle 16 deutschen Bundesländer auf der Karte!",
+    "readyDesc": "15 Fragen, 2 Modi – zeige dein Wissen über die deutschen Bundesländer!",
+    "questionOf": "{current} / {total}",
+    "chooseState": "Welches Bundesland ist markiert?",
+    "clickState": "Klicke auf der Karte auf das Bundesland",
+    "confirm": "Bestätigen",
+    "correct": "Richtig! +{xp} XP",
+    "wrong": "Falsch! −1 Boost",
+    "wrongAnswer": "Richtige Antwort: {name}",
+    "next": "Weiter",
+    "states": {
+      "bw": "Baden-Württemberg",
+      "by": "Bayern",
+      "be": "Berlin",
+      "bb": "Brandenburg",
+      "hb": "Bremen",
+      "hh": "Hamburg",
+      "he": "Hessen",
+      "mv": "Mecklenburg-Vorpommern",
+      "ni": "Niedersachsen",
+      "nw": "Nordrhein-Westfalen",
+      "rp": "Rheinland-Pfalz",
+      "sl": "Saarland",
+      "sn": "Sachsen",
+      "st": "Sachsen-Anhalt",
+      "sh": "Schleswig-Holstein",
+      "th": "Thüringen"
+    }
   }
 }

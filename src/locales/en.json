@@ -607,5 +607,36 @@
       "masterCodeLabel": "Master code:",
       "masterCodeParentInstruction": "🎁 Show this master code to your parents – you've earned a surprise!"
     }
+  },
+  "bundeslaenderQuiz": {
+    "title": "German States Quiz",
+    "description": "Identify all 16 German federal states on the map!",
+    "readyDesc": "15 questions, 2 modes – show your knowledge of German federal states!",
+    "questionOf": "{current} / {total}",
+    "chooseState": "Which state is highlighted?",
+    "clickState": "Click the state on the map",
+    "confirm": "Confirm",
+    "correct": "Correct! +{xp} XP",
+    "wrong": "Wrong! −1 Boost",
+    "wrongAnswer": "Correct answer: {name}",
+    "next": "Next",
+    "states": {
+      "bw": "Baden-Württemberg",
+      "by": "Bavaria",
+      "be": "Berlin",
+      "bb": "Brandenburg",
+      "hb": "Bremen",
+      "hh": "Hamburg",
+      "he": "Hesse",
+      "mv": "Mecklenburg-Western Pomerania",
+      "ni": "Lower Saxony",
+      "nw": "North Rhine-Westphalia",
+      "rp": "Rhineland-Palatinate",
+      "sl": "Saarland",
+      "sn": "Saxony",
+      "st": "Saxony-Anhalt",
+      "sh": "Schleswig-Holstein",
+      "th": "Thuringia"
+    }
   }
 }

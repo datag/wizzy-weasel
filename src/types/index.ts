@@ -83,3 +83,20 @@ export interface HardwareItem {
   emoji: string
   questions: HardwareQuestion[]
 }
+
+// Bundesländer-Quiz
+export type BundeslandMode = 'map-to-name' | 'name-to-map'
+
+export interface Bundesland {
+  id: string           // ISO 3166-2 code, e.g. 'DE-BY'
+  svgPathId: string    // the `id` attribute of the <path> in map-germany.svg
+  nameKey: string      // i18n key for the state name
+  flagPath: string     // relative path to the flag SVG asset
+  capital: string      // Landeshauptstadt
+}
+
+export interface BundeslandQuestion {
+  bundesland: Bundesland
+  mode: BundeslandMode
+  options: Bundesland[]  // 4 choices for map-to-name mode (includes correct one)
+}

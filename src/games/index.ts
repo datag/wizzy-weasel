@@ -47,4 +47,13 @@ export const GAMES: GameConfig[] = [
     path: '/game/it-hardware-quiz',
     component: defineAsyncComponent(() => import('@/components/games/ItHardwareQuiz.vue')),
   },
+  {
+    id: 'bundeslaender-quiz',
+    titleKey: 'bundeslaenderQuiz.title',
+    descriptionKey: 'bundeslaenderQuiz.description',
+    icon: '🗺️',
+    color: 'from-amber-500 to-orange-600',
+    path: '/game/bundeslaender-quiz',
+    component: defineAsyncComponent(() => import('@/components/games/BundeslaenderQuiz.vue')),
+  },
 ]
