@@ -165,21 +165,19 @@ onUnmounted(() => {
       fill="#1e293b"
     >{{ h.num }}</text>
 
-    <!-- Hour hand -->
+    <!-- Hour hand (visual) -->
     <line
       :x1="cx"
       :y1="cy"
       :x2="hourHandEnd.x"
       :y2="hourHandEnd.y"
       stroke="#1e293b"
-      :stroke-width="size * 0.028"
+      :stroke-width="size * 0.038"
       stroke-linecap="round"
-      :class="interactive ? 'cursor-grab active:cursor-grabbing' : ''"
-      @mousedown="startDrag('hour', $event)"
-      @touchstart.prevent="startDrag('hour', $event)"
+      pointer-events="none"
     />
 
-    <!-- Minute hand -->
+    <!-- Minute hand (visual) -->
     <line
       :x1="cx"
       :y1="cy"
@@ -188,12 +186,44 @@ onUnmounted(() => {
       stroke="#3b82f6"
       :stroke-width="size * 0.018"
       stroke-linecap="round"
-      :class="interactive ? 'cursor-grab active:cursor-grabbing' : ''"
-      @mousedown="startDrag('minute', $event)"
-      @touchstart.prevent="startDrag('minute', $event)"
+      pointer-events="none"
     />
 
     <!-- Center dot -->
-    <circle :cx="cx" :cy="cy" :r="size * 0.025" fill="#1e293b" />
+    <circle :cx="cx" :cy="cy" :r="size * 0.025" fill="#1e293b" pointer-events="none" />
+
+    <!-- Hit areas (interactive only) — order matters for z/pointer priority:
+         Minute hit area is rendered first (full length → active in outer zone).
+         Hour hit area is rendered last (shorter → sits on top in inner zone).
+         Where both overlap (inner zone) the hour area wins; beyond the hour tip only
+         the minute area exists, so the minute hand wins there. -->
+    <template v-if="interactive">
+      <!-- Minute hand hit area (full length) -->
+      <line
+        :x1="cx"
+        :y1="cy"
+        :x2="minuteHandEnd.x"
+        :y2="minuteHandEnd.y"
+        stroke="transparent"
+        :stroke-width="size * 0.11"
+        stroke-linecap="round"
+        class="cursor-grab active:cursor-grabbing"
+        @mousedown="startDrag('minute', $event)"
+        @touchstart.prevent="startDrag('minute', $event)"
+      />
+      <!-- Hour hand hit area (inner zone, rendered on top → higher priority when overlapping) -->
+      <line
+        :x1="cx"
+        :y1="cy"
+        :x2="hourHandEnd.x"
+        :y2="hourHandEnd.y"
+        stroke="transparent"
+        :stroke-width="size * 0.11"
+        stroke-linecap="round"
+        class="cursor-grab active:cursor-grabbing"
+        @mousedown="startDrag('hour', $event)"
+        @touchstart.prevent="startDrag('hour', $event)"
+      />
+    </template>
   </svg>
 </template>
