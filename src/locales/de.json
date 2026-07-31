@@ -183,7 +183,6 @@
       "ap-a2-3": "Im Monitor, um Farben zu mischen",
       "ap-a2-4": "In der Tastatur, um Tasten zu beleuchten",
       "ap-a2-5": "Im Netzteil, um Strom zu erzeugen",
-
       "ssd-q1": "Was macht eine SSD?",
       "ssd-q2": "Was sind Vorteile einer SSD gegenüber einer HDD?",
       "ssd-q3": "Was bedeutet die Abkürzung SSD?",
@@ -202,7 +201,6 @@
       "ssd-a3-3": "System Storage Device",
       "ssd-a3-4": "Secondary Screen Display",
       "ssd-a3-5": "Smart Sound Driver",
-
       "sw-q1": "Wofür wird ein Netzwerk-Switch verwendet?",
       "sw-q2": "Was ist der Unterschied zwischen einem Switch und einem Router?",
       "sw-a1-1": "Er verbindet mehrere Geräte in einem Netzwerk miteinander",
@@ -215,7 +213,6 @@
       "sw-a2-3": "Ein Switch hat immer mehr Anschlüsse als ein Router",
       "sw-a2-4": "Ein Router kann keine WLAN-Signale senden",
       "sw-a2-5": "Es gibt keinen Unterschied, beide machen das Gleiche",
-
       "psu-q1": "Was macht das Netzteil in einem Computer?",
       "psu-q2": "Was passiert, wenn das Netzteil ausfällt?",
       "psu-a1-1": "Es wandelt den Strom aus der Steckdose in eine Form um, die der Computer nutzen kann",
@@ -228,7 +225,6 @@
       "psu-a2-3": "Der Monitor wird heller",
       "psu-a2-4": "Das Internet wird schneller",
       "psu-a2-5": "Die Tastatur leuchtet auf",
-
       "mon-q1": "Was macht ein Monitor?",
       "mon-q2": "Was bedeutet 'Full HD' bei einem Monitor?",
       "mon-a1-1": "Er zeigt Bilder, Videos und Programme des Computers an",
@@ -241,7 +237,6 @@
       "mon-a2-3": "Der Monitor kann nur schwarz-weiß anzeigen",
       "mon-a2-4": "Der Monitor hat einen eingebauten Lautsprecher",
       "mon-a2-5": "Der Monitor braucht keine Stromversorgung",
-
       "kb-q1": "Wofür wird eine Tastatur hauptsächlich verwendet?",
       "kb-q2": "Was kann man mit einer Tastatur alles tun?",
       "kb-a1-1": "Zum Eingeben von Text und Befehlen in den Computer",
@@ -254,7 +249,6 @@
       "kb-a2-3": "Den Monitor heller machen",
       "kb-a2-4": "Fotos aufnehmen",
       "kb-a2-5": "Dateien dauerhaft speichern",
-
       "ms-q1": "Wozu dient eine Computermaus?",
       "ms-q2": "Was macht ein Doppelklick mit der linken Maustaste?",
       "ms-a1-1": "Zum Bewegen des Mauszeigers und Klicken auf dem Bildschirm",
@@ -267,7 +261,6 @@
       "ms-a2-3": "Er druckt das aktuelle Dokument",
       "ms-a2-4": "Er schaltet den Monitor aus",
       "ms-a2-5": "Er verbindet das Gerät mit dem Internet",
-
       "rt-q1": "Was ist die Hauptaufgabe eines Routers?",
       "rt-q2": "Was sendet ein WLAN-Router aus?",
       "rt-a1-1": "Er verbindet das Heimnetzwerk mit dem Internet",
@@ -280,7 +273,6 @@
       "rt-a2-3": "Schallwellen für besseren Sound",
       "rt-a2-4": "Bilder auf den Fernseher",
       "rt-a2-5": "Strom an alle angeschlossenen Geräte",
-
       "cpu-q1": "Was ist die Aufgabe des Prozessors (CPU)?",
       "cpu-q2": "Was bedeutet die Abkürzung CPU?",
       "cpu-q3": "Was beeinflusst die Geschwindigkeit eines Prozessors?",
@@ -299,7 +291,6 @@
       "cpu-a3-3": "Die Farbe des Gehäuses",
       "cpu-a3-4": "Die Größe des Monitors",
       "cpu-a3-5": "Das Gewicht der Tastatur",
-
       "ram-q1": "Was speichert der RAM (Arbeitsspeicher)?",
       "ram-q2": "Was passiert mit dem Inhalt des RAM, wenn du den Computer ausschaltest?",
       "ram-q3": "Was bedeutet die Abkürzung RAM?",
@@ -318,7 +309,6 @@
       "ram-a3-3": "Read And Modify",
       "ram-a3-4": "Running Application Memory",
       "ram-a3-5": "Remote Access Mode",
-
       "gpu-q1": "Wofür ist die Grafikkarte (GPU) zuständig?",
       "gpu-q2": "Wer profitiert besonders von einer starken Grafikkarte?",
       "gpu-a1-1": "Sie berechnet und gibt Bilder und Videos auf dem Monitor aus",
@@ -331,7 +321,6 @@
       "gpu-a2-3": "Nur wer viel druckt",
       "gpu-a2-4": "Nur wer keine Programme nutzt",
       "gpu-a2-5": "Niemand, die CPU reicht immer aus",
-
       "usb-q1": "Wofür verwendet man einen USB-Stick?",
       "usb-q2": "Wie schließt man einen USB-Stick an den Computer an?",
       "usb-a1-1": "Zum Speichern und Mitnehmen von Dateien",
@@ -344,7 +333,6 @@
       "usb-a2-3": "Man verbindet ihn per Bluetooth",
       "usb-a2-4": "Man schraubt ihn in die Grafikkarte",
       "usb-a2-5": "Man befestigt ihn am Monitor",
-
       "wc-q1": "Wofür wird eine Webcam hauptsächlich benutzt?",
       "wc-q2": "Was kann eine Webcam aufnehmen?",
       "wc-a1-1": "Für Videotelefonate und Online-Unterricht",
@@ -357,7 +345,6 @@
       "wc-a2-3": "Töne, die von Lautsprechern kommen",
       "wc-a2-4": "Daten von USB-Sticks",
       "wc-a2-5": "Druckaufträge für den Drucker",
-
       "pr-q1": "Was macht ein Drucker?",
       "pr-q2": "Welche zwei Druckerarten gibt es am häufigsten?",
       "pr-a1-1": "Er überträgt Dokumente und Bilder auf Papier",
@@ -370,7 +357,6 @@
       "pr-a2-3": "Sounddrucker",
       "pr-a2-4": "Magnetdrucker",
       "pr-a2-5": "Solardrucker",
-
       "hs-q1": "Was ist ein Headset?",
       "hs-q2": "Wofür wird ein Headset meistens benutzt?",
       "hs-a1-1": "Kopfhörer mit einem eingebauten Mikrofon",
@@ -383,7 +369,6 @@
       "hs-a2-3": "Zum Speichern von Dateien",
       "hs-a2-4": "Zum Einrichten des Netzwerks",
       "hs-a2-5": "Zum Steuern des Mauszeigers",
-
       "hdd-q1": "Was macht eine Festplatte (HDD)?",
       "hdd-q2": "Was sind Nachteile einer HDD gegenüber einer SSD?",
       "hdd-q3": "Was bedeutet HDD?",
@@ -402,7 +387,6 @@
       "hdd-a3-3": "Hybrid Drive Disk",
       "hdd-a3-4": "Hard Digital Display",
       "hdd-a3-5": "Home Data Drive",
-
       "sp-q1": "Was macht ein Lautsprecher?",
       "sp-q2": "Was ist der Unterschied zwischen einem Lautsprecher und einem Headset?",
       "sp-a1-1": "Er gibt Töne, Musik und Sprache hörbar aus",
@@ -415,7 +399,6 @@
       "sp-a2-3": "Ein Headset kann keine Musik abspielen",
       "sp-a2-4": "Ein Lautsprecher braucht immer eine Bluetooth-Verbindung",
       "sp-a2-5": "Es gibt keinen Unterschied",
-
       "sm-q1": "Was ist ein Smartphone?",
       "sm-q2": "Was kann ein Smartphone, das ein einfaches Handy nicht kann?",
       "sm-a1-1": "Ein Mobiltelefon mit Touchscreen und vielen App-Funktionen",
@@ -428,7 +411,6 @@
       "sm-a2-3": "Telefonieren",
       "sm-a2-4": "SMS senden",
       "sm-a2-5": "Akkus laden",
-
       "tb-q1": "Was ist ein Tablet?",
       "tb-q2": "Welcher Vorteil hat ein Tablet gegenüber einem Laptop?",
       "tb-a1-1": "Ein flacher Computer mit Touchscreen, meist ohne eigene Tastatur",
@@ -441,7 +423,6 @@
       "tb-a2-3": "Es hat immer mehr Speicherplatz",
       "tb-a2-4": "Es lässt sich besser programmieren",
       "tb-a2-5": "Es hat immer eine bessere Kamera",
-
       "sd-q1": "Wofür wird eine SD-Karte verwendet?",
       "sd-q2": "Was bedeutet SD in SD-Karte?",
       "sd-a1-1": "Zum Speichern von Daten in Kameras, Smartphones oder Tablets",
@@ -454,7 +435,6 @@
       "sd-a2-3": "Saved Data",
       "sd-a2-4": "System Drive",
       "sd-a2-5": "Standard Disk",
-
       "uh-q1": "Was macht ein USB-Hub?",
       "uh-q2": "Wann braucht man einen USB-Hub?",
       "uh-a1-1": "Er erweitert einen USB-Anschluss auf mehrere Anschlüsse gleichzeitig",
@@ -467,7 +447,6 @@
       "uh-a2-3": "Wenn der Bildschirm zu klein ist",
       "uh-a2-4": "Wenn der Akku nicht mehr lädt",
       "uh-a2-5": "Wenn man ein Gerät reparieren möchte",
-
       "eh-q1": "Was ist eine externe Festplatte?",
       "eh-q2": "Wofür eignet sich eine externe Festplatte besonders?",
       "eh-a1-1": "Ein tragbares Speichergerät, das per USB an den Computer angeschlossen wird",
@@ -480,7 +459,6 @@
       "eh-a2-3": "Als Ersatz für den Arbeitsspeicher",
       "eh-a2-4": "Zum Verbinden mit dem Internet",
       "eh-a2-5": "Zum Drucken von Dokumenten",
-
       "gp-q1": "Wofür wird ein Gamepad (Controller) verwendet?",
       "gp-q2": "An welchen Geräten kann man einen Controller verwenden?",
       "gp-a1-1": "Zum Steuern von Figuren und Aktionen in Videospielen",
@@ -493,7 +471,6 @@
       "gp-a2-3": "Nur an sehr alten Computern",
       "gp-a2-4": "Nur an Macs",
       "gp-a2-5": "Nur an Fernsehern ohne Spielekonsole",
-
       "pb-q1": "Was ist eine Powerbank?",
       "pb-q2": "Woran erkennt man, wie viel Energie eine Powerbank speichern kann?",
       "pb-a1-1": "Ein tragbarer Akku, der Smartphones und andere Geräte unterwegs aufladen kann",
@@ -506,7 +483,6 @@
       "pb-a2-3": "An der Anzahl der USB-Anschlüsse",
       "pb-a2-4": "An der Farbe des Gehäuses",
       "pb-a2-5": "An der Größe des Displays",
-
       "rpi-q1": "Was ist ein Einplatinen-Computer (SBC) wie der Raspberry Pi?",
       "rpi-q2": "Was kann man mit einem Raspberry Pi machen?",
       "rpi-q3": "Was braucht man zusätzlich, um einen Raspberry Pi nutzen zu können?",
@@ -525,7 +501,6 @@
       "rpi-a3-3": "Einen separaten Prozessor",
       "rpi-a3-4": "Einen eingebauten Akku",
       "rpi-a3-5": "Eine spezielle Raspberry-Pi-Tastatur",
-
       "mic-q1": "Wofür wird ein externes Mikrofon verwendet?",
       "mic-q2": "Wer profitiert besonders von einem externen Mikrofon?",
       "mic-a1-1": "Zum Aufnehmen von Sprache oder Musik mit besserer Qualität als ein eingebautes Mikrofon",
@@ -538,7 +513,6 @@
       "mic-a2-3": "Nur Menschen ohne Internetverbindung",
       "mic-a2-4": "Nur Grafik-Designer",
       "mic-a2-5": "Nur Netzwerk-Administratoren",
-
       "vr-q1": "Was ist eine VR-Brille (VR-Headset)?",
       "vr-q2": "Was bedeutet VR?",
       "vr-a1-1": "Ein Gerät, das man vor die Augen hält und eine dreidimensionale virtuelle Welt zeigt",
@@ -638,5 +612,20 @@
       "sh": "Schleswig-Holstein",
       "th": "Thüringen"
     }
+  },
+  "clockDetective": {
+    "title": "Uhr-Detektiv",
+    "description": "Lies die Uhrzeit ab oder stelle die Zeiger richtig!",
+    "intro": "Lies die Analoguhr ab oder stelle die Zeiger ein. Die Schwierigkeit steigt automatisch!",
+    "round": "Runde {n}/{total}",
+    "score": "Punkte: {score}",
+    "questionReadMC": "Welche Uhrzeit zeigt die Uhr?",
+    "questionSetHands": "Stelle die Zeiger auf diese Zeit:",
+    "confirm": "Bestätigen ✅",
+    "correct": "Richtig",
+    "feedbackCorrect": "Richtig! 🎉",
+    "feedbackWrong": "Leider falsch 😅",
+    "xpEarned": "XP verdient",
+    "maxDifficulty": "Schwierigkeitsstufe"
   }
 }

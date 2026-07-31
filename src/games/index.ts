@@ -56,4 +56,13 @@ export const GAMES: GameConfig[] = [
     path: '/game/bundeslaender-quiz',
     component: defineAsyncComponent(() => import('@/components/games/BundeslaenderQuiz.vue')),
   },
+  {
+    id: 'clock-detective',
+    titleKey: 'clockDetective.title',
+    descriptionKey: 'clockDetective.description',
+    icon: '🕰️',
+    color: 'from-sky-400 to-cyan-600',
+    path: '/game/clock-detective',
+    component: defineAsyncComponent(() => import('@/components/games/ClockDetective.vue')),
+  },
 ]
