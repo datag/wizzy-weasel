@@ -611,7 +611,7 @@
   "bundeslaenderQuiz": {
     "title": "Bundesländer-Quiz",
     "description": "Erkenne alle 16 deutschen Bundesländer auf der Karte!",
-    "readyDesc": "15 Fragen, 2 Modi – zeige dein Wissen über die deutschen Bundesländer!",
+    "readyDesc": "16 Fragen, zufälliger Modus – jedes Bundesland genau einmal!",
     "questionOf": "{current} / {total}",
     "chooseState": "Welches Bundesland ist markiert?",
     "clickState": "Klicke auf der Karte auf das Bundesland",

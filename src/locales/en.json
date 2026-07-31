@@ -611,7 +611,7 @@
   "bundeslaenderQuiz": {
     "title": "German States Quiz",
     "description": "Identify all 16 German federal states on the map!",
-    "readyDesc": "15 questions, 2 modes – show your knowledge of German federal states!",
+    "readyDesc": "16 questions, random mode – every state exactly once!",
     "questionOf": "{current} / {total}",
     "chooseState": "Which state is highlighted?",
     "clickState": "Click the state on the map",

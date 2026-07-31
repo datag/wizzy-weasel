@@ -131,7 +131,7 @@ export const BUNDESLAENDER: Bundesland[] = [
 
 export const VALID_SVG_IDS = new Set(BUNDESLAENDER.map(b => b.svgPathId))
 
-export const ROUND_SIZE = 15
+export const ROUND_SIZE = 16
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
