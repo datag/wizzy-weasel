@@ -636,6 +636,9 @@
     "correct": "Richtig! +{xp} XP",
     "wrong": "Falsch!",
     "next": "Weiter",
+    "translate": "Übersetzung anzeigen",
+    "hideTranslation": "Übersetzung ausblenden",
+    "translationFailed": "Übersetzung nicht verfügbar",
     "languages": {
       "de": "Deutsch",
       "en": "Englisch",

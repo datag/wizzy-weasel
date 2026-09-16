@@ -35,6 +35,46 @@ const progressPct = computed(() =>
   totalQuestions.value > 0 ? (questionIndex.value / totalQuestions.value) * 100 : 0
 )
 
+// ─── Translation ──────────────────────────────────────────────
+const translationCache = new Map<string, string>()
+const translation = ref('')
+const translating = ref(false)
+const translationError = ref(false)
+
+async function toggleTranslation() {
+  const q = current.value
+  if (!q) return
+  if (translation.value) {
+    translation.value = ''
+    return
+  }
+  if (translationCache.has(q.sentence)) {
+    translation.value = translationCache.get(q.sentence)!
+    return
+  }
+
+  translating.value = true
+  translationError.value = false
+  try {
+    const url = 'https://api.mymemory.translated.net/get'
+      + `?q=${encodeURIComponent(q.sentence)}`
+      + `&langpair=autodetect%7C${encodeURIComponent(settingsStore.locale)}`
+    const res = await fetch(url)
+    const data = await res.json()
+    const text = data?.responseData?.translatedText
+    if (typeof text === 'string' && text) {
+      translationCache.set(q.sentence, text)
+      translation.value = text
+    } else {
+      translationError.value = true
+    }
+  } catch {
+    translationError.value = true
+  } finally {
+    translating.value = false
+  }
+}
+
 // ─── Game flow ────────────────────────────────────────────────
 function startGame() {
   // Exclude the current app locale from sentences and answer options
@@ -94,6 +134,8 @@ function nextQuestion() {
   } else {
     questionIndex.value++
     selectedLanguage = null
+    translation.value = ''
+    translationError.value = false
     phase.value = 'playing'
   }
 }
@@ -187,6 +229,23 @@ function answerClass(lang: LanguageId): string {
           <p :key="questionIndex" class="text-2xl sm:text-4xl font-bold leading-snug">
             {{ current.sentence }}
           </p>
+
+          <button
+            class="mt-3 text-sm sm:text-base font-semibold text-fuchsia-300 underline underline-offset-2 transition-colors flex-shrink-0"
+            :disabled="translating"
+            @click="toggleTranslation"
+          >
+            {{ translation ? t('languageQuiz.hideTranslation') : t('languageQuiz.translate') }}
+          </button>
+
+          <Transition name="pop">
+            <p v-if="translation" :key="questionIndex" class="mt-2 text-lg sm:text-2xl font-semibold text-white/80 leading-snug">
+              {{ translation }}
+            </p>
+            <p v-else-if="translationError" class="mt-2 text-sm font-medium text-red-300">
+              {{ t('languageQuiz.translationFailed') }}
+            </p>
+          </Transition>
         </div>
 
         <!-- Prompt -->
