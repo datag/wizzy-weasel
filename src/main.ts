@@ -28,12 +28,31 @@ app.use(pinia)
 app.use(router)
 app.use(i18n)
 
-// GH Pages 404.html redirects unknown client-side routes to the entry point with
-// the original path in the ?r= query param. Restore the route and clean the URL.
-const redirect = new URLSearchParams(window.location.search).get('r')
-if (redirect) {
-  history.replaceState(null, '', window.location.pathname)
-  router.replace(redirect.startsWith('/') ? redirect : `/${redirect}`).then(() => app.mount('#app'))
+const BASE_URL = import.meta.env.BASE_URL
+
+// GitHub Pages serves the SPA as 404.html (HTTP 404) for any path that isn't a real
+// file. So in production, a pathname other than the base URL IS the 404 document.
+// Valid routes are forwarded to the entry point (?r=) to obtain a clean 200 and have
+// the URL restored; invalid ones stay here with the genuine 404 status.
+const is404Document = import.meta.env.PROD && window.location.pathname !== BASE_URL
+
+if (is404Document) {
+  const route = window.location.pathname.slice(BASE_URL.length).replace(/^\/+/, '')
+  const target = `/${route}`
+  const matched = router.resolve(target).matched
+  const isValid = matched.length > 0 && !matched.some(r => r.name === 'not-found')
+
+  if (isValid) {
+    window.location.replace(`${BASE_URL}?r=${encodeURIComponent(route)}`)
+  } else {
+    app.mount('#app')
+  }
 } else {
-  app.mount('#app')
+  const redirect = new URLSearchParams(window.location.search).get('r')
+  if (redirect) {
+    history.replaceState(null, '', window.location.pathname)
+    router.replace(redirect.startsWith('/') ? redirect : `/${redirect}`).then(() => app.mount('#app'))
+  } else {
+    app.mount('#app')
+  }
 }

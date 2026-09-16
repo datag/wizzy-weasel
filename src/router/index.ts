@@ -12,7 +12,7 @@ const router = createRouter({
     { path: '/', component: Dashboard },
     { path: '/game/:id', component: GameView },
     { path: '/settings', component: Settings },
-    { path: '/:pathMatch(.*)*', component: NotFound },
+    { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFound },
   ],
 })
 
