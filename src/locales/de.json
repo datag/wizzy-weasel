@@ -627,5 +627,21 @@
     "feedbackWrong": "Leider falsch 😅",
     "xpEarned": "XP verdient",
     "maxDifficulty": "Schwierigkeitsstufe"
+  },
+  "languageQuiz": {
+    "title": "Sprach-Detektiv",
+    "description": "In welcher Sprache ist der Satz geschrieben?",
+    "questionOf": "Frage {current} von {total}",
+    "whichLanguage": "In welcher Sprache ist dieser Satz geschrieben?",
+    "correct": "Richtig! +{xp} XP",
+    "wrong": "Falsch!",
+    "next": "Weiter",
+    "languages": {
+      "de": "Deutsch",
+      "en": "Englisch",
+      "fr": "Französisch",
+      "es": "Spanisch",
+      "it": "Italienisch"
+    }
   }
 }

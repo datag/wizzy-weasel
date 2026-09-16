@@ -627,5 +627,21 @@
     "feedbackWrong": "Not quite 😅",
     "xpEarned": "XP earned",
     "maxDifficulty": "Difficulty reached"
+  },
+  "languageQuiz": {
+    "title": "Language Detective",
+    "description": "In which language is the sentence written?",
+    "questionOf": "Question {current} of {total}",
+    "whichLanguage": "In which language is this sentence written?",
+    "correct": "Correct! +{xp} XP",
+    "wrong": "Wrong!",
+    "next": "Next",
+    "languages": {
+      "de": "German",
+      "en": "English",
+      "fr": "French",
+      "es": "Spanish",
+      "it": "Italian"
+    }
   }
 }

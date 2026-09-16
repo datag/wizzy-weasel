@@ -65,4 +65,13 @@ export const GAMES: GameConfig[] = [
     path: '/game/clock-detective',
     component: defineAsyncComponent(() => import('@/components/games/ClockDetective.vue')),
   },
+  {
+    id: 'language-detective',
+    titleKey: 'languageQuiz.title',
+    descriptionKey: 'languageQuiz.description',
+    icon: '🕵️',
+    color: 'from-fuchsia-500 to-pink-600',
+    path: '/game/language-detective',
+    component: defineAsyncComponent(() => import('@/components/games/LanguageDetective.vue')),
+  },
 ]

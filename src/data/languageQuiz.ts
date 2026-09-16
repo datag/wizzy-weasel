@@ -1,0 +1,327 @@
+import type { LanguageId, LanguageQuestion } from '@/types'
+
+export const LANGUAGES: LanguageId[] = ['de', 'en', 'fr', 'es', 'it']
+
+export const QUESTIONS_PER_SESSION = 10
+
+// Import all language SVGs as URLs at build time
+const _flagModules = import.meta.glob('../assets/languages/*.svg', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+}) as Record<string, string>
+
+export const FLAG_URLS: Record<string, string> = Object.fromEntries(
+  Object.entries(_flagModules).map(([path, url]) => {
+    const key = path.split('/').pop()!.replace('.svg', '').replace('flag-', '')
+    return [key, url]
+  })
+)
+
+export const LANGUAGE_NAME_KEYS: Record<LanguageId, string> = {
+  de: 'languageQuiz.languages.de',
+  en: 'languageQuiz.languages.en',
+  fr: 'languageQuiz.languages.fr',
+  es: 'languageQuiz.languages.es',
+  it: 'languageQuiz.languages.it',
+}
+
+function shuffle<T>(arr: T[]): T[] {
+  const copy = [...arr]
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const tmp = copy[i]
+    copy[i] = copy[j]
+    copy[j] = tmp
+  }
+  return copy
+}
+
+function randomItem<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)]
+}
+
+export const SENTENCES: Record<LanguageId, string[]> = {
+  de: [
+    'Guten Morgen!',
+    'Ich heiße Anna.',
+    'Wie geht es dir?',
+    'Das ist mein Hund.',
+    'Ich habe zwei Brüder.',
+    'Die Katze ist schwarz.',
+    'Wir gehen zur Schule.',
+    'Ich mag Eis.',
+    'Wie alt bist du?',
+    'Ich bin sieben Jahre alt.',
+    'Heute ist schönes Wetter.',
+    'Es regnet.',
+    'Ich spiele Fußball.',
+    'Mein Lieblingsessen ist Pizza.',
+    'Wo ist der Bahnhof?',
+    'Ich habe Hunger.',
+    'Ich habe Durst.',
+    'Das Buch liegt auf dem Tisch.',
+    'Ich wohne in Berlin.',
+    'Wir fahren in den Urlaub.',
+    'Die Blume ist rot.',
+    'Ich habe eine Schwester.',
+    'Der Himmel ist blau.',
+    'Ich lese ein Buch.',
+    'Gib mir bitte das Brot.',
+    'Ich gehe ins Bett.',
+    'Gute Nacht!',
+    'Ich freue mich.',
+    'Was ist das?',
+    'Ich verstehe nicht.',
+    'Kannst du mir helfen?',
+    'Ich habe keinen Hunger.',
+    'Die Schule beginnt um acht Uhr.',
+    'Ich male ein Bild.',
+    'Wir singen ein Lied.',
+    'Der Vogel fliegt.',
+    'Ich schwimme im See.',
+    'Meine Oma ist nett.',
+    'Der Ball ist unter dem Tisch.',
+    'Ich ziehe meine Jacke an.',
+    'Es ist kalt.',
+    'Ich mag die Farbe Blau.',
+    'Wir haben einen Garten.',
+    'Das Pferd ist groß.',
+    'Ich esse einen Apfel.',
+    'Morgen habe ich Geburtstag.',
+    'Ich spiele mit meinen Freunden.',
+    'Das Fenster ist offen.',
+    'Ich habe einen Bleistift.',
+    'Auf Wiedersehen!',
+  ],
+  en: [
+    'Good morning!',
+    'My name is Anna.',
+    'How are you?',
+    'This is my dog.',
+    'I have two brothers.',
+    'The cat is black.',
+    'We go to school.',
+    'I like ice cream.',
+    'How old are you?',
+    'I am seven years old.',
+    'The weather is nice today.',
+    'It is raining.',
+    'I play football.',
+    'My favorite food is pizza.',
+    'Where is the train station?',
+    'I am hungry.',
+    'I am thirsty.',
+    'The book is on the table.',
+    'I live in London.',
+    'We are going on vacation.',
+    'The flower is red.',
+    'I have a sister.',
+    'The sky is blue.',
+    'I read a book.',
+    'Please give me the bread.',
+    'I go to bed.',
+    'Good night!',
+    'I am happy.',
+    'What is this?',
+    'I do not understand.',
+    'Can you help me?',
+    'I am not hungry.',
+    'School starts at eight o\u2019clock.',
+    'I draw a picture.',
+    'We sing a song.',
+    'The bird is flying.',
+    'I swim in the lake.',
+    'My grandma is nice.',
+    'The ball is under the table.',
+    'I put on my jacket.',
+    'It is cold.',
+    'I like the color blue.',
+    'We have a garden.',
+    'The horse is big.',
+    'I eat an apple.',
+    'Tomorrow is my birthday.',
+    'I play with my friends.',
+    'The window is open.',
+    'I have a pencil.',
+    'Goodbye!',
+  ],
+  fr: [
+    'Bonjour !',
+    'Je m\u2019appelle Anna.',
+    'Comment vas-tu ?',
+    'C\u2019est mon chien.',
+    'J\u2019ai deux frères.',
+    'Le chat est noir.',
+    'Nous allons à l\u2019école.',
+    'J\u2019aime la glace.',
+    'Quel âge as-tu ?',
+    'J\u2019ai sept ans.',
+    'Il fait beau aujourd\u2019hui.',
+    'Il pleut.',
+    'Je joue au football.',
+    'Mon plat préféré, c\u2019est la pizza.',
+    'Où est la gare ?',
+    'J\u2019ai faim.',
+    'J\u2019ai soif.',
+    'Le livre est sur la table.',
+    'J\u2019habite à Paris.',
+    'Nous partons en vacances.',
+    'La fleur est rouge.',
+    'J\u2019ai une sœur.',
+    'Le ciel est bleu.',
+    'Je lis un livre.',
+    'Donne-moi le pain, s\u2019il te plaît.',
+    'Je vais me coucher.',
+    'Bonne nuit !',
+    'Je suis content.',
+    'Qu\u2019est-ce que c\u2019est ?',
+    'Je ne comprends pas.',
+    'Tu peux m\u2019aider ?',
+    'Je n\u2019ai pas faim.',
+    'L\u2019école commence à huit heures.',
+    'Je dessine une image.',
+    'Nous chantons une chanson.',
+    'L\u2019oiseau vole.',
+    'Je nage dans le lac.',
+    'Ma grand-mère est gentille.',
+    'Le ballon est sous la table.',
+    'Je mets ma veste.',
+    'Il fait froid.',
+    'J\u2019aime la couleur bleue.',
+    'Nous avons un jardin.',
+    'Le cheval est grand.',
+    'Je mange une pomme.',
+    'Demain, c\u2019est mon anniversaire.',
+    'Je joue avec mes amis.',
+    'La fenêtre est ouverte.',
+    'J\u2019ai un crayon.',
+    'Au revoir !',
+  ],
+  es: [
+    '¡Buenos días!',
+    'Me llamo Ana.',
+    '¿Cómo estás?',
+    'Este es mi perro.',
+    'Tengo dos hermanos.',
+    'El gato es negro.',
+    'Vamos a la escuela.',
+    'Me gusta el helado.',
+    '¿Cuántos años tienes?',
+    'Tengo siete años.',
+    'Hoy hace buen tiempo.',
+    'Está lloviendo.',
+    'Juego al fútbol.',
+    'Mi comida favorita es la pizza.',
+    '¿Dónde está la estación?',
+    'Tengo hambre.',
+    'Tengo sed.',
+    'El libro está sobre la mesa.',
+    'Vivo en Madrid.',
+    'Nos vamos de vacaciones.',
+    'La flor es roja.',
+    'Tengo una hermana.',
+    'El cielo es azul.',
+    'Leo un libro.',
+    'Dame el pan, por favor.',
+    'Me voy a la cama.',
+    '¡Buenas noches!',
+    'Estoy contento.',
+    '¿Qué es esto?',
+    'No entiendo.',
+    '¿Puedes ayudarme?',
+    'No tengo hambre.',
+    'La escuela empieza a las ocho.',
+    'Dibujo un cuadro.',
+    'Cantamos una canción.',
+    'El pájaro vuela.',
+    'Nado en el lago.',
+    'Mi abuela es amable.',
+    'El balón está debajo de la mesa.',
+    'Me pongo la chaqueta.',
+    'Hace frío.',
+    'Me gusta el color azul.',
+    'Tenemos un jardín.',
+    'El caballo es grande.',
+    'Como una manzana.',
+    'Mañana es mi cumpleaños.',
+    'Juego con mis amigos.',
+    'La ventana está abierta.',
+    'Tengo un lápiz.',
+    '¡Adiós!',
+  ],
+  it: [
+    'Buongiorno!',
+    'Mi chiamo Anna.',
+    'Come stai?',
+    'Questo è il mio cane.',
+    'Ho due fratelli.',
+    'Il gatto è nero.',
+    'Andiamo a scuola.',
+    'Mi piace il gelato.',
+    'Quanti anni hai?',
+    'Ho sette anni.',
+    'Oggi fa bel tempo.',
+    'Sta piovendo.',
+    'Gioco a calcio.',
+    'Il mio cibo preferito è la pizza.',
+    'Dov\u2019è la stazione?',
+    'Ho fame.',
+    'Ho sete.',
+    'Il libro è sul tavolo.',
+    'Abito a Roma.',
+    'Andiamo in vacanza.',
+    'Il fiore è rosso.',
+    'Ho una sorella.',
+    'Il cielo è blu.',
+    'Leggo un libro.',
+    'Dammi il pane, per favore.',
+    'Vado a letto.',
+    'Buonanotte!',
+    'Sono contento.',
+    'Cos\u2019è questo?',
+    'Non capisco.',
+    'Puoi aiutarmi?',
+    'Non ho fame.',
+    'La scuola comincia alle otto.',
+    'Disegno un quadro.',
+    'Cantiamo una canzone.',
+    'L\u2019uccello vola.',
+    'Nuoto nel lago.',
+    'Mia nonna è gentile.',
+    'Il pallone è sotto il tavolo.',
+    'Metto la giacca.',
+    'Fa freddo.',
+    'Mi piace il colore blu.',
+    'Abbiamo un giardino.',
+    'Il cavallo è grande.',
+    'Mangio una mela.',
+    'Domani è il mio compleanno.',
+    'Gioco con i miei amici.',
+    'La finestra è aperta.',
+    'Ho una matita.',
+    'Arrivederci!',
+  ],
+}
+
+/** Build a session of QUESTIONS_PER_SESSION questions, excluding the current app locale from sentences and answer options. */
+export function buildSession(appLocale: LanguageId): LanguageQuestion[] {
+  const pool = LANGUAGES.filter((lang) => lang !== appLocale)
+  const selected: LanguageQuestion[] = []
+  const usedSentences = new Set<string>()
+
+  while (selected.length < QUESTIONS_PER_SESSION) {
+    const language = randomItem(pool)
+    const candidates = SENTENCES[language].filter((sentence) => !usedSentences.has(sentence))
+    const sentence = randomItem(candidates)
+    usedSentences.add(sentence)
+
+    // 3 random wrong options + the correct language
+    const options = shuffle(pool.filter((lang) => lang !== language)).slice(0, 3)
+    options.push(language)
+
+    selected.push({ language, sentence, options: shuffle(options) })
+  }
+
+  return selected
+}

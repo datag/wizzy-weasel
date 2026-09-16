@@ -100,3 +100,12 @@ export interface BundeslandQuestion {
   mode: BundeslandMode
   options: Bundesland[]  // 4 choices for map-to-name mode (includes correct one)
 }
+
+// Language Detective
+export type LanguageId = 'de' | 'en' | 'fr' | 'es' | 'it'
+
+export interface LanguageQuestion {
+  language: LanguageId  // correct answer
+  sentence: string
+  options: LanguageId[] // 4 choices (includes correct one)
+}
