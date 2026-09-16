@@ -58,7 +58,7 @@ async function toggleTranslation() {
   try {
     const url = 'https://api.mymemory.translated.net/get'
       + `?q=${encodeURIComponent(q.sentence)}`
-      + `&langpair=autodetect%7C${encodeURIComponent(settingsStore.locale)}`
+      + `&langpair=${encodeURIComponent(q.language)}%7C${encodeURIComponent(settingsStore.locale)}`
     const res = await fetch(url)
     const data = await res.json()
     const text = data?.responseData?.translatedText
