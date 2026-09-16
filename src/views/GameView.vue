@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { GAMES } from '@/games/index'
+import NotFound from '@/views/NotFound.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -14,15 +15,11 @@ function onExit() {
 </script>
 
 <template>
-  <!-- Game view: full screen, no navbar -->
-  <div class="fixed inset-0 bg-slate-900 overflow-hidden">
+  <div v-if="game" class="fixed inset-0 bg-slate-900 overflow-hidden">
     <component
-      v-if="game"
       :is="game.component"
       @exit="onExit"
     />
-    <div v-else class="flex items-center justify-center h-full text-white">
-      <p>Unknown game: {{ gameId }}</p>
-    </div>
   </div>
+  <NotFound v-else />
 </template>

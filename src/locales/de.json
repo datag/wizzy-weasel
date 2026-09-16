@@ -646,5 +646,10 @@
       "es": "Spanisch",
       "it": "Italienisch"
     }
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "message": "Hoppla, diese Seite gibt es nicht.",
+    "home": "Zurück zur Startseite"
   }
 }

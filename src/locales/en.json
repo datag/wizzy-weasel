@@ -646,5 +646,10 @@
       "es": "Spanish",
       "it": "Italian"
     }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "Oops, this page does not exist.",
+    "home": "Back to home"
   }
 }

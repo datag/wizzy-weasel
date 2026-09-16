@@ -57,6 +57,21 @@ jobs:
         <head>
             <meta charset="utf-8">
             <title>Seite nicht gefunden</title>
+            <script>
+                // GitHub Pages has no server-side rewrites. When a client-side route
+                // (e.g. /<repo>/game/language-detective) is requested directly, GH Pages
+                // serves this file while keeping the original URL. Forward the original
+                // route to the SPA entry point via the ?r= query param, which the app
+                // then restores and cleans up.
+                (function () {
+                    var segments = window.location.pathname.split('/');
+                    var base = '/' + (segments[1] || '') + '/';
+                    var route = segments.slice(2).join('/');
+                    if (route) {
+                        window.location.replace(base + '?r=' + encodeURIComponent(route));
+                    }
+                })();
+            </script>
             <style>
                 body { font-family: sans-serif; text-align: center; padding: 50px; }
                 a { color: #24292e; text-decoration: none; font-weight: bold; border: 1px solid #d1d5da; padding: 10px 20px; border-radius: 6px; }

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Dashboard from '@/views/Dashboard.vue'
 import GameView from '@/views/GameView.vue'
+import NotFound from '@/views/NotFound.vue'
 import Settings from '@/views/Settings.vue'
 
 export { GAMES } from '@/games/index'
@@ -11,7 +12,7 @@ const router = createRouter({
     { path: '/', component: Dashboard },
     { path: '/game/:id', component: GameView },
     { path: '/settings', component: Settings },
-    { path: '/:pathMatch(.*)*', redirect: '/' },
+    { path: '/:pathMatch(.*)*', component: NotFound },
   ],
 })
 
