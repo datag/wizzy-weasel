@@ -234,6 +234,11 @@ const shapeOptions = computed<string[]>(() => {
   return question.value.options
 })
 
+const userAnswerText = computed<string>(() => {
+  if (!question.value) return ''
+  return question.value.category === 'shape' ? (selectedShape.value ?? '') : answer.value
+})
+
 function shapeBtnClass(opt: string) {
   if (phase.value !== 'feedback') return ''
   if (!question.value || question.value.category !== 'shape') return ''
@@ -246,10 +251,17 @@ function shapeBtnClass(opt: string) {
 
 function trainCarClass(i: number) {
   if (question.value && i === question.value.hiddenIndex) {
-    if (phase.value === 'feedback' && !feedbackPositive.value) return 'train-car-reveal'
+    if (phase.value === 'feedback') return feedbackPositive.value ? 'train-car-reveal' : 'train-car-wrong'
     if (phase.value === 'playing') return 'train-car-missing'
   }
   return 'train-car-known'
+}
+
+function hiddenTermDisplay(): string {
+  if (!question.value) return ''
+  if (phase.value === 'feedback' && !feedbackPositive.value) return userAnswerText.value || '?'
+  if (phase.value === 'feedback') return String(displayTerms.value[question.value.hiddenIndex])
+  return '?'
 }
 
 // ─── Game flow ────────────────────────────────────────────────
@@ -448,7 +460,7 @@ onUnmounted(() => {
                 class="train-car"
                 :class="trainCarClass(i)"
               >
-                {{ i === question?.hiddenIndex && phase !== 'feedback' ? '?' : term }}
+                {{ i === question?.hiddenIndex ? hiddenTermDisplay() : term }}
               </span>
             </template>
           </div>
@@ -633,6 +645,12 @@ onUnmounted(() => {
   background: rgba(34, 197, 94, 0.18);
   border: 2px solid rgba(74, 222, 128, 0.8);
   box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+}
+.train-car-wrong {
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.18);
+  border: 2px solid rgba(248, 113, 113, 0.8);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
 }
 @keyframes pulse-unknown {
   0%, 100% { opacity: 1; }
