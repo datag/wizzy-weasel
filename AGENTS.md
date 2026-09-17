@@ -36,6 +36,8 @@ Games are registered in **`src/games/index.ts`** as `GameConfig[]`. Each entry h
 
 The router resolves `/game/:id` to `GameView.vue`, which looks up the game by `id` and renders its component. To add a game: create `src/components/games/MyGame.vue`, add i18n keys to both locale files, and register it in `src/games/index.ts`.
 
+When adding a new game or substantially changing an existing one, also update the **Games table in `README.md`** so it always lists every registered game.
+
 ### State & Persistence
 All user data lives in **LocalStorage via Pinia stores** — no backend.
 
