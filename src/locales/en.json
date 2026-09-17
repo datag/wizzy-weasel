@@ -668,7 +668,16 @@
     },
     "feedback": {
       "correct": "✅ Correct! +{xp} XP",
-      "wrongPrefix": "❌ Wrong! The answer was:"
+      "wrongPrefix": "❌ Wrong! The answer was:",
+      "explanation": "How it works: {rule}",
+      "continue": "Continue"
+    },
+    "pattern": {
+      "add": "Always add {n}",
+      "subtract": "Always subtract {n}",
+      "multiply": "Always multiply by {n}",
+      "alternating": "Alternating {steps}",
+      "shape": "The shapes repeat: {shapes}"
     },
     "summary": {
       "title": "Round Complete!",

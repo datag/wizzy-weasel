@@ -155,7 +155,10 @@ function buildArithmetic(): SequenceQuestion {
   const start = randInt(Math.min(startMin, startMax), Math.max(startMin, startMax))
   const terms = Array.from({ length: len }, (_, i) => start + direction * step * i)
   const hiddenIndex = pickHiddenIndex(len)
-  return { category: 'arithmetic', terms, hiddenIndex, solution: terms[hiddenIndex] }
+  const explanation = direction === 1
+    ? t('sequenceTrain.pattern.add', { n: step })
+    : t('sequenceTrain.pattern.subtract', { n: step })
+  return { category: 'arithmetic', terms, hiddenIndex, solution: terms[hiddenIndex], explanation }
 }
 
 function buildGeometric(): SequenceQuestion {
@@ -166,7 +169,8 @@ function buildGeometric(): SequenceQuestion {
   const start = randInt(1, Math.max(1, maxStart))
   const terms = Array.from({ length: len }, (_, i) => start * Math.pow(mult, i))
   const hiddenIndex = pickHiddenIndex(len)
-  return { category: 'geometric', terms, hiddenIndex, solution: terms[hiddenIndex] }
+  const explanation = t('sequenceTrain.pattern.multiply', { n: mult })
+  return { category: 'geometric', terms, hiddenIndex, solution: terms[hiddenIndex], explanation }
 }
 
 function buildAlternating(): SequenceQuestion {
@@ -186,7 +190,9 @@ function buildAlternating(): SequenceQuestion {
   const t0 = randInt(1 - relMin, max - relMax)
   const terms = rel.map(r => t0 + r)
   const hiddenIndex = pickHiddenIndex(len)
-  return { category: 'alternating', terms, hiddenIndex, solution: terms[hiddenIndex] }
+  const steps = cycle.map(s => `${s > 0 ? '+' : '−'}${Math.abs(s)}`).join(', ')
+  const explanation = t('sequenceTrain.pattern.alternating', { steps })
+  return { category: 'alternating', terms, hiddenIndex, solution: terms[hiddenIndex], explanation }
 }
 
 function buildShape(): SequenceQuestion {
@@ -202,7 +208,9 @@ function buildShape(): SequenceQuestion {
   const solution = shapes[hiddenIndex]
   const distractors = shuffle(SHAPE_POOL.filter(s => s !== solution)).slice(0, 3)
   const options = shuffle([solution, ...distractors])
-  return { category: 'shape', shapes, hiddenIndex, solution, options }
+  const cycle = distinct.join(' ')
+  const explanation = t('sequenceTrain.pattern.shape', { shapes: cycle })
+  return { category: 'shape', shapes, hiddenIndex, solution, options, explanation }
 }
 
 function buildQuestion(): SequenceQuestion {
@@ -234,6 +242,14 @@ function shapeBtnClass(opt: string) {
   if (isCorrect) return 'shape-btn-correct'
   if (isSelectedWrong) return 'shape-btn-wrong'
   return 'shape-btn-dim'
+}
+
+function trainCarClass(i: number) {
+  if (question.value && i === question.value.hiddenIndex) {
+    if (phase.value === 'feedback' && !feedbackPositive.value) return 'train-car-reveal'
+    if (phase.value === 'playing') return 'train-car-missing'
+  }
+  return 'train-car-known'
 }
 
 // ─── Game flow ────────────────────────────────────────────────
@@ -277,9 +293,10 @@ function evaluateAnswer(correct: boolean) {
   }
 
   phase.value = 'feedback'
-  const feedbackDuration = correct ? 900 : 2500
-
-  feedbackTimer = setTimeout(() => advance(), feedbackDuration)
+  if (correct) {
+    feedbackTimer = setTimeout(() => advance(), 900)
+  }
+  // wrong answers stay in the feedback phase until the user taps "Weiter"
 }
 
 function advance() {
@@ -429,9 +446,9 @@ onUnmounted(() => {
               <span class="train-connector">・</span>
               <span
                 class="train-car"
-                :class="i === question?.hiddenIndex ? 'train-car-missing' : 'train-car-known'"
+                :class="trainCarClass(i)"
               >
-                {{ i === question?.hiddenIndex ? '?' : term }}
+                {{ i === question?.hiddenIndex && phase !== 'feedback' ? '?' : term }}
               </span>
             </template>
           </div>
@@ -515,7 +532,15 @@ onUnmounted(() => {
             :class="feedbackPositive ? 'feedback-correct' : 'feedback-wrong'"
           >
             <span class="text-xl sm:text-2xl font-extrabold text-center">{{ feedbackMsg }}</span>
-            <span v-if="!feedbackPositive" class="feedback-answer">{{ wrongCorrectAnswer }}</span>
+            <template v-if="!feedbackPositive">
+              <span class="feedback-answer">{{ wrongCorrectAnswer }}</span>
+              <span class="text-sm sm:text-base text-white/90 text-center max-w-xs leading-snug">
+                {{ t('sequenceTrain.feedback.explanation', { rule: question?.explanation }) }}
+              </span>
+              <AppButton size="lg" full-width class="feedback-continue" @click="advance">
+                {{ t('sequenceTrain.feedback.continue') }}
+              </AppButton>
+            </template>
           </div>
         </Transition>
       </div>
@@ -603,6 +628,12 @@ onUnmounted(() => {
   border: 2px dashed rgba(251, 146, 60, 0.7);
   animation: pulse-unknown 1.2s ease-in-out infinite;
 }
+.train-car-reveal {
+  color: #bbf7d0;
+  background: rgba(34, 197, 94, 0.18);
+  border: 2px solid rgba(74, 222, 128, 0.8);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+}
 @keyframes pulse-unknown {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.55; }
@@ -655,6 +686,10 @@ onUnmounted(() => {
 .feedback-wrong {
   background: rgb(190, 18, 60);
   color: #fff;
+}
+.feedback-continue {
+  pointer-events: auto;
+  min-width: 12rem;
 }
 .feedback-answer {
   font-size: clamp(2.5rem, 10vw, 4rem);

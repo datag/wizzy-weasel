@@ -121,6 +121,7 @@ export type SequenceQuestion =
       terms: number[]
       hiddenIndex: number  // index of the missing term (the '?' carriage)
       solution: number
+      explanation: string  // localized description of the pattern rule
     }
   | {
       category: 'shape'
@@ -128,4 +129,5 @@ export type SequenceQuestion =
       hiddenIndex: number  // index of the missing term (the '?' carriage)
       solution: string
       options: string[]    // 4 choices (includes correct one)
+      explanation: string  // localized description of the pattern rule
     }

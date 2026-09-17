@@ -668,7 +668,16 @@
     },
     "feedback": {
       "correct": "✅ Richtig! +{xp} XP",
-      "wrongPrefix": "❌ Falsch! Richtig wäre:"
+      "wrongPrefix": "❌ Falsch! Richtig wäre:",
+      "explanation": "So geht's: {rule}",
+      "continue": "Weiter"
+    },
+    "pattern": {
+      "add": "Immer +{n} rechnen",
+      "subtract": "Immer −{n} rechnen",
+      "multiply": "Immer mal {n}",
+      "alternating": "Abwechselnd {steps}",
+      "shape": "Die Formen wiederholen sich: {shapes}"
     },
     "summary": {
       "title": "Runde beendet!",
