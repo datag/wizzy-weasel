@@ -528,7 +528,7 @@ onUnmounted(() => {
         <Transition name="pop">
           <div
             v-if="phase === 'feedback'"
-            class="feedback-banner fixed top-16 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
+            class="feedback-banner fixed bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
             :class="feedbackPositive ? 'feedback-correct' : 'feedback-wrong'"
           >
             <span class="text-xl sm:text-2xl font-extrabold text-center">{{ feedbackMsg }}</span>
