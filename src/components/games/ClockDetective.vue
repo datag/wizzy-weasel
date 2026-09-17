@@ -187,13 +187,13 @@ function endGame() {
 }
 
 function exitGame() {
-  nextRoundTimer && clearTimeout(nextRoundTimer)
+  if (nextRoundTimer) clearTimeout(nextRoundTimer)
   gameStore.endGame()
   emit('exit')
 }
 
 onUnmounted(() => {
-  nextRoundTimer && clearTimeout(nextRoundTimer)
+  if (nextRoundTimer) clearTimeout(nextRoundTimer)
 })
 
 // ─── Helpers ──────────────────────────────────────────────────

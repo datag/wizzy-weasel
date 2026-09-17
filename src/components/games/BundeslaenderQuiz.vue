@@ -208,7 +208,8 @@ watch(questionIndex, () => {
 function onKeyDown(e: KeyboardEvent) {
   if (e.key === 'Escape') {
     e.preventDefault()
-    isPaused.value ? resumeGame() : pauseGame()
+    if (isPaused.value) resumeGame()
+    else pauseGame()
     return
   }
   if (isPaused.value) return
