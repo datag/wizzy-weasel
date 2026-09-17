@@ -576,12 +576,12 @@ onUnmounted(() => {
 .pop-enter-active { animation: pop-in 0.15s ease-out; }
 .pop-leave-active { animation: pop-out 0.15s ease-in; }
 @keyframes pop-in {
-  from { opacity: 0; transform: translate(-50%, -8px) scale(0.8); }
-  to   { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  from { opacity: 0; transform: translateY(-8px) scale(0.8); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes pop-out {
-  from { opacity: 1; transform: translate(-50%, 0) scale(1); }
-  to   { opacity: 0; transform: translate(-50%, -8px) scale(0.8); }
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(-8px) scale(0.8); }
 }
 
 /* ── Level select ───────────────────────────────────────────── */
