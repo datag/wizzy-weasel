@@ -430,6 +430,12 @@ onUnmounted(() => {
       <div v-if="phase === 'playing' || phase === 'feedback'" class="flex flex-col items-center justify-center min-h-full gap-5 px-6 py-8">
         <!-- HUD -->
         <div class="w-full max-w-lg flex items-center justify-between text-sm">
+          <button
+            class="w-11 h-11 flex-shrink-0 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white text-base"
+            :title="t('game.paused')"
+            :aria-label="t('game.paused')"
+            @click="pauseGame"
+          >⏸</button>
           <span class="bg-white/10 rounded-full px-3 py-1 font-bold">
             {{ t('sequenceTrain.question.progress', { current: questionIndex, total: QUESTIONS_PER_ROUND }) }}
           </span>
