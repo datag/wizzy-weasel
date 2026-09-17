@@ -74,4 +74,13 @@ export const GAMES: GameConfig[] = [
     path: '/game/language-detective',
     component: defineAsyncComponent(() => import('@/components/games/LanguageDetective.vue')),
   },
+  {
+    id: 'sequence-train',
+    titleKey: 'sequenceTrain.title',
+    descriptionKey: 'sequenceTrain.description',
+    icon: '🚂',
+    color: 'from-orange-500 to-red-500',
+    path: '/game/sequence-train',
+    component: defineAsyncComponent(() => import('@/components/games/SequenceTrain.vue')),
+  },
 ]

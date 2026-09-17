@@ -109,3 +109,23 @@ export interface LanguageQuestion {
   sentence: string
   options: LanguageId[] // 4 choices (includes correct one)
 }
+
+// Sequence Train (Setze die Reihe fort)
+export type SequenceDifficulty = 'easy' | 'medium' | 'hard'
+
+export type SequenceCategory = 'arithmetic' | 'geometric' | 'alternating' | 'shape'
+
+export type SequenceQuestion =
+  | {
+      category: 'arithmetic' | 'geometric' | 'alternating'
+      terms: number[]
+      hiddenIndex: number  // index of the missing term (the '?' carriage)
+      solution: number
+    }
+  | {
+      category: 'shape'
+      shapes: string[]
+      hiddenIndex: number  // index of the missing term (the '?' carriage)
+      solution: string
+      options: string[]    // 4 choices (includes correct one)
+    }

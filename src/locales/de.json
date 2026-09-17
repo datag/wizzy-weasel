@@ -647,6 +647,38 @@
       "it": "Italienisch"
     }
   },
+  "sequenceTrain": {
+    "title": "Setze die Reihe fort",
+    "description": "Der Zahlenzug fährt los – finde die fehlende Zahl!",
+    "config": {
+      "title": "Schwierigkeit",
+      "easy": "Leicht",
+      "medium": "Mittel",
+      "hard": "Schwer",
+      "easyHint": "Einfache Schritte: +1, +2, +5, +10 und Verdoppeln.",
+      "mediumHint": "Größere Schritte, Mal-Reihen und Wechselmuster.",
+      "hardHint": "Große Schritte, schwere Muster und Formen.",
+      "start": "🚂 Losfahren!"
+    },
+    "question": {
+      "progress": "Aufgabe {current} von {total}",
+      "inputPlaceholder": "Deine Antwort…",
+      "confirm": "Bestätigen",
+      "chooseShape": "Welche Form gehört in den Waggon?"
+    },
+    "feedback": {
+      "correct": "✅ Richtig! +{xp} XP",
+      "wrongPrefix": "❌ Falsch! Richtig wäre:"
+    },
+    "summary": {
+      "title": "Runde beendet!",
+      "score": "Deine Punkte: {score}",
+      "correct": "Richtig: {count}",
+      "wrong": "Falsch: {count}",
+      "playAgain": "Nochmal spielen",
+      "backToMenu": "Zurück zum Menü"
+    }
+  },
   "notFound": {
     "title": "Seite nicht gefunden",
     "message": "Hoppla, diese Seite gibt es nicht.",

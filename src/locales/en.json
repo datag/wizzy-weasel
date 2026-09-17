@@ -647,6 +647,38 @@
       "it": "Italian"
     }
   },
+  "sequenceTrain": {
+    "title": "Continue the Sequence",
+    "description": "The number train is leaving – find the missing number!",
+    "config": {
+      "title": "Difficulty",
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard",
+      "easyHint": "Simple steps: +1, +2, +5, +10 and doubling.",
+      "mediumHint": "Bigger steps, times tables and alternating patterns.",
+      "hardHint": "Big steps, tricky patterns and shapes.",
+      "start": "🚂 All aboard!"
+    },
+    "question": {
+      "progress": "Question {current} of {total}",
+      "inputPlaceholder": "Your answer…",
+      "confirm": "Confirm",
+      "chooseShape": "Which shape belongs in the carriage?"
+    },
+    "feedback": {
+      "correct": "✅ Correct! +{xp} XP",
+      "wrongPrefix": "❌ Wrong! The answer was:"
+    },
+    "summary": {
+      "title": "Round Complete!",
+      "score": "Your score: {score}",
+      "correct": "Correct: {count}",
+      "wrong": "Wrong: {count}",
+      "playAgain": "Play again",
+      "backToMenu": "Back to menu"
+    }
+  },
   "notFound": {
     "title": "Page not found",
     "message": "Oops, this page does not exist.",

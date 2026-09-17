@@ -20,6 +20,7 @@ A browser-based learning game app for primary-school children. Offline-first, ta
 | 🗺️ Bundesländer-Quiz | German federal states — map and names |
 | 🕰️ Clock Detective | Read analog clocks |
 | 🕵️ Language Detective | Identify the language of a sentence |
+| 🚂 Sequence Train | Continue number and shape sequences |
 
 ---
 
