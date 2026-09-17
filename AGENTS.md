@@ -77,6 +77,7 @@ SVGs are imported as Vue components via `vite-svg-loader` (SVGO disabled to pres
 ## Test with browser automation
 
 * You may use MCP for Chrome-Devtools (preferred) or Playwright.
-* If you create screenshots for visual inspections, save them to a temporary location – not in the repository.
-* The app runs locally during development at http://localhost:5173/. Depending on the task you may set the viewport (desktop, tablet, mobile).
+* Prefer DOM inspection over screenshots. Only when visual inspection via screenshots/images is really necessary, delegate the analysis to a sub-agent with an image-capable model (e.g. gemini-3.8-flash). Save screenshots to a temporary location – not in the repository.
+* Usually the Vite dev server is already running at http://localhost:5173/ — reuse that process. Only spin up your own dev server if none is running, and never kill a dev server you did not start yourself.
+* Depending on the task you may set the viewport (desktop, tablet, mobile).
 * Use sparingly, as this task is token-intensive. Use it primarily for debugging and verifying complex changes.
