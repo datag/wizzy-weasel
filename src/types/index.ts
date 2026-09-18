@@ -115,6 +115,8 @@ export type SequenceDifficulty = 'easy' | 'medium' | 'hard'
 
 export type SequenceCategory = 'arithmetic' | 'geometric' | 'alternating' | 'shape'
 
+export type SequenceMode = SequenceCategory | 'all'
+
 export type SequenceQuestion =
   | {
       category: 'arithmetic' | 'geometric' | 'alternating'

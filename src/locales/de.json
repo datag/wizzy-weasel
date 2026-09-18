@@ -658,7 +658,20 @@
       "easyHint": "Einfache Schritte (+1, +2, +5, +10), Verdoppeln und Formenmuster.",
       "mediumHint": "Größere Schritte, Mal-Reihen, Wechselmuster und Formen.",
       "hardHint": "Große Schritte, anspruchsvolle Muster und Formen.",
-      "start": "🚂 Losfahren!"
+      "start": "🚂 Losfahren!",
+      "modeTitle": "Aufgabenart",
+      "mode": {
+        "all": "Alle",
+        "allHint": "Alle Aufgabenarten gemischt.",
+        "arithmetic": "Zahlenfolgen",
+        "arithmeticHint": "Immer der gleiche Schritt: + oder −.",
+        "geometric": "Mal-Reihen",
+        "geometricHint": "Immer mit derselben Zahl malnehmen.",
+        "alternating": "Wechselmuster",
+        "alternatingHint": "Die Schritte wechseln sich ab.",
+        "shape": "Formen",
+        "shapeHint": "Formen wiederholen sich als Muster."
+      }
     },
     "question": {
       "progress": "Aufgabe {current} von {total}",

@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useUserStore, XP_PER_CORRECT } from '@/stores/user'
 import { useGameStore } from '@/stores/game'
 import { useSequenceTrainStore } from '@/stores/sequenceTrain'
-import type { SequenceQuestion, SequenceDifficulty, SequenceCategory } from '@/types'
+import type { SequenceQuestion, SequenceDifficulty, SequenceCategory, SequenceMode } from '@/types'
 import AppButton from '@/components/ui/AppButton.vue'
 import PauseModal from '@/components/ui/PauseModal.vue'
 
@@ -104,12 +104,16 @@ const phase = ref<Phase>('intro')
 // ─── Pause state ──────────────────────────────────────────────
 const isPaused = ref(false)
 
-// ─── Intro / level select ─────────────────────────────────────
+// ─── Intro / level & mode select ──────────────────────────────
 const selectedLevel = ref<SequenceDifficulty>(stStore.level)
 const LEVELS: SequenceDifficulty[] = ['easy', 'medium', 'hard']
 
+const selectedMode = ref<SequenceMode>(stStore.mode)
+const MODES: SequenceMode[] = ['all', 'arithmetic', 'geometric', 'alternating', 'shape']
+
 function startGame() {
   stStore.setLevel(selectedLevel.value)
+  stStore.setMode(selectedMode.value)
   gameStore.startGame('sequence-train')
   questionIndex.value = 0
   correctCount.value = 0
@@ -186,6 +190,7 @@ function pickShapeHiddenIndex(len: number, coreLen: number): number {
 
 // ─── Question generation ──────────────────────────────────────
 function pickCategory(): SequenceCategory {
+  if (selectedMode.value !== 'all') return selectedMode.value
   const cfg = LEVEL_CONFIG[selectedLevel.value]
   const pool: SequenceCategory[] = []
   ;(Object.keys(cfg.weights) as SequenceCategory[]).forEach(cat => {
@@ -386,6 +391,7 @@ function advance() {
 function restartGame() {
   phase.value = 'intro'
   selectedLevel.value = stStore.level
+  selectedMode.value = stStore.mode
 }
 
 // ─── Pause / Resume ───────────────────────────────────────────
@@ -480,6 +486,23 @@ onUnmounted(() => {
             </button>
           </div>
           <p class="text-xs text-white/50">{{ t(`sequenceTrain.config.${selectedLevel}Hint`) }}</p>
+        </div>
+
+        <div class="w-full max-w-sm bg-white/10 rounded-2xl p-6 flex flex-col gap-4">
+          <h2 class="text-xl font-bold text-amber-200">{{ t('sequenceTrain.config.modeTitle') }}</h2>
+          <div class="flex flex-wrap gap-2">
+            <button
+              v-for="mode in MODES"
+              :key="mode"
+              class="level-btn flex-1 rounded-xl px-3 py-3 font-bold text-base transition-all active:scale-95"
+              :class="selectedMode === mode ? 'level-btn-active' : 'level-btn-idle'"
+              style="min-height: 48px"
+              @click="selectedMode = mode"
+            >
+              {{ t(`sequenceTrain.config.mode.${mode}`) }}
+            </button>
+          </div>
+          <p class="text-xs text-white/50">{{ t(`sequenceTrain.config.mode.${selectedMode}Hint`) }}</p>
         </div>
 
         <AppButton size="lg" @click="startGame">{{ t('sequenceTrain.config.start') }}</AppButton>

@@ -658,7 +658,20 @@
       "easyHint": "Simple steps (+1, +2, +5, +10), doubling and shape patterns.",
       "mediumHint": "Bigger steps, times tables, alternating patterns and shapes.",
       "hardHint": "Big steps, challenging patterns and shapes.",
-      "start": "🚂 All aboard!"
+      "start": "🚂 All aboard!",
+      "modeTitle": "Question type",
+      "mode": {
+        "all": "All",
+        "allHint": "All question types mixed.",
+        "arithmetic": "Number sequences",
+        "arithmeticHint": "Always the same step: + or −.",
+        "geometric": "Times tables",
+        "geometricHint": "Always multiply by the same number.",
+        "alternating": "Alternating",
+        "alternatingHint": "The steps alternate.",
+        "shape": "Shapes",
+        "shapeHint": "Shapes repeat in a pattern."
+      }
     },
     "question": {
       "progress": "Question {current} of {total}",
