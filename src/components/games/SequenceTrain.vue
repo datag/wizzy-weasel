@@ -19,11 +19,61 @@ const stStore = useSequenceTrainStore()
 const QUESTIONS_PER_ROUND = 10
 const SHAPE_POOL = ['▲', '●', '■', '★', '◆', '♥'] as const
 
+interface ShapePatternTemplate {
+  /** The indices referring to distinct shapes, e.g. [0, 1] for AB, [0, 0, 1] for AAB */
+  pattern: number[]
+  /** Number of distinct shapes required */
+  distinctCount: number
+  /** Total sequence length to show in the train (at least 2 full repetitions) */
+  len: number
+}
+
+// Schoolbook pattern templates (didactically unambiguous with clear Musterkern)
+const SHAPE_PATTERNS: Record<SequenceDifficulty, ShapePatternTemplate[]> = {
+  easy: [
+    // AB (core len 2): 3 full cycles = 6 cars
+    { pattern: [0, 1], distinctCount: 2, len: 6 },
+    // AAB (core len 3): 2 full cycles + 1 = 7 cars
+    { pattern: [0, 0, 1], distinctCount: 2, len: 7 },
+    // ABB (core len 3): 2 full cycles + 1 = 7 cars
+    { pattern: [0, 1, 1], distinctCount: 2, len: 7 },
+    // ABA (core len 3): 2 full cycles + 1 = 7 cars
+    { pattern: [0, 1, 0], distinctCount: 2, len: 7 },
+  ],
+  medium: [
+    // ABC (core len 3): 2 full cycles + 1 = 7 cars
+    { pattern: [0, 1, 2], distinctCount: 3, len: 7 },
+    // AABB (core len 4): 2 full cycles = 8 cars
+    { pattern: [0, 0, 1, 1], distinctCount: 2, len: 8 },
+    // ABBA (core len 4, symmetrical): 2 full cycles = 8 cars
+    { pattern: [0, 1, 1, 0], distinctCount: 2, len: 8 },
+    // ABAC (core len 4): 2 full cycles = 8 cars
+    { pattern: [0, 1, 0, 2], distinctCount: 3, len: 8 },
+    // AAB (core len 3): 2 full cycles + 1 = 7 cars
+    { pattern: [0, 0, 1], distinctCount: 2, len: 7 },
+    // ABB (core len 3): 2 full cycles + 1 = 7 cars
+    { pattern: [0, 1, 1], distinctCount: 2, len: 7 },
+  ],
+  hard: [
+    // ABCD (core len 4): 2 full cycles = 8 cars
+    { pattern: [0, 1, 2, 3], distinctCount: 4, len: 8 },
+    // AABC (core len 4): 2 full cycles = 8 cars
+    { pattern: [0, 0, 1, 2], distinctCount: 3, len: 8 },
+    // ABCC (core len 4): 2 full cycles = 8 cars
+    { pattern: [0, 1, 2, 2], distinctCount: 3, len: 8 },
+    // AAAB (core len 4): 2 full cycles = 8 cars
+    { pattern: [0, 0, 0, 1], distinctCount: 2, len: 8 },
+    // ABAC (core len 4): 2 full cycles = 8 cars
+    { pattern: [0, 1, 0, 2], distinctCount: 3, len: 8 },
+    // ABBA (core len 4): 2 full cycles = 8 cars
+    { pattern: [0, 1, 1, 0], distinctCount: 2, len: 8 },
+  ],
+}
+
 interface LevelConfig {
   arithmetic: { steps: number[]; max: number }
   geometric: { multipliers: number[]; max: number }
   alternating: { max: number }
-  shape: { cycleLen: number; allowGrouped: boolean; groupSize: number }
   weights: Record<SequenceCategory, number>
 }
 
@@ -32,21 +82,18 @@ const LEVEL_CONFIG: Record<SequenceDifficulty, LevelConfig> = {
     arithmetic: { steps: [1, 2, 5, 10], max: 30 },
     geometric: { multipliers: [2], max: 64 },
     alternating: { max: 60 },
-    shape: { cycleLen: 2, allowGrouped: false, groupSize: 2 },
-    weights: { arithmetic: 4, geometric: 3, alternating: 0, shape: 3 },
+    weights: { arithmetic: 4, geometric: 2, alternating: 0, shape: 4 },
   },
   medium: {
     arithmetic: { steps: [3, 4, 6, 7, 8, 9], max: 100 },
     geometric: { multipliers: [2, 3], max: 162 },
     alternating: { max: 100 },
-    shape: { cycleLen: 3, allowGrouped: true, groupSize: 2 },
     weights: { arithmetic: 3, geometric: 2, alternating: 2, shape: 3 },
   },
   hard: {
     arithmetic: { steps: [12, 15, 16, 18, 20], max: 200 },
     geometric: { multipliers: [2, 3, 4, 5], max: 500 },
     alternating: { max: 200 },
-    shape: { cycleLen: 4, allowGrouped: true, groupSize: 3 },
     weights: { arithmetic: 3, geometric: 2, alternating: 2, shape: 3 },
   },
 }
@@ -122,9 +169,19 @@ function shuffle<T>(arr: readonly T[]): T[] {
 }
 
 function pickHiddenIndex(len: number): number {
-  // ~50% next term (last index), else a hidden middle term
-  if (Math.random() < 0.5) return len - 1
+  // ~70% next term (last index), else a hidden middle term (never the first term)
+  if (Math.random() < 0.7) return len - 1
   return randInt(1, len - 2)
+}
+
+function pickShapeHiddenIndex(len: number, coreLen: number): number {
+  // 75% of the time: the last wagon (classic schoolbook "continue the pattern")
+  if (Math.random() < 0.75) {
+    return len - 1
+  }
+  // 25% of the time: a gap in cycle 2 or 3 (never in cycle 1!)
+  // This guarantees the pattern core is fully established first (indices 0 .. coreLen - 1 are always visible)
+  return randInt(coreLen, len - 2)
 }
 
 // ─── Question generation ──────────────────────────────────────
@@ -141,7 +198,7 @@ function buildArithmetic(): SequenceQuestion {
   const cfg = LEVEL_CONFIG[selectedLevel.value].arithmetic
   const step = randomItem(cfg.steps)
   const direction = Math.random() < 0.5 ? 1 : -1
-  const len = randInt(4, 5)
+  const len = 5
   const lastIndex = len - 1
   let startMin: number
   let startMax: number
@@ -164,7 +221,7 @@ function buildArithmetic(): SequenceQuestion {
 function buildGeometric(): SequenceQuestion {
   const cfg = LEVEL_CONFIG[selectedLevel.value].geometric
   const mult = randomItem(cfg.multipliers)
-  const len = randInt(4, 5)
+  const len = 5
   const maxStart = Math.floor(cfg.max / Math.pow(mult, len - 1))
   const start = randInt(1, Math.max(1, maxStart))
   const terms = Array.from({ length: len }, (_, i) => start * Math.pow(mult, i))
@@ -175,10 +232,12 @@ function buildGeometric(): SequenceQuestion {
 
 function buildAlternating(): SequenceQuestion {
   const max = LEVEL_CONFIG[selectedLevel.value].alternating.max
-  const cycle = selectedLevel.value === 'hard'
-    ? [randInt(2, 5), randInt(2, 5), -randInt(2, 4)]
+  const isHard = selectedLevel.value === 'hard'
+  const cycle = isHard
+    ? [randInt(2, 4), randInt(2, 4), -randInt(1, 3)]
     : [randInt(2, 4), -randInt(1, 3)]
-  const len = randInt(4, 6)
+  // Ensure at least 2 full cycles are demonstrated so there is zero ambiguity
+  const len = isHard ? 7 : 6
   const rel: number[] = []
   let v = 0
   for (let i = 0; i < len; i++) {
@@ -189,27 +248,30 @@ function buildAlternating(): SequenceQuestion {
   const relMax = Math.max(...rel)
   const t0 = randInt(1 - relMin, max - relMax)
   const terms = rel.map(r => t0 + r)
-  const hiddenIndex = pickHiddenIndex(len)
+  // Ensure the pattern is established before the missing term
+  const minHidden = cycle.length * 2 - 1
+  const hiddenIndex = Math.random() < 0.75
+    ? len - 1
+    : randInt(minHidden, len - 2)
   const steps = cycle.map(s => `${s > 0 ? '+' : '−'}${Math.abs(s)}`).join(', ')
   const explanation = t('sequenceTrain.pattern.alternating', { steps })
   return { category: 'alternating', terms, hiddenIndex, solution: terms[hiddenIndex], explanation }
 }
 
 function buildShape(): SequenceQuestion {
-  const cfg = LEVEL_CONFIG[selectedLevel.value].shape
-  const len = randInt(4, 6)
-  const distinct = shuffle(SHAPE_POOL).slice(0, cfg.cycleLen)
-  const grouped = cfg.allowGrouped && Math.random() < 0.5
-  const shapes = Array.from({ length: len }, (_, i) => {
-    if (grouped) return distinct[Math.floor(i / cfg.groupSize) % distinct.length]
-    return distinct[i % distinct.length]
-  })
-  const hiddenIndex = pickHiddenIndex(len)
+  const templates = SHAPE_PATTERNS[selectedLevel.value]
+  const template = randomItem(templates)
+  const distinct = shuffle(SHAPE_POOL).slice(0, template.distinctCount)
+  const core = template.pattern.map(idx => distinct[idx])
+  const shapes = Array.from({ length: template.len }, (_, i) => core[i % core.length])
+  const hiddenIndex = pickShapeHiddenIndex(template.len, core.length)
   const solution = shapes[hiddenIndex]
-  const distractors = shuffle(SHAPE_POOL.filter(s => s !== solution)).slice(0, 3)
-  const options = shuffle([solution, ...distractors])
-  const cycle = distinct.join(' ')
-  const explanation = t('sequenceTrain.pattern.shape', { shapes: cycle })
+
+  // Options: include all distinct shapes used in this pattern, plus pool distractors to total 4 choices
+  const otherShapes = shuffle(SHAPE_POOL.filter(s => !distinct.includes(s)))
+  const options = shuffle([...distinct, ...otherShapes].slice(0, 4))
+  const coreDisplay = core.join(' ')
+  const explanation = t('sequenceTrain.pattern.shape', { shapes: coreDisplay })
   return { category: 'shape', shapes, hiddenIndex, solution, options, explanation }
 }
 
@@ -429,7 +491,7 @@ onUnmounted(() => {
     <Transition name="fade">
       <div v-if="phase === 'playing' || phase === 'feedback'" class="flex flex-col items-center justify-center min-h-full gap-5 px-6 py-8">
         <!-- HUD -->
-        <div class="w-full max-w-lg flex items-center justify-between text-sm">
+        <div class="w-full max-w-xl flex items-center justify-between text-sm">
           <button
             class="w-11 h-11 flex-shrink-0 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white text-base"
             :title="t('game.paused')"
@@ -448,7 +510,7 @@ onUnmounted(() => {
         </div>
 
         <!-- Progress bar -->
-        <div class="w-full max-w-lg h-2 bg-white/10 rounded-full overflow-hidden">
+        <div class="w-full max-w-xl h-2 bg-white/10 rounded-full overflow-hidden">
           <div
             class="h-full bg-amber-400 rounded-full transition-all duration-300"
             :style="{ width: `${(questionIndex / QUESTIONS_PER_ROUND) * 100}%` }"
@@ -456,15 +518,15 @@ onUnmounted(() => {
         </div>
 
         <!-- Question card -->
-        <div class="w-full max-w-lg bg-white/10 border border-white/20 rounded-3xl p-6 sm:p-8 flex flex-col items-center gap-6 shadow-2xl">
+        <div class="w-full max-w-xl bg-white/10 border border-white/20 rounded-3xl p-5 sm:p-8 flex flex-col items-center gap-6 shadow-2xl">
           <!-- Train -->
-          <div class="flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap">
-            <span class="train-loco text-5xl sm:text-6xl">🚂</span>
+          <div class="flex items-center justify-center gap-1 sm:gap-2 flex-wrap">
+            <span class="train-loco text-4xl sm:text-6xl">🚂</span>
             <template v-for="(term, i) in displayTerms" :key="i">
               <span class="train-connector">・</span>
               <span
                 class="train-car"
-                :class="trainCarClass(i)"
+                :class="[trainCarClass(i), isShapeQuestion ? 'train-car-shape' : '']"
               >
                 {{ i === question?.hiddenIndex ? hiddenTermDisplay() : term }}
               </span>
@@ -626,14 +688,18 @@ onUnmounted(() => {
   line-height: 1;
 }
 .train-car {
-  font-size: clamp(1.75rem, 6vw, 3rem);
+  font-size: clamp(1.4rem, 4.5vw, 2.75rem);
   font-weight: 900;
   line-height: 1;
   min-width: 2ch;
   text-align: center;
   border-radius: 0.75rem;
-  padding: 0.2em 0.4em;
+  padding: 0.25em 0.35em;
   display: inline-block;
+}
+.train-car-shape {
+  min-width: 1.6ch;
+  padding: 0.2em 0.3em;
 }
 .train-car-known {
   color: #fde68a;

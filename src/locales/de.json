@@ -655,9 +655,9 @@
       "easy": "Leicht",
       "medium": "Mittel",
       "hard": "Schwer",
-      "easyHint": "Einfache Schritte: +1, +2, +5, +10 und Verdoppeln.",
-      "mediumHint": "Größere Schritte, Mal-Reihen und Wechselmuster.",
-      "hardHint": "Große Schritte, schwere Muster und Formen.",
+      "easyHint": "Einfache Schritte (+1, +2, +5, +10), Verdoppeln und Formenmuster.",
+      "mediumHint": "Größere Schritte, Mal-Reihen, Wechselmuster und Formen.",
+      "hardHint": "Große Schritte, anspruchsvolle Muster und Formen.",
       "start": "🚂 Losfahren!"
     },
     "question": {

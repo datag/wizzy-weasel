@@ -655,9 +655,9 @@
       "easy": "Easy",
       "medium": "Medium",
       "hard": "Hard",
-      "easyHint": "Simple steps: +1, +2, +5, +10 and doubling.",
-      "mediumHint": "Bigger steps, times tables and alternating patterns.",
-      "hardHint": "Big steps, tricky patterns and shapes.",
+      "easyHint": "Simple steps (+1, +2, +5, +10), doubling and shape patterns.",
+      "mediumHint": "Bigger steps, times tables, alternating patterns and shapes.",
+      "hardHint": "Big steps, challenging patterns and shapes.",
       "start": "🚂 All aboard!"
     },
     "question": {
