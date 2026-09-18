@@ -203,7 +203,10 @@ function buildArithmetic(): SequenceQuestion {
   const cfg = LEVEL_CONFIG[selectedLevel.value].arithmetic
   const step = randomItem(cfg.steps)
   const direction = Math.random() < 0.5 ? 1 : -1
-  const len = 5
+  // Shrink the length so the largest term fits the positive range (max-1)
+  // and no term can ever become negative or exceed the level max.
+  let len = 5
+  while (len > 3 && step * (len - 1) > cfg.max - 1) len--
   const lastIndex = len - 1
   let startMin: number
   let startMax: number
@@ -214,7 +217,7 @@ function buildArithmetic(): SequenceQuestion {
     startMin = 1 + step * lastIndex
     startMax = cfg.max
   }
-  const start = randInt(Math.min(startMin, startMax), Math.max(startMin, startMax))
+  const start = randInt(startMin, startMax)
   const terms = Array.from({ length: len }, (_, i) => start + direction * step * i)
   const hiddenIndex = pickHiddenIndex(len)
   const explanation = direction === 1
