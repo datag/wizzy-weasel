@@ -436,7 +436,7 @@ onUnmounted(() => {
 
     <!-- ── PHASE 1: INTRO & CONFIG ── -->
     <Transition name="fade">
-      <div v-if="phase === 'intro'" class="flex flex-col items-center justify-center min-h-full px-4 py-8 max-w-lg mx-auto w-full gap-6">
+      <div v-if="phase === 'intro'" class="flex flex-col items-center my-auto px-4 pt-12 pb-8 max-w-lg mx-auto w-full gap-6">
         <div class="text-7xl animate-bounce">🦁</div>
         <h1 class="text-3xl sm:text-4xl font-extrabold text-center text-amber-300">
           {{ t('wortartenSafari.intro.title') }}
@@ -807,7 +807,7 @@ onUnmounted(() => {
     <Transition name="fade">
       <div
         v-if="phase === 'gameover'"
-        class="flex flex-col items-center justify-center min-h-full px-4 py-8 max-w-md mx-auto w-full gap-5"
+        class="flex flex-col items-center my-auto px-4 pt-12 pb-8 max-w-md mx-auto w-full gap-5"
       >
         <div class="text-7xl animate-bounce">🏆</div>
         <h1 class="text-3xl font-extrabold text-center text-amber-300">
