@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUserStore, XP_PER_CORRECT } from '@/stores/user'
 import { useGameStore } from '@/stores/game'
@@ -27,6 +27,16 @@ const gameStore = useGameStore()
 type Phase = 'intro' | 'step1' | 'step2' | 'step3' | 'step4' | 'gameover'
 const phase = ref<Phase>('intro')
 const isPaused = ref(false)
+const containerRef = ref<HTMLElement | null>(null)
+
+function scrollToTop() {
+  nextTick(() => {
+    if (containerRef.value) {
+      containerRef.value.scrollTop = 0
+    }
+    window.scrollTo(0, 0)
+  })
+}
 
 // ─── Config / Intro State ─────────────────────────────────────
 const selectedWordClasses = ref<Set<SafariWordClass>>(
@@ -116,15 +126,18 @@ function startGame() {
 
   gameStore.startGame('wortarten-safari')
   phase.value = 'step1'
+  scrollToTop()
 }
 
 // ─── Step Transitions ─────────────────────────────────────────
 function goToStep2() {
   phase.value = 'step2'
+  scrollToTop()
 }
 
 function goToStep3() {
   phase.value = 'step3'
+  scrollToTop()
 }
 
 function evaluateAndGoToStep4() {
@@ -184,11 +197,13 @@ function evaluateAndGoToStep4() {
   gameStore.addScore(earnedXp)
 
   phase.value = 'step4'
+  scrollToTop()
 }
 
 function finishGame() {
   gameStore.endGame()
   phase.value = 'gameover'
+  scrollToTop()
 }
 
 // ─── Step 1 Interactions: Sentence Ends ───────────────────────
@@ -441,7 +456,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="w-full h-full select-none bg-gradient-to-br from-emerald-950 via-teal-950 to-stone-900 text-white overflow-y-auto flex flex-col justify-between">
+  <div
+    ref="containerRef"
+    class="w-full h-full select-none bg-gradient-to-br from-emerald-950 via-teal-950 to-stone-900 text-white overflow-y-auto flex flex-col justify-between"
+  >
 
     <!-- ── PHASE 1: INTRO & CONFIG ── -->
     <Transition name="fade">
