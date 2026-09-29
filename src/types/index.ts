@@ -142,6 +142,10 @@ export type SafariWordClass =
   | 'article'
   | 'pronoun'
   | 'preposition'
+  | 'numeral'
+  | 'adverb'
+  | 'conjunction'
+  | 'interjection'
   | 'other'
 
 export interface SafariToken {
