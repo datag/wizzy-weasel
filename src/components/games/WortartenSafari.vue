@@ -12,7 +12,6 @@ import type {
   SafariStory,
   SafariToken,
   SafariWordClass,
-  SafariCasingMode,
   SafariWordClassConfig,
 } from '@/types'
 import AppButton from '@/components/ui/AppButton.vue'
@@ -33,8 +32,6 @@ const isPaused = ref(false)
 const selectedWordClasses = ref<Set<SafariWordClass>>(
   new Set(SAFARI_WORD_CLASSES.filter(c => c.defaultActive).map(c => c.key))
 )
-const casingMode = ref<SafariCasingMode>('lowercase')
-const resolvedCasing = ref<'lowercase' | 'uppercase'>('lowercase')
 
 function toggleWordClass(key: SafariWordClass) {
   const next = new Set(selectedWordClasses.value)
@@ -110,12 +107,6 @@ function pickRandomStory(): SafariStory {
 }
 
 function startGame() {
-  if (casingMode.value === 'random') {
-    resolvedCasing.value = Math.random() < 0.5 ? 'lowercase' : 'uppercase'
-  } else {
-    resolvedCasing.value = casingMode.value
-  }
-
   currentStory.value = pickRandomStory()
   selectedGaps.value = new Set()
   capitalizedTokenIds.value = new Set()
@@ -250,12 +241,6 @@ function formatTokenText(token: SafariToken): string {
       : phase.value === 'step4'
       ? token.isCapitalized
       : false
-
-  if (phase.value === 'step1') {
-    return resolvedCasing.value === 'lowercase'
-      ? token.raw.toLowerCase()
-      : token.raw.toUpperCase()
-  }
 
   if (isCap) {
     // Capitalize first letter, remainder lowercase
@@ -496,36 +481,6 @@ onUnmounted(() => {
                 <span class="text-xs font-bold truncate">{{ t(cfg.nameKey) }}</span>
                 <span class="text-[10px] opacity-75 truncate">({{ t(cfg.childNameKey) }})</span>
               </div>
-            </button>
-          </div>
-        </div>
-
-        <!-- Casing selection card -->
-        <div class="w-full bg-emerald-900/40 border border-emerald-500/30 rounded-2xl p-5 flex flex-col gap-3 shadow-lg">
-          <h2 class="text-base sm:text-lg font-bold text-amber-200">
-            {{ t('wortartenSafari.intro.casingTitle') }}
-          </h2>
-          <div class="flex flex-col gap-2">
-            <button
-              v-for="mode in (['lowercase', 'uppercase', 'random'] as SafariCasingMode[])"
-              :key="mode"
-              type="button"
-              class="flex items-center gap-3 p-3 rounded-xl border text-left transition-all active:scale-95 touch-manipulation cursor-pointer"
-              :class="[
-                casingMode === mode
-                  ? 'bg-amber-500/30 border-amber-400 text-amber-100 font-bold shadow-md'
-                  : 'bg-black/20 border-white/10 text-white/60 hover:bg-black/30',
-              ]"
-              style="min-height: 44px"
-              @click="casingMode = mode"
-            >
-              <span
-                class="w-4 h-4 rounded-full flex items-center justify-center text-[10px] border shrink-0"
-                :class="casingMode === mode ? 'border-amber-400 bg-amber-400 text-black font-bold' : 'border-white/30'"
-              >
-                {{ casingMode === mode ? '●' : '' }}
-              </span>
-              <span class="text-xs sm:text-sm">{{ t(`wortartenSafari.intro.casing.${mode}`) }}</span>
             </button>
           </div>
         </div>

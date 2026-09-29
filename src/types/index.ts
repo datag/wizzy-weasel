@@ -144,8 +144,6 @@ export type SafariWordClass =
   | 'preposition'
   | 'other'
 
-export type SafariCasingMode = 'lowercase' | 'uppercase' | 'random'
-
 export interface SafariToken {
   id: string
   raw: string              // Wort in korrekter Groß-/Kleinschreibung

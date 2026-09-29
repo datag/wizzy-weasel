@@ -725,12 +725,6 @@
       "subtitle": "Mach dich bereit für die Satz-Expedition! Entdecke Satzenden, Großschreibung und Wortarten in 5 Sätzen.",
       "wordClassesTitle": "Wortarten für die Expedition:",
       "wordClassesHint": "Wähle aus, welche Wortarten du aufspüren möchtest.",
-      "casingTitle": "Text-Schreibweise:",
-      "casing": {
-        "lowercase": "Alles kleingeschrieben (Klassischer Salattext)",
-        "uppercase": "Alles GROSSGESCHRIEBEN",
-        "random": "Zufällig ausgewählt"
-      },
       "start": "🧭 Safari starten"
     },
     "hud": {

@@ -725,12 +725,6 @@
       "subtitle": "Get ready for a German grammar expedition! Discover sentence endings, capitalization, and parts of speech in 5 sentences.",
       "wordClassesTitle": "Word classes for your expedition:",
       "wordClassesHint": "Choose which word classes you want to practice.",
-      "casingTitle": "Text capitalization mode:",
-      "casing": {
-        "lowercase": "All lowercase (classic puzzle text)",
-        "uppercase": "All UPPERCASE",
-        "random": "Randomly selected"
-      },
       "start": "🧭 Start Safari"
     },
     "hud": {
