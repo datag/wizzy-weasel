@@ -716,7 +716,9 @@
       "pronoun": "Pronoun",
       "pronounChild": "Pronoun (Fürwort)",
       "preposition": "Preposition",
-      "prepositionChild": "Preposition (Vorwort)"
+      "prepositionChild": "Preposition (Vorwort)",
+      "other": "Other",
+      "otherChild": "Other word"
     },
     "intro": {
       "title": "Welcome to Word Class Safari! 🦁",
@@ -769,6 +771,7 @@
       "popoverCasingWrong": "❌ Spelling hint: \"{word}\" should be {expected}.",
       "popoverWordClassCorrect": "✅ Correct word class: {class}!",
       "popoverWordClassWrong": "❌ Correct word class: {expected} (your choice: {actual})",
+      "popoverWordClassNotMonitored": "ℹ️ Word class: {class} (not practiced in this round)",
       "close": "Close",
       "toSummary": "🏆 View summary"
     },

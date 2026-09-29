@@ -62,6 +62,13 @@ const capitalizedTokenIds = ref<Set<string>>(new Set())
 const tokenWordClasses = ref<Map<string, SafariWordClass>>(new Map())
 const activeWordClassBrush = ref<SafariWordClass>('noun')
 
+const targetActiveTokensCount = computed(() => {
+  if (!currentStory.value) return 0
+  return currentStory.value.tokens.filter(tok =>
+    selectedWordClasses.value.has(tok.wordClass)
+  ).length
+})
+
 // Step 4: Active Popover / Inspector
 interface PopoverData {
   title: string
@@ -222,14 +229,15 @@ function selectWordClassBrush(key: SafariWordClass) {
   activeWordClassBrush.value = key
 }
 
-function applyWordClassToToken(tokenId: string) {
+function applyWordClassToToken(token: SafariToken) {
   if (phase.value !== 'step3') return
+  if (!selectedWordClasses.value.has(token.wordClass)) return
   const next = new Map(tokenWordClasses.value)
-  const current = next.get(tokenId)
+  const current = next.get(token.id)
   if (current === activeWordClassBrush.value) {
-    next.delete(tokenId)
+    next.delete(token.id)
   } else {
-    next.set(tokenId, activeWordClassBrush.value)
+    next.set(token.id, activeWordClassBrush.value)
   }
   tokenWordClasses.value = next
 }
@@ -258,15 +266,28 @@ function formatTokenText(token: SafariToken): string {
 }
 
 function getTokenStyleClass(token: SafariToken): string {
-  // Step 3 or Step 4: Show painted word classes
-  const assigned =
-    phase.value === 'step4'
-      ? token.wordClass
-      : tokenWordClasses.value.get(token.id)
+  // Step 3: words not in selectedWordClasses are dimmed / greyed out
+  if (phase.value === 'step3' && !selectedWordClasses.value.has(token.wordClass)) {
+    return 'bg-white/5 text-white/60 border-dashed border-white/20 opacity-70'
+  }
 
-  if (assigned && WORD_CLASS_MAP.has(assigned)) {
-    const cfg = WORD_CLASS_MAP.get(assigned)!
-    return `${cfg.bgClass} shadow-sm font-semibold`
+  // Step 3: painted word class for active tokens
+  if (phase.value === 'step3') {
+    const assigned = tokenWordClasses.value.get(token.id)
+    if (assigned && WORD_CLASS_MAP.has(assigned)) {
+      const cfg = WORD_CLASS_MAP.get(assigned)!
+      return `${cfg.bgClass} shadow-sm font-semibold`
+    }
+    return 'bg-white/10 hover:bg-white/20 text-white'
+  }
+
+  // Step 4: Show painted word classes for active words, neutral for non-active
+  if (phase.value === 'step4') {
+    if (selectedWordClasses.value.has(token.wordClass) && WORD_CLASS_MAP.has(token.wordClass)) {
+      const cfg = WORD_CLASS_MAP.get(token.wordClass)!
+      return `${cfg.bgClass} shadow-sm font-semibold`
+    }
+    return 'bg-white/10 text-white/80'
   }
 
   return 'bg-white/10 hover:bg-white/20 text-white'
@@ -353,6 +374,9 @@ function inspectToken(token: SafariToken) {
         })
       )
     }
+  } else {
+    const className = t(`wortartenSafari.classes.${token.wordClass}Child`)
+    details.push(t('wortartenSafari.step4.popoverWordClassNotMonitored', { class: className }))
   }
 
   activePopover.value = {
@@ -612,24 +636,29 @@ onUnmounted(() => {
           <!-- Word Token Element -->
           <button
             type="button"
-            class="relative inline-flex items-center justify-center px-3 py-1.5 rounded-xl border transition-all text-base sm:text-lg select-none cursor-pointer"
+            class="relative inline-flex items-center justify-center px-3 py-1.5 rounded-xl border transition-all text-base sm:text-lg select-none"
             :class="[
               getTokenStyleClass(token),
-              phase === 'step2' ? 'hover:scale-105 active:scale-95' : '',
-              phase === 'step3' ? 'hover:scale-105 active:scale-95' : '',
+              phase === 'step2' ? 'cursor-pointer hover:scale-105 active:scale-95' : '',
+              phase === 'step3' && selectedWordClasses.has(token.wordClass)
+                ? 'cursor-pointer hover:scale-105 active:scale-95'
+                : '',
+              phase === 'step3' && !selectedWordClasses.has(token.wordClass)
+                ? 'cursor-not-allowed'
+                : '',
               phase === 'step4' && isTokenFaulty(token)
-                ? 'ring-2 ring-red-400 border-red-500 bg-red-900/40 text-red-200 shadow-md animate-pulse'
+                ? 'cursor-pointer ring-2 ring-red-400 border-red-500 bg-red-900/40 text-red-200 shadow-md animate-pulse'
                 : '',
               phase === 'step4' && !isTokenFaulty(token)
-                ? 'border-emerald-500/50'
+                ? 'cursor-pointer border-emerald-500/50'
                 : 'border-white/10',
             ]"
             style="min-height: 44px; min-width: 44px"
             @click="
               phase === 'step2'
                 ? toggleCapitalization(token.id)
-                : phase === 'step3'
-                ? applyWordClassToToken(token.id)
+                : phase === 'step3' && selectedWordClasses.has(token.wordClass)
+                ? applyWordClassToToken(token)
                 : phase === 'step4'
                 ? inspectToken(token)
                 : undefined
@@ -753,7 +782,7 @@ onUnmounted(() => {
       <!-- Step 3 Footer -->
       <template v-if="phase === 'step3'">
         <div class="text-xs sm:text-sm text-emerald-200 font-medium">
-          {{ tokenWordClasses.size }} Wörter markiert
+          {{ tokenWordClasses.size }} von {{ targetActiveTokensCount }} Wörtern markiert
         </div>
         <AppButton size="md" @click="evaluateAndGoToStep4">
           {{ t('wortartenSafari.step3.finish') }}

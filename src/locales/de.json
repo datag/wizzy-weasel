@@ -716,7 +716,9 @@
       "pronoun": "Pronomen",
       "pronounChild": "Fürwort",
       "preposition": "Präposition",
-      "prepositionChild": "Vorwort"
+      "prepositionChild": "Vorwort",
+      "other": "Sonstiges",
+      "otherChild": "Anderes Wort"
     },
     "intro": {
       "title": "Willkommen zur Wortarten-Safari! 🦁",
@@ -769,6 +771,7 @@
       "popoverCasingWrong": "❌ Rechtschreib-Tipp: „{word}“ gehört {expected}.",
       "popoverWordClassCorrect": "✅ Richtige Wortart: {class}!",
       "popoverWordClassWrong": "❌ Richtige Wortart: {expected} (deine Wahl: {actual})",
+      "popoverWordClassNotMonitored": "ℹ️ Wortart: {class} (nicht in dieser Safari gesucht)",
       "close": "Schließen",
       "toSummary": "🏆 Zur Gesamtwertung"
     },
