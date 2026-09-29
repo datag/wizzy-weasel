@@ -309,12 +309,21 @@ function inspectGap(index: number) {
       explanation: 'Jeder vollständige Hauptsatz endet mit einem Punkt.',
     }
   } else if (!isActualEnd && isSelected) {
+    const isComma = !!token.hasComma
     activePopover.value = {
       title: t('wortartenSafari.step4.popoverTitle'),
       statusType: 'wrong',
-      badgeText: 'Kein Satzende',
-      details: [t('wortartenSafari.step4.popoverSentenceEndExtra')],
-      explanation: 'Dieser Satz geht hier noch weiter. Setze einen Punkt nur am Ende des Gedankens.',
+      badgeText: isComma
+        ? t('wortartenSafari.step4.popoverSentenceEndCommaBadge')
+        : t('wortartenSafari.step4.popoverSentenceEndExtraBadge'),
+      details: [
+        isComma
+          ? t('wortartenSafari.step4.popoverSentenceEndComma')
+          : t('wortartenSafari.step4.popoverSentenceEndExtra'),
+      ],
+      explanation: isComma
+        ? t('wortartenSafari.step4.popoverSentenceEndCommaExpl')
+        : t('wortartenSafari.step4.popoverSentenceEndExtraExpl'),
     }
   }
 }
@@ -642,11 +651,13 @@ onUnmounted(() => {
           <!-- Inter-word or Sentence-End Gap Slot -->
           <button
             type="button"
-            class="inline-flex items-center justify-center rounded-xl transition-all cursor-pointer select-none mx-0.5 touch-manipulation"
+            class="inline-flex items-center justify-center rounded-xl transition-all select-none mx-0.5 touch-manipulation"
             :class="[
               phase === 'step1'
-                ? 'hover:bg-amber-400/20 active:scale-90 border border-dashed border-emerald-400/30'
-                : '',
+                ? 'cursor-pointer hover:bg-amber-400/20 active:scale-90 border border-dashed border-emerald-400/30'
+                : phase === 'step4'
+                ? 'cursor-pointer'
+                : 'cursor-default pointer-events-none',
               selectedGaps.has(idx)
                 ? 'bg-amber-500/20 text-amber-300 font-bold border-amber-400'
                 : 'text-white/20',
@@ -669,6 +680,12 @@ onUnmounted(() => {
               class="w-6 h-6 rounded-full border border-dashed border-red-400 text-red-300 flex items-center justify-center text-xs font-bold"
             >
               .
+            </span>
+            <span
+              v-else-if="phase !== 'step1' && token.hasComma"
+              class="text-white/50 text-xl font-bold select-none"
+            >
+              ,
             </span>
             <span v-else-if="phase === 'step1'" class="text-xs opacity-40">␣</span>
           </button>

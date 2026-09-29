@@ -153,6 +153,7 @@ export interface SafariToken {
   raw: string              // Wort in korrekter Groß-/Kleinschreibung
   wordClass: SafariWordClass
   isSentenceEnd: boolean  // Ist dieses Wort das letzte Wort eines Satzes?
+  hasComma?: boolean      // Folgt auf dieses Wort im Satz ein Komma?
   isCapitalized: boolean  // Gehört dieses Wort großgeschrieben?
   explanation: string     // Kurzerklärung für das Popover
 }
