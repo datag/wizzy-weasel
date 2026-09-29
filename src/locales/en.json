@@ -701,6 +701,88 @@
       "backToMenu": "Back to menu"
     }
   },
+  "wortartenSafari": {
+    "title": "Word Class Safari",
+    "description": "Hunt down sentence ends, capitalization, and parts of speech in German texts!",
+    "classes": {
+      "noun": "Noun",
+      "nounChild": "Noun (Namenwort)",
+      "verb": "Verb",
+      "verbChild": "Verb (Tunwort)",
+      "adjective": "Adjective",
+      "adjectiveChild": "Adjective (Wiewort)",
+      "article": "Article",
+      "articleChild": "Article (Begleiter)",
+      "pronoun": "Pronoun",
+      "pronounChild": "Pronoun (Fürwort)",
+      "preposition": "Preposition",
+      "prepositionChild": "Preposition (Vorwort)"
+    },
+    "intro": {
+      "title": "Welcome to Word Class Safari! 🦁",
+      "subtitle": "Get ready for a German grammar expedition! Discover sentence endings, capitalization, and parts of speech in 5 sentences.",
+      "wordClassesTitle": "Word classes for your expedition:",
+      "wordClassesHint": "Choose which word classes you want to practice.",
+      "casingTitle": "Text capitalization mode:",
+      "casing": {
+        "lowercase": "All lowercase (classic puzzle text)",
+        "uppercase": "All UPPERCASE",
+        "random": "Randomly selected"
+      },
+      "start": "🧭 Start Safari"
+    },
+    "hud": {
+      "step": "Step {step} of {total}",
+      "step1Name": "Find sentence ends",
+      "step2Name": "Mark capitalization",
+      "step3Name": "Identify word classes",
+      "step4Name": "Expedition report",
+      "score": "Score: {score}"
+    },
+    "step1": {
+      "instruction": "Tap the gaps between words to mark the 5 sentence endings with a dot.",
+      "endsFound": "Sentence ends marked: {count} of 5",
+      "next": "Continue to Step 2: Capitalization ➔"
+    },
+    "step2": {
+      "instruction": "Tap words that should be capitalized (sentence starts and German nouns).",
+      "capitalizedCount": "Words capitalized: {count}",
+      "next": "Continue to Step 3: Word Classes ➔"
+    },
+    "step3": {
+      "instruction": "Pick a word class below and color matching words in the text.",
+      "activeTool": "Selected word class:",
+      "tapToUnset": "Tapping again removes the color.",
+      "finish": "🔍 Evaluate Safari"
+    },
+    "step4": {
+      "title": "Expedition Evaluation",
+      "instruction": "Tap any highlighted word or sentence end to see the solution and explanation.",
+      "correctEnds": "Sentence ends:",
+      "correctCasing": "Capitalization:",
+      "correctClasses": "Word classes:",
+      "popoverTitle": "Explorer Note",
+      "popoverSentenceEndCorrect": "✅ Perfect! Sentence {num} ends here.",
+      "popoverSentenceEndMissing": "❌ Missing period! Sentence {num} ends here.",
+      "popoverSentenceEndExtra": "❌ No sentence end here. The sentence continues.",
+      "popoverCasingCorrect": "✅ Capitalization correct!",
+      "popoverCasingWrong": "❌ Spelling hint: \"{word}\" should be {expected}.",
+      "popoverWordClassCorrect": "✅ Correct word class: {class}!",
+      "popoverWordClassWrong": "❌ Correct word class: {expected} (your choice: {actual})",
+      "close": "Close",
+      "toSummary": "🏆 View summary"
+    },
+    "summary": {
+      "title": "Safari Complete! 🎉",
+      "subtitle": "Here is your expedition result for this text:",
+      "sentenceEnds": "Sentence ends found",
+      "capitalization": "Capitalization detected",
+      "wordClasses": "Word classes correct",
+      "totalScore": "Total score: {score}",
+      "playAgain": "Start new Safari",
+      "backToMenu": "Back to menu"
+    }
+  },
   "notFound": {
     "title": "Page not found",
     "message": "Oops, this page does not exist.",

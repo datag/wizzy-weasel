@@ -701,6 +701,88 @@
       "backToMenu": "Zurück zum Menü"
     }
   },
+  "wortartenSafari": {
+    "title": "Wortarten-Safari",
+    "description": "Finde Satzenden, Großbuchstaben und Wortarten im Dschungel der Sätze!",
+    "classes": {
+      "noun": "Nomen",
+      "nounChild": "Namenwort",
+      "verb": "Verb",
+      "verbChild": "Tunwort",
+      "adjective": "Adjektiv",
+      "adjectiveChild": "Wiewort",
+      "article": "Artikel",
+      "articleChild": "Begleiter",
+      "pronoun": "Pronomen",
+      "pronounChild": "Fürwort",
+      "preposition": "Präposition",
+      "prepositionChild": "Vorwort"
+    },
+    "intro": {
+      "title": "Willkommen zur Wortarten-Safari! 🦁",
+      "subtitle": "Mach dich bereit für die Satz-Expedition! Entdecke Satzenden, Großschreibung und Wortarten in 5 Sätzen.",
+      "wordClassesTitle": "Wortarten für die Expedition:",
+      "wordClassesHint": "Wähle aus, welche Wortarten du aufspüren möchtest.",
+      "casingTitle": "Text-Schreibweise:",
+      "casing": {
+        "lowercase": "Alles kleingeschrieben (Klassischer Salattext)",
+        "uppercase": "Alles GROSSGESCHRIEBEN",
+        "random": "Zufällig ausgewählt"
+      },
+      "start": "🧭 Safari starten"
+    },
+    "hud": {
+      "step": "Schritt {step} von {total}",
+      "step1Name": "Satzenden finden",
+      "step2Name": "Großschreibung markieren",
+      "step3Name": "Wortarten jagen",
+      "step4Name": "Expeditions-Bericht",
+      "score": "Punkte: {score}"
+    },
+    "step1": {
+      "instruction": "Tippe auf die Lücken zwischen den Wörtern, um die 5 Satzenden mit einem Punkt zu markieren.",
+      "endsFound": "Satzenden markiert: {count} von 5",
+      "next": "Weiter zu Schritt 2: Großschreibung ➔"
+    },
+    "step2": {
+      "instruction": "Tippe auf alle Wörter, die großgeschrieben werden müssen (Satzanfänge und Nomen).",
+      "capitalizedCount": "Wörter großgeschrieben: {count}",
+      "next": "Weiter zu Schritt 3: Wortarten ➔"
+    },
+    "step3": {
+      "instruction": "Wähle unten eine Wortart aus und färbe die passenden Wörter im Text ein.",
+      "activeTool": "Ausgewählte Wortart:",
+      "tapToUnset": "Nochmaliges Tippen entfernt die Färbung.",
+      "finish": "🔍 Safari auswerten"
+    },
+    "step4": {
+      "title": "Expeditions-Auswertung",
+      "instruction": "Tippe auf markierte Wörter oder Satzenden, um die Lösung und Erklärung anzuzeigen.",
+      "correctEnds": "Satzenden:",
+      "correctCasing": "Groß-/Kleinschreibung:",
+      "correctClasses": "Wortarten:",
+      "popoverTitle": "Forscher-Hinweis",
+      "popoverSentenceEndCorrect": "✅ Perfekt! Hier endet Satz {num}.",
+      "popoverSentenceEndMissing": "❌ Hier fehlt ein Punkt! Hier endet Satz {num}.",
+      "popoverSentenceEndExtra": "❌ Hier gehört kein Satzende hin. Der Satz geht noch weiter.",
+      "popoverCasingCorrect": "✅ Groß-/Kleinschreibung richtig!",
+      "popoverCasingWrong": "❌ Rechtschreib-Tipp: „{word}“ gehört {expected}.",
+      "popoverWordClassCorrect": "✅ Richtige Wortart: {class}!",
+      "popoverWordClassWrong": "❌ Richtige Wortart: {expected} (deine Wahl: {actual})",
+      "close": "Schließen",
+      "toSummary": "🏆 Zur Gesamtwertung"
+    },
+    "summary": {
+      "title": "Safari erfolgreich gemeistert! 🎉",
+      "subtitle": "Hier ist dein Forscher-Ergebnis für diesen Text:",
+      "sentenceEnds": "Satzenden gefunden",
+      "capitalization": "Großschreibung erkannt",
+      "wordClasses": "Wortarten richtig",
+      "totalScore": "Gesamtpunkte: {score}",
+      "playAgain": "Neue Safari starten",
+      "backToMenu": "Zurück zum Menü"
+    }
+  },
   "notFound": {
     "title": "Seite nicht gefunden",
     "message": "Hoppla, diese Seite gibt es nicht.",

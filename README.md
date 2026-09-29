@@ -21,6 +21,8 @@ A browser-based learning game app for primary-school children. Offline-first, ta
 | 🕰️ Clock Detective | Read analog clocks |
 | 🕵️ Language Detective | Identify the language of a sentence |
 | 🚂 Sequence Train | Continue number and shape sequences |
+| 🦁 Wortarten-Safari | German sentence endings, capitalization, and word classes |
+
 
 ---
 

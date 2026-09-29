@@ -133,3 +133,43 @@ export type SequenceQuestion =
       options: string[]    // 4 choices (includes correct one)
       explanation: string  // localized description of the pattern rule
     }
+
+// Wortarten-Safari
+export type SafariWordClass =
+  | 'noun'
+  | 'verb'
+  | 'adjective'
+  | 'article'
+  | 'pronoun'
+  | 'preposition'
+  | 'other'
+
+export type SafariCasingMode = 'lowercase' | 'uppercase' | 'random'
+
+export interface SafariToken {
+  id: string
+  raw: string              // Wort in korrekter Groß-/Kleinschreibung
+  wordClass: SafariWordClass
+  isSentenceEnd: boolean  // Ist dieses Wort das letzte Wort eines Satzes?
+  isCapitalized: boolean  // Gehört dieses Wort großgeschrieben?
+  explanation: string     // Kurzerklärung für das Popover
+}
+
+export interface SafariStory {
+  id: string
+  title: string
+  tokens: SafariToken[]   // Alle Token der 5 Sätze in Reihenfolge
+}
+
+export interface SafariWordClassConfig {
+  key: SafariWordClass
+  nameKey: string
+  childNameKey: string
+  color: string
+  bgClass: string
+  textClass: string
+  borderClass: string
+  badgeClass: string
+  defaultActive: boolean
+}
+

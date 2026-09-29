@@ -83,4 +83,14 @@ export const GAMES: GameConfig[] = [
     path: '/game/sequence-train',
     component: defineAsyncComponent(() => import('@/components/games/SequenceTrain.vue')),
   },
+  {
+    id: 'wortarten-safari',
+    titleKey: 'wortartenSafari.title',
+    descriptionKey: 'wortartenSafari.description',
+    icon: '🦁',
+    color: 'from-emerald-600 to-teal-700',
+    path: '/game/wortarten-safari',
+    component: defineAsyncComponent(() => import('@/components/games/WortartenSafari.vue')),
+  },
 ]
+
