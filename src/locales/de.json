@@ -55,6 +55,7 @@
     "progress": "Aufgabe {current} von {total}",
     "correct": "Richtig! +{xp} XP",
     "wrong": "Falsch!",
+    "yourInput": "Deine Eingabe",
     "missedWords": "Deine Fehler:",
     "placeholder": "Buchstabe(n) eingeben…"
   },

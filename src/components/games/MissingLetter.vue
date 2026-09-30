@@ -23,6 +23,7 @@ const phase = ref<Phase>('ready')
 const sessionScore = ref(0)
 const correctCount = ref(0)
 const input = ref('')
+const lastUserAnswer = ref('')
 const feedbackWord = ref<MissingLetterWord | null>(null)
 const missedWords = ref<MissingLetterWord[]>([])
 
@@ -60,6 +61,7 @@ function startGame() {
   taskIndex.value = 0
   feedbackWord.value = null
   input.value = ''
+  lastUserAnswer.value = ''
   if (advanceTimer) {
     clearTimeout(advanceTimer)
     advanceTimer = null
@@ -119,6 +121,7 @@ function nextTask() {
   taskIndex.value++
   feedbackWord.value = null
   input.value = ''
+  lastUserAnswer.value = ''
   phase.value = 'playing'
   nextTick(() => letterInput.value?.focus())
 }
@@ -127,6 +130,7 @@ function submit() {
   if (phase.value !== 'playing' || !currentWord.value) return
   const answer = input.value.trim()
   if (!answer) return
+  lastUserAnswer.value = answer
 
   const correct = answer.toLowerCase() === currentWord.value.solution.toLowerCase()
   feedbackWord.value = currentWord.value
@@ -168,10 +172,6 @@ function onKeyDown(e: KeyboardEvent) {
 // ─── Display helpers ─────────────────────────────────────────
 const hasInput = computed(() => input.value.trim().length > 0)
 
-function gapPlaceholder(word: MissingLetterWord): string {
-  return '\u00A0'.repeat(Math.max(word.solution.length, 1))
-}
-
 onMounted(() => window.addEventListener('keydown', onKeyDown))
 onUnmounted(() => {
   window.removeEventListener('keydown', onKeyDown)
@@ -207,8 +207,8 @@ onUnmounted(() => {
       </div>
 
       <!-- HUD -->
-      <div class="flex items-center justify-between px-4 sm:px-6 pt-3 pb-1 flex-shrink-0">
-        <div class="flex items-center gap-3">
+      <div class="flex items-center justify-between px-3 sm:px-6 pt-2.5 sm:pt-4 pb-1 flex-shrink-0">
+        <div class="flex items-center gap-2 sm:gap-3">
           <button
             class="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white text-base"
             :aria-label="t('game.paused')"
@@ -217,30 +217,30 @@ onUnmounted(() => {
           >
             ⏸
           </button>
-          <span class="text-sm sm:text-base font-semibold text-white/80">
+          <span class="text-xs sm:text-base font-semibold text-white/80">
             {{ t('missingLetter.progress', { current: Math.min(taskIndex + 1, TOTAL_TASKS), total: TOTAL_TASKS }) }}
           </span>
         </div>
-        <span class="text-sm sm:text-base font-bold bg-white/10 rounded-full px-3 py-1">
+        <span class="text-xs sm:text-base font-bold bg-white/10 rounded-full px-2.5 sm:px-3 py-1">
           {{ t('game.score', { score: sessionScore }) }}
         </span>
       </div>
 
-      <!-- Sentence display area -->
-      <div class="flex-1 min-h-0 flex flex-col items-center justify-center gap-6 px-4 sm:px-8 py-4 overflow-y-auto">
+      <!-- Sentence and action area -->
+      <div class="flex-1 min-h-0 flex flex-col items-center justify-start sm:justify-center gap-3 sm:gap-4 px-3 sm:px-8 pt-2.5 sm:pt-4 pb-4 sm:pb-6 overflow-y-auto">
         <div
           v-if="currentDisplayWord"
-          class="w-full max-w-2xl bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-10 shadow-xl backdrop-blur-sm text-center leading-relaxed"
+          class="w-full max-w-2xl bg-white/5 border border-white/10 rounded-xl sm:rounded-3xl p-3.5 sm:p-8 md:p-10 shadow-xl backdrop-blur-sm text-center leading-normal sm:leading-loose"
           :class="phase === 'playing' ? 'cursor-pointer' : ''"
           @click="phase === 'playing' && letterInput?.focus()"
         >
-          <p class="text-xl sm:text-2xl md:text-3xl font-medium text-white/90">
+          <p class="text-lg sm:text-2xl md:text-3xl font-medium text-white/90">
             <span>{{ currentDisplayWord.sentenceBefore }}</span>
             <!-- Target word with bold highlight and gap/feedback -->
             <span class="inline-block font-extrabold text-amber-300 mx-1">
               <template v-if="phase === 'feedback-wrong' && feedbackWord">
                 <span>{{ feedbackWord.before }}</span>
-                <span class="bg-red-500 text-white rounded-lg px-2 py-0.5 mx-0.5 font-black shadow-sm">{{ feedbackWord.solution }}</span>
+                <span class="bg-purple-600 text-white rounded-lg px-2 py-0.5 mx-0.5 font-black shadow-sm">{{ feedbackWord.solution }}</span>
                 <span>{{ feedbackWord.after }}</span>
               </template>
               <template v-else-if="phase === 'feedback-correct' && feedbackWord">
@@ -250,12 +250,17 @@ onUnmounted(() => {
               </template>
               <template v-else-if="currentWord">
                 <span>{{ currentWord.before }}</span>
-                <span
-                  class="inline-block border-b-4 border-amber-300 min-w-[2ch] px-1 text-center font-black transition-colors"
-                  :class="input ? 'text-blue-400' : 'text-amber-200'"
-                >
-                  {{ input || gapPlaceholder(currentWord) }}
-                </span>
+                <input
+                  ref="letterInput"
+                  v-model="input"
+                  type="text"
+                  :style="{ width: `${Math.max(currentWord.solution.length, input.length, 2) + 0.4}ch` }"
+                  autocomplete="off"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  class="inline-block border-b-4 border-amber-300 bg-white/10 rounded-t-md text-center font-extrabold text-blue-400 focus:bg-white/20 focus:border-amber-200 outline-none align-baseline px-0.5 mx-0.5 transition-all text-inherit leading-none"
+                />
                 <span>{{ currentWord.after }}</span>
               </template>
             </span>
@@ -267,49 +272,46 @@ onUnmounted(() => {
         <Transition name="pop">
           <div
             v-if="phase === 'feedback-correct'"
-            class="text-2xl font-extrabold text-green-300"
+            class="text-xl sm:text-2xl font-extrabold text-green-300"
           >
             {{ t('missingLetter.correct', { xp: XP_PER_CORRECT }) }}
           </div>
           <div
             v-else-if="phase === 'feedback-wrong'"
-            class="text-2xl font-extrabold text-red-300"
+            class="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 text-center"
           >
-            {{ t('missingLetter.wrong') }}
+            <span class="text-xl sm:text-2xl font-extrabold text-red-300">{{ t('missingLetter.wrong') }}</span>
+            <div class="flex items-center gap-1.5 text-xs sm:text-base font-semibold text-white/80">
+              <span>{{ t('missingLetter.yourInput') }}:</span>
+              <span class="inline-flex items-center bg-red-500/25 border border-red-400/60 text-red-200 rounded-md px-2 py-0.5 text-sm sm:text-base font-bold shadow-sm">
+                {{ lastUserAnswer }}
+              </span>
+            </div>
           </div>
         </Transition>
-      </div>
 
-      <!-- Action / Input area pinned at bottom -->
-      <div class="flex-shrink-0 flex items-center justify-center w-full max-w-md mx-auto px-6 pb-6 pt-2 min-h-[80px]">
-        <!-- Playing input -->
-        <div v-if="phase === 'playing'" class="flex gap-3 w-full">
-          <input
-            ref="letterInput"
-            v-model="input"
-            type="text"
-            :placeholder="t('missingLetter.placeholder')"
-            autocomplete="off"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="false"
-            class="flex-1 min-w-0 bg-white/15 border-2 border-white/30 rounded-2xl px-4 py-3 text-white text-xl font-bold placeholder-white/30 outline-none focus:border-white/60 transition-colors text-center min-h-[56px]"
-          />
+        <!-- Action button directly below task -->
+        <div class="w-full max-w-xs flex items-center justify-center pt-1">
+          <!-- Playing: Prüfen button -->
           <button
+            v-if="phase === 'playing'"
             :disabled="!hasInput"
-            class="transition-all rounded-2xl px-5 py-3 font-bold text-white text-lg min-h-[56px]"
+            class="w-full transition-all rounded-2xl px-6 py-2.5 sm:py-3 font-bold text-white text-base sm:text-lg min-h-[44px] sm:min-h-[50px] shadow-md flex items-center justify-center"
             :class="hasInput
-              ? 'bg-violet-500 hover:bg-violet-400 active:scale-95'
+              ? 'bg-violet-500 hover:bg-violet-400 active:scale-95 cursor-pointer'
               : 'bg-violet-500 opacity-40 cursor-not-allowed'"
             @click="submit"
           >
             {{ t('missingLetter.check') }}
           </button>
-        </div>
 
-        <!-- Feedback wrong (or correct manually continuing): Continue button -->
-        <div v-else-if="phase === 'feedback-wrong' || phase === 'feedback-correct'" class="flex justify-center w-full">
-          <AppButton size="lg" class="min-w-[180px] shadow-lg" @click="nextTask">
+          <!-- Feedback: Continue button -->
+          <AppButton
+            v-else-if="phase === 'feedback-wrong' || phase === 'feedback-correct'"
+            size="lg"
+            class="w-full min-w-[180px] shadow-lg"
+            @click="nextTask"
+          >
             {{ t('missingLetter.continue') }} ➔
           </AppButton>
         </div>

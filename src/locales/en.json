@@ -55,6 +55,7 @@
     "progress": "Task {current} of {total}",
     "correct": "Correct! +{xp} XP",
     "wrong": "Wrong!",
+    "yourInput": "Your input",
     "missedWords": "Your mistakes:",
     "placeholder": "Type the letter(s)…"
   },
