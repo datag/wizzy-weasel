@@ -250,8 +250,11 @@ onUnmounted(() => {
               </template>
               <template v-else-if="currentWord">
                 <span>{{ currentWord.before }}</span>
-                <span class="inline-block border-b-4 border-amber-300 min-w-[2ch] px-1 text-center font-black text-amber-200">
-                  {{ gapPlaceholder(currentWord) }}
+                <span
+                  class="inline-block border-b-4 border-amber-300 min-w-[2ch] px-1 text-center font-black transition-colors"
+                  :class="input ? 'text-blue-400' : 'text-amber-200'"
+                >
+                  {{ input || gapPlaceholder(currentWord) }}
                 </span>
                 <span>{{ currentWord.after }}</span>
               </template>
