@@ -49,9 +49,10 @@
   },
   "missingLetter": {
     "title": "Fehlender Buchstabe",
-    "description": "Finde den fehlenden Buchstaben im Wort!",
+    "description": "Lies den Satz und finde die fehlenden Buchstaben im gesuchten Wort!",
     "check": "Prüfen",
-    "timeLeft": "noch {seconds} Sekunden",
+    "continue": "Weiter",
+    "progress": "Aufgabe {current} von {total}",
     "correct": "Richtig! +{xp} XP",
     "wrong": "Falsch!",
     "missedWords": "Deine Fehler:",

@@ -37,9 +37,11 @@ export interface QuixRound {
 
 // Missing Letter word entry
 export interface MissingLetterWord {
-  before: string    // text before the gap
-  solution: string  // the missing letter(s)
-  after: string     // text after the gap
+  sentenceBefore: string  // text in sentence before the target word
+  before: string          // text before the gap inside target word
+  solution: string        // the missing letter(s)
+  after: string           // text after the gap inside target word
+  sentenceAfter: string   // text in sentence after the target word
 }
 
 // Mystical Times Table question

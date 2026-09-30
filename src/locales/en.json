@@ -49,9 +49,10 @@
   },
   "missingLetter": {
     "title": "Missing Letter",
-    "description": "Find the missing letter in the word!",
+    "description": "Read the sentence and find the missing letters in the target word!",
     "check": "Check",
-    "timeLeft": "{seconds} seconds left",
+    "continue": "Continue",
+    "progress": "Task {current} of {total}",
     "correct": "Correct! +{xp} XP",
     "wrong": "Wrong!",
     "missedWords": "Your mistakes:",

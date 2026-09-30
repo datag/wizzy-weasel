@@ -15,12 +15,13 @@ const userStore = useUserStore()
 const gameStore = useGameStore()
 
 // ─── Constants ───────────────────────────────────────────────
-const GAME_DURATION = 60 // seconds
+const TOTAL_TASKS = 15
 
 // ─── Game state ───────────────────────────────────────────────
 type Phase = 'ready' | 'playing' | 'feedback-correct' | 'feedback-wrong' | 'gameover'
 const phase = ref<Phase>('ready')
 const sessionScore = ref(0)
+const correctCount = ref(0)
 const input = ref('')
 const feedbackWord = ref<MissingLetterWord | null>(null)
 const missedWords = ref<MissingLetterWord[]>([])
@@ -28,14 +29,14 @@ const missedWords = ref<MissingLetterWord[]>([])
 // ─── Pause state ──────────────────────────────────────────────
 const isPaused = ref(false)
 
-// ─── Timer ────────────────────────────────────────────────────
-const timeLeft = ref(GAME_DURATION)
-const progressPct = computed(() => (timeLeft.value / GAME_DURATION) * 100)
-let countdownTimer: ReturnType<typeof setInterval> | null = null
+// ─── Task session ─────────────────────────────────────────────
+const taskIndex = ref(0)
+const sessionWords = ref<MissingLetterWord[]>([])
+const currentWord = computed(() => sessionWords.value[taskIndex.value] ?? null)
+const currentDisplayWord = computed(() => feedbackWord.value ?? currentWord.value)
+const progressPct = computed(() => (taskIndex.value / TOTAL_TASKS) * 100)
 
-// ─── Word queue ───────────────────────────────────────────────
-let queue: MissingLetterWord[] = []
-const currentWord = ref<MissingLetterWord | null>(null)
+let advanceTimer: ReturnType<typeof setTimeout> | null = null
 
 function getWordList(): MissingLetterWord[] {
   const lang = locale.value.startsWith('en') ? 'en' : 'de'
@@ -51,66 +52,75 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
-function refillQueue() {
-  queue = shuffle(getWordList())
-}
-
-function nextWord() {
-  if (queue.length === 0) refillQueue()
-  currentWord.value = queue.shift()!
+// ─── Game flow ────────────────────────────────────────────────
+function startGame() {
+  sessionScore.value = 0
+  correctCount.value = 0
+  missedWords.value = []
+  taskIndex.value = 0
+  feedbackWord.value = null
   input.value = ''
+  if (advanceTimer) {
+    clearTimeout(advanceTimer)
+    advanceTimer = null
+  }
+
+  const list = getWordList()
+  sessionWords.value = shuffle(list).slice(0, TOTAL_TASKS)
+
+  gameStore.startGame('missing-letter')
   phase.value = 'playing'
   nextTick(() => letterInput.value?.focus())
 }
 
-// ─── Game flow ────────────────────────────────────────────────
-function startGame() {
-  sessionScore.value = 0
-  missedWords.value = []
-  timeLeft.value = GAME_DURATION
-  gameStore.startGame('missing-letter')
-  refillQueue()
-  nextWord()
-  startCountdown()
-}
-
-function startCountdown() {
-  countdownTimer = setInterval(() => {
-    timeLeft.value--
-    if (timeLeft.value <= 0) {
-      stopCountdown()
-      endGame()
-    }
-  }, 1000)
-}
-
-function stopCountdown() {
-  if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null }
-}
-
 function pauseGame() {
   if (!['playing', 'feedback-correct', 'feedback-wrong'].includes(phase.value) || isPaused.value) return
-  stopCountdown()
   isPaused.value = true
 }
 
 function resumeGame() {
   if (!isPaused.value) return
   isPaused.value = false
-  if (phase.value === 'playing') startCountdown()
+  if (phase.value === 'playing') {
+    nextTick(() => letterInput.value?.focus())
+  }
 }
 
 function exitGame() {
-  stopCountdown()
+  if (advanceTimer) {
+    clearTimeout(advanceTimer)
+    advanceTimer = null
+  }
   isPaused.value = false
   gameStore.endGame()
   emit('exit')
 }
 
 function endGame() {
-  stopCountdown()
+  if (advanceTimer) {
+    clearTimeout(advanceTimer)
+    advanceTimer = null
+  }
   gameStore.endGame()
   phase.value = 'gameover'
+}
+
+function nextTask() {
+  if (advanceTimer) {
+    clearTimeout(advanceTimer)
+    advanceTimer = null
+  }
+
+  if (taskIndex.value + 1 >= TOTAL_TASKS) {
+    endGame()
+    return
+  }
+
+  taskIndex.value++
+  feedbackWord.value = null
+  input.value = ''
+  phase.value = 'playing'
+  nextTick(() => letterInput.value?.focus())
 }
 
 function submit() {
@@ -125,12 +135,13 @@ function submit() {
     userStore.addXp(XP_PER_CORRECT)
     gameStore.addScore(XP_PER_CORRECT)
     sessionScore.value += XP_PER_CORRECT
+    correctCount.value++
     phase.value = 'feedback-correct'
-    setTimeout(() => nextWord(), 700)
+    advanceTimer = setTimeout(() => nextTask(), 700)
   } else {
     missedWords.value.push(currentWord.value)
     phase.value = 'feedback-wrong'
-    setTimeout(() => nextWord(), 2000)
+    // Stays on feedback-wrong until user clicks Continue or presses Enter
   }
 }
 
@@ -144,18 +155,31 @@ function onKeyDown(e: KeyboardEvent) {
     return
   }
   if (isPaused.value) return
-  if (e.key === 'Enter') submit()
+
+  if (e.key === 'Enter') {
+    if (phase.value === 'playing') {
+      submit()
+    } else if (phase.value === 'feedback-correct' || phase.value === 'feedback-wrong') {
+      nextTask()
+    }
+  }
 }
 
 // ─── Display helpers ─────────────────────────────────────────
 const hasInput = computed(() => input.value.trim().length > 0)
 
 function gapPlaceholder(word: MissingLetterWord): string {
-  return '_'.repeat(Math.max(word.solution.length, 1))
+  return '\u00A0'.repeat(Math.max(word.solution.length, 1))
 }
 
 onMounted(() => window.addEventListener('keydown', onKeyDown))
-onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); stopCountdown() })
+onUnmounted(() => {
+  window.removeEventListener('keydown', onKeyDown)
+  if (advanceTimer) {
+    clearTimeout(advanceTimer)
+    advanceTimer = null
+  }
+})
 </script>
 
 <template>
@@ -174,51 +198,66 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); stopCountd
 
     <!-- ── PLAYING / FEEDBACK screens ── -->
     <template v-if="phase === 'playing' || phase === 'feedback-correct' || phase === 'feedback-wrong'">
-      <!-- Timer bar -->
+      <!-- Progress bar -->
       <div class="w-full h-2 bg-white/10 flex-shrink-0">
         <div
-          class="h-full rounded-r-full transition-none"
-          :class="progressPct > 40 ? 'bg-green-400' : progressPct > 20 ? 'bg-yellow-400' : 'bg-red-400'"
+          class="h-full bg-violet-400 rounded-r-full transition-all duration-300"
           :style="{ width: `${progressPct}%` }"
         />
       </div>
 
       <!-- HUD -->
-      <div class="flex items-center justify-between px-5 pt-3 pb-1 flex-shrink-0">
-        <span class="text-sm font-semibold text-white/70">
-          {{ t('missingLetter.timeLeft', { seconds: timeLeft }) }}
-        </span>
-        <span class="text-sm font-bold bg-white/10 rounded-full px-3 py-1">
+      <div class="flex items-center justify-between px-4 sm:px-6 pt-3 pb-1 flex-shrink-0">
+        <div class="flex items-center gap-3">
+          <button
+            class="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white text-base"
+            :aria-label="t('game.paused')"
+            :title="t('game.paused')"
+            @click="pauseGame"
+          >
+            ⏸
+          </button>
+          <span class="text-sm sm:text-base font-semibold text-white/80">
+            {{ t('missingLetter.progress', { current: Math.min(taskIndex + 1, TOTAL_TASKS), total: TOTAL_TASKS }) }}
+          </span>
+        </div>
+        <span class="text-sm sm:text-base font-bold bg-white/10 rounded-full px-3 py-1">
           {{ t('game.score', { score: sessionScore }) }}
         </span>
       </div>
 
-      <!-- Word display -->
-      <div class="flex-1 min-h-0 flex flex-col items-center justify-center gap-6 px-6 overflow-y-auto">
-
-        <!-- The word with gap -->
+      <!-- Sentence display area -->
+      <div class="flex-1 min-h-0 flex flex-col items-center justify-center gap-6 px-4 sm:px-8 py-4 overflow-y-auto">
         <div
-          class="text-5xl sm:text-7xl font-black tracking-widest text-center leading-tight"
+          v-if="currentDisplayWord"
+          class="w-full max-w-2xl bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-10 shadow-xl backdrop-blur-sm text-center leading-relaxed"
           :class="phase === 'playing' ? 'cursor-pointer' : ''"
           @click="phase === 'playing' && letterInput?.focus()"
         >
-          <template v-if="phase === 'feedback-wrong' && feedbackWord">
-            <span>{{ feedbackWord.before }}</span>
-            <span class="bg-red-500 text-white rounded-lg px-2 mx-1">{{ feedbackWord.solution }}</span>
-            <span>{{ feedbackWord.after }}</span>
-          </template>
-          <template v-else-if="phase === 'feedback-correct' && feedbackWord">
-            <span>{{ feedbackWord.before }}</span>
-            <span class="bg-green-500 text-white rounded-lg px-2 mx-1">{{ feedbackWord.solution }}</span>
-            <span>{{ feedbackWord.after }}</span>
-          </template>
-          <template v-else-if="currentWord">
-            <span>{{ currentWord.before }}</span>
-            <span class="inline-block border-b-4 border-white/80 min-w-[2ch] text-white/30 tracking-normal px-1">
-              {{ gapPlaceholder(currentWord) }}
+          <p class="text-xl sm:text-2xl md:text-3xl font-medium text-white/90">
+            <span>{{ currentDisplayWord.sentenceBefore }}</span>
+            <!-- Target word with bold highlight and gap/feedback -->
+            <span class="inline-block font-extrabold text-amber-300 mx-1">
+              <template v-if="phase === 'feedback-wrong' && feedbackWord">
+                <span>{{ feedbackWord.before }}</span>
+                <span class="bg-red-500 text-white rounded-lg px-2 py-0.5 mx-0.5 font-black shadow-sm">{{ feedbackWord.solution }}</span>
+                <span>{{ feedbackWord.after }}</span>
+              </template>
+              <template v-else-if="phase === 'feedback-correct' && feedbackWord">
+                <span>{{ feedbackWord.before }}</span>
+                <span class="bg-green-500 text-white rounded-lg px-2 py-0.5 mx-0.5 font-black shadow-sm">{{ feedbackWord.solution }}</span>
+                <span>{{ feedbackWord.after }}</span>
+              </template>
+              <template v-else-if="currentWord">
+                <span>{{ currentWord.before }}</span>
+                <span class="inline-block border-b-4 border-amber-300 min-w-[2ch] px-1 text-center font-black text-amber-200">
+                  {{ gapPlaceholder(currentWord) }}
+                </span>
+                <span>{{ currentWord.after }}</span>
+              </template>
             </span>
-            <span>{{ currentWord.after }}</span>
-          </template>
+            <span>{{ currentDisplayWord.sentenceAfter }}</span>
+          </p>
         </div>
 
         <!-- Feedback message -->
@@ -238,29 +277,39 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); stopCountd
         </Transition>
       </div>
 
-      <!-- Input area — pinned at bottom so it's always visible -->
-      <div v-if="phase === 'playing'" class="flex-shrink-0 flex gap-3 w-full max-w-xs mx-auto px-6 pb-6 pt-3">
-        <input
-          ref="letterInput"
-          v-model="input"
-          type="text"
-          :placeholder="t('missingLetter.placeholder')"
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="false"
-          class="flex-1 min-w-0 bg-white/15 border-2 border-white/30 rounded-2xl px-4 py-3 text-white text-xl font-bold placeholder-white/30 outline-none focus:border-white/60 transition-colors text-center min-h-[56px]"
-        />
-        <button
-          :disabled="!hasInput"
-          class="transition-all rounded-2xl px-5 py-3 font-bold text-white text-lg min-h-[56px]"
-          :class="hasInput
-            ? 'bg-violet-500 hover:bg-violet-400 active:scale-95'
-            : 'bg-violet-500 opacity-40 cursor-not-allowed'"
-          @click="submit"
-        >
-          {{ t('missingLetter.check') }}
-        </button>
+      <!-- Action / Input area pinned at bottom -->
+      <div class="flex-shrink-0 flex items-center justify-center w-full max-w-md mx-auto px-6 pb-6 pt-2 min-h-[80px]">
+        <!-- Playing input -->
+        <div v-if="phase === 'playing'" class="flex gap-3 w-full">
+          <input
+            ref="letterInput"
+            v-model="input"
+            type="text"
+            :placeholder="t('missingLetter.placeholder')"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            class="flex-1 min-w-0 bg-white/15 border-2 border-white/30 rounded-2xl px-4 py-3 text-white text-xl font-bold placeholder-white/30 outline-none focus:border-white/60 transition-colors text-center min-h-[56px]"
+          />
+          <button
+            :disabled="!hasInput"
+            class="transition-all rounded-2xl px-5 py-3 font-bold text-white text-lg min-h-[56px]"
+            :class="hasInput
+              ? 'bg-violet-500 hover:bg-violet-400 active:scale-95'
+              : 'bg-violet-500 opacity-40 cursor-not-allowed'"
+            @click="submit"
+          >
+            {{ t('missingLetter.check') }}
+          </button>
+        </div>
+
+        <!-- Feedback wrong (or correct manually continuing): Continue button -->
+        <div v-else-if="phase === 'feedback-wrong' || phase === 'feedback-correct'" class="flex justify-center w-full">
+          <AppButton size="lg" class="min-w-[180px] shadow-lg" @click="nextTask">
+            {{ t('missingLetter.continue') }} ➔
+          </AppButton>
+        </div>
       </div>
     </template>
 
@@ -270,19 +319,24 @@ onUnmounted(() => { window.removeEventListener('keydown', onKeyDown); stopCountd
         <div class="text-6xl">🏁</div>
         <h2 class="text-4xl font-extrabold">{{ t('game.gameOver') }}</h2>
         <p class="text-2xl font-bold text-yellow-300">{{ t('game.finalScore', { score: sessionScore }) }}</p>
+        <p class="text-white/70 font-semibold">{{ correctCount }} / {{ TOTAL_TASKS }} richtig</p>
 
         <!-- Missed words list -->
-        <div v-if="missedWords.length > 0" class="w-full max-w-sm">
+        <div v-if="missedWords.length > 0" class="w-full max-w-lg">
           <p class="text-white/60 font-semibold mb-3 text-center">{{ t('missingLetter.missedWords') }}</p>
-          <ul class="space-y-2">
+          <ul class="space-y-2.5 max-h-56 overflow-y-auto pr-1">
             <li
               v-for="(w, i) in missedWords"
               :key="i"
-              class="bg-white/10 rounded-xl px-4 py-2 text-xl font-bold text-center tracking-wide"
+              class="bg-white/10 rounded-xl px-4 py-2.5 text-base sm:text-lg leading-snug"
             >
-              <span>{{ w.before }}</span>
-              <span class="bg-red-500 text-white rounded px-1 mx-0.5">{{ w.solution }}</span>
-              <span>{{ w.after }}</span>
+              <span class="text-white/70">{{ w.sentenceBefore }}</span>
+              <span class="font-extrabold text-white">
+                <span>{{ w.before }}</span>
+                <span class="bg-red-500 text-white rounded px-1.5 py-0.5 mx-0.5">{{ w.solution }}</span>
+                <span>{{ w.after }}</span>
+              </span>
+              <span class="text-white/70">{{ w.sentenceAfter }}</span>
             </li>
           </ul>
         </div>
