@@ -126,13 +126,29 @@ function nextTask() {
   nextTick(() => letterInput.value?.focus())
 }
 
-function submit() {
-  if (phase.value !== 'playing' || !currentWord.value) return
-  const answer = input.value.trim()
-  if (!answer) return
-  lastUserAnswer.value = answer
+function isNoLetter(val: string | null | undefined): boolean {
+  if (!val) return false
+  const trimmed = val.trim().toLowerCase()
+  return trimmed === '-' || trimmed === '–' || trimmed === '—' || trimmed === 'ø' || trimmed === '0'
+}
 
-  const correct = answer.toLowerCase() === currentWord.value.solution.toLowerCase()
+const lastUserAnswerDisplay = computed(() => {
+  if (isNoLetter(lastUserAnswer.value)) {
+    return t('missingLetter.noLetter')
+  }
+  return lastUserAnswer.value
+})
+
+function evaluateAnswer(userIsNoLetter: boolean, rawInput: string) {
+  if (phase.value !== 'playing' || !currentWord.value) return
+  const targetIsNoLetter = isNoLetter(currentWord.value.solution)
+
+  lastUserAnswer.value = userIsNoLetter ? '–' : rawInput
+
+  const correct = targetIsNoLetter
+    ? userIsNoLetter
+    : !userIsNoLetter && rawInput.toLowerCase() === currentWord.value.solution.toLowerCase()
+
   feedbackWord.value = currentWord.value
 
   if (correct) {
@@ -147,6 +163,18 @@ function submit() {
     phase.value = 'feedback-wrong'
     // Stays on feedback-wrong until user clicks Continue or presses Enter
   }
+}
+
+function submit() {
+  const raw = input.value.trim()
+  if (!raw) return
+  const userIsNoLetter = isNoLetter(raw)
+  evaluateAnswer(userIsNoLetter, raw)
+}
+
+function submitNoLetter() {
+  if (hasInput.value) return
+  evaluateAnswer(true, '')
 }
 
 // ─── Input ───────────────────────────────────────────────────
@@ -239,14 +267,34 @@ onUnmounted(() => {
             <!-- Target word with bold highlight and gap/feedback -->
             <span class="inline-block font-extrabold text-amber-300 mx-1">
               <template v-if="phase === 'feedback-wrong' && feedbackWord">
-                <span>{{ feedbackWord.before }}</span>
-                <span class="bg-purple-600 text-white rounded-lg px-2 py-0.5 mx-0.5 font-black shadow-sm">{{ feedbackWord.solution }}</span>
-                <span>{{ feedbackWord.after }}</span>
+                <template v-if="isNoLetter(feedbackWord.solution)">
+                  <span class="bg-purple-600 text-white rounded-lg px-2.5 py-0.5 mx-0.5 font-black shadow-sm">
+                    {{ feedbackWord.before }}{{ feedbackWord.after }}
+                  </span>
+                  <span class="text-sm sm:text-base font-bold text-purple-200 ml-1">
+                    ({{ t('missingLetter.noLetter') }})
+                  </span>
+                </template>
+                <template v-else>
+                  <span>{{ feedbackWord.before }}</span>
+                  <span class="bg-purple-600 text-white rounded-lg px-2 py-0.5 mx-0.5 font-black shadow-sm">{{ feedbackWord.solution }}</span>
+                  <span>{{ feedbackWord.after }}</span>
+                </template>
               </template>
               <template v-else-if="phase === 'feedback-correct' && feedbackWord">
-                <span>{{ feedbackWord.before }}</span>
-                <span class="bg-green-500 text-white rounded-lg px-2 py-0.5 mx-0.5 font-black shadow-sm">{{ feedbackWord.solution }}</span>
-                <span>{{ feedbackWord.after }}</span>
+                <template v-if="isNoLetter(feedbackWord.solution)">
+                  <span class="bg-green-500 text-white rounded-lg px-2.5 py-0.5 mx-0.5 font-black shadow-sm">
+                    {{ feedbackWord.before }}{{ feedbackWord.after }}
+                  </span>
+                  <span class="text-sm sm:text-base font-bold text-green-200 ml-1">
+                    ({{ t('missingLetter.noLetter') }})
+                  </span>
+                </template>
+                <template v-else>
+                  <span>{{ feedbackWord.before }}</span>
+                  <span class="bg-green-500 text-white rounded-lg px-2 py-0.5 mx-0.5 font-black shadow-sm">{{ feedbackWord.solution }}</span>
+                  <span>{{ feedbackWord.after }}</span>
+                </template>
               </template>
               <template v-else-if="currentWord">
                 <span>{{ currentWord.before }}</span>
@@ -268,6 +316,22 @@ onUnmounted(() => {
           </p>
         </div>
 
+        <!-- Quick action: Kein Buchstabe button during playing phase -->
+        <div v-if="phase === 'playing'" class="flex items-center justify-center pt-0.5">
+          <button
+            type="button"
+            :disabled="hasInput"
+            class="flex items-center justify-center gap-2 px-5 py-2.5 rounded-2xl font-bold transition-all min-h-[44px] shadow-md select-none"
+            :class="hasInput
+              ? 'bg-white/5 text-white/30 border border-white/10 opacity-40 cursor-not-allowed'
+              : 'bg-white/10 hover:bg-white/20 text-white/90 border border-white/20 active:scale-95 cursor-pointer'"
+            @click="submitNoLetter"
+          >
+            <span class="text-lg leading-none font-extrabold">∅</span>
+            <span class="text-sm sm:text-base">{{ t('missingLetter.noLetter') }}</span>
+          </button>
+        </div>
+
         <!-- Feedback message -->
         <Transition name="pop">
           <div
@@ -284,7 +348,7 @@ onUnmounted(() => {
             <div class="flex items-center gap-1.5 text-xs sm:text-base font-semibold text-white/80">
               <span>{{ t('missingLetter.yourInput') }}:</span>
               <span class="inline-flex items-center bg-red-500/25 border border-red-400/60 text-red-200 rounded-md px-2 py-0.5 text-sm sm:text-base font-bold shadow-sm">
-                {{ lastUserAnswer }}
+                {{ lastUserAnswerDisplay }}
               </span>
             </div>
           </div>
@@ -337,9 +401,15 @@ onUnmounted(() => {
             >
               <span class="text-white/70">{{ w.sentenceBefore }}</span>
               <span class="font-extrabold text-white">
-                <span>{{ w.before }}</span>
-                <span class="bg-red-500 text-white rounded px-1.5 py-0.5 mx-0.5">{{ w.solution }}</span>
-                <span>{{ w.after }}</span>
+                <template v-if="isNoLetter(w.solution)">
+                  <span class="bg-purple-600 text-white rounded px-1.5 py-0.5 mx-0.5">{{ w.before }}{{ w.after }}</span>
+                  <span class="text-xs sm:text-sm font-semibold text-purple-200 ml-1">({{ t('missingLetter.noLetter') }})</span>
+                </template>
+                <template v-else>
+                  <span>{{ w.before }}</span>
+                  <span class="bg-purple-600 text-white rounded px-1.5 py-0.5 mx-0.5">{{ w.solution }}</span>
+                  <span>{{ w.after }}</span>
+                </template>
               </span>
               <span class="text-white/70">{{ w.sentenceAfter }}</span>
             </li>

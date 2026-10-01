@@ -8,7 +8,10 @@ import type { MissingLetterWord } from '@/types/index'
  * sollte eine ausgewogene Mischung aus folgenden 5 Kategorien angestrebt werden:
  *
  * 1. Vokal-Längen und Dehnungen:
- *    - Dehnungs-h (stummes h vor l, m, n, r): fahren, Zahn, Uhr, Ohr
+ *    - Dehnungs-h (stummes h vor l, m, n, r): fahren, Zahn, Uhr, Ohr, Bahn
+ *      Didaktischer Hinweis: Zum Dehnungs-h gehören Kontrastwörter OHNE Dehnungs-h
+ *      (Lösung: '-'), damit Kinder lernen, ob ein langes Wort mit oder ohne h geschrieben wird
+ *      (z. B. Zahn vs. Kran/Plan, Uhr vs. Spur, Ohr vs. Tor, Zahl vs. Wal/Schal, Sohn vs. Ton).
  *    - Langes i: meist als "ie" (Riese, Sieb, fliegen), seltener nur als langes "i" (Maschine, Tiger)
  *    - Doppelvokale: aa, ee, oo (Saat, Beet, Boot, Meer, Haar)
  *
@@ -104,6 +107,18 @@ const DE: MissingLetterWord[] = [
   { sentenceBefore: 'Nach der langen Bergwanderung schmerzte sein rechter ', before: 'Fu', solution: 'ß', after: '', sentenceAfter: ' ein wenig.' }, // Fuß (ß nach langem Vokal)
   { sentenceBefore: 'Hoch oben auf dem steilen Felsen steht ein prächtiges altes ', before: 'Schlo', solution: 'ss', after: '', sentenceAfter: '.' }, // Schloss (ss nach kurzem Vokal)
   { sentenceBefore: 'Wenn morgen die Sonne scheint, gehen wir ', before: 'vie', solution: 'll', after: 'eicht', sentenceAfter: ' an den Badesee.' }, // vielleicht (Merkwort mit v und ll)
+  // ── Dehnungs-h und Kontrastwörter (ohne Dehnungs-h, Lösung '-') ──
+  { sentenceBefore: 'Ich fahre jeden Morgen mit der ', before: 'Ba', solution: 'h', after: 'n', sentenceAfter: ' zur Schule.' }, // Bahn (Dehnungs-h)
+  { sentenceBefore: 'In den Sommerferien ', before: 'fa', solution: 'h', after: 'ren', sentenceAfter: ' wir mit dem Zug ans Meer.' }, // fahren (Dehnungs-h)
+  { sentenceBefore: 'Auf der lauten Baustelle hebt ein gelber ', before: 'Kra', solution: '-', after: 'n', sentenceAfter: ' die schweren Kisten.' }, // Kran (Kontrast: kein h)
+  { sentenceBefore: 'Für das Baumhaus zeichnen die Kinder einen genauen ', before: 'Pla', solution: '-', after: 'n', sentenceAfter: '.' }, // Plan (Kontrast: kein h)
+  { sentenceBefore: 'Der Stürmer jubelt und schießt den Ball direkt ins ', before: 'To', solution: '-', after: 'r', sentenceAfter: '.' }, // Tor (Kontrast: kein h)
+  { sentenceBefore: 'Im frischen Neuschnee entdecken wir eine geheimnisvolle ', before: 'Spu', solution: '-', after: 'r', sentenceAfter: '.' }, // Spur (Kontrast: kein h)
+  { sentenceBefore: 'Im blauen Ozean taucht ein riesiger ', before: 'Wa', solution: '-', after: 'l', sentenceAfter: ' durch die Wellen.' }, // Wal (Kontrast: kein h)
+  { sentenceBefore: 'Wenn es draußen stürmt, strickt Oma einen warmen ', before: 'Scha', solution: '-', after: 'l', sentenceAfter: '.' }, // Schal (Kontrast: kein h)
+  { sentenceBefore: 'In der Töpferwerkstatt kneten wir weichen ', before: 'To', solution: '-', after: 'n', sentenceAfter: ' mit den Händen.' }, // Ton (Kontrast: kein h)
+  { sentenceBefore: 'Auf dem neuen Schulheft steht vorne mein ', before: 'Na', solution: '-', after: 'me', sentenceAfter: ' geschrieben.' }, // Name (Kontrast: kein h vor m)
+  { sentenceBefore: 'Die Königin trägt bei der Feier eine goldene ', before: 'Kro', solution: '-', after: 'ne', sentenceAfter: ' auf dem Kopf.' }, // Krone (Kontrast: kein h vor n)
 ]
 
 const EN: MissingLetterWord[] = [
