@@ -63,4 +63,4 @@ Pushes to `main` automatically build and deploy to GitHub Pages. The build passe
 
 ## License
 
-Do whatever you want with it.
+Released under the [MIT License](./LICENSE.md). Attribution required.
