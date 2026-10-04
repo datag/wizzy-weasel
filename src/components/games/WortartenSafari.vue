@@ -140,6 +140,16 @@ function goToStep3() {
   scrollToTop()
 }
 
+function goBackToStep1() {
+  phase.value = 'step1'
+  scrollToTop()
+}
+
+function goBackToStep2() {
+  phase.value = 'step2'
+  scrollToTop()
+}
+
 function evaluateAndGoToStep4() {
   if (!currentStory.value) return
 
@@ -608,6 +618,9 @@ onUnmounted(() => {
               : t('wortartenSafari.step4.instruction')
           }}
         </p>
+        <p v-if="phase === 'step1'" class="mt-1 text-xs text-white/40">
+          {{ t('wortartenSafari.step1.commaHint') }}
+        </p>
       </div>
 
       <!-- Interactive Story Canvas -->
@@ -761,8 +774,18 @@ onUnmounted(() => {
 
       <!-- Step 2 Footer -->
       <template v-if="phase === 'step2'">
-        <div class="text-xs sm:text-sm text-emerald-200 font-medium">
-          {{ t('wortartenSafari.step2.capitalizedCount', { count: capitalizedTokenIds.size }) }}
+        <div class="flex flex-col items-start gap-1">
+          <div class="text-xs sm:text-sm text-emerald-200 font-medium">
+            {{ t('wortartenSafari.step2.capitalizedCount', { count: capitalizedTokenIds.size }) }}
+          </div>
+          <button
+            type="button"
+            class="inline-flex items-center gap-1.5 min-h-[44px] -ml-3 px-3 rounded-xl text-xs sm:text-sm font-semibold text-emerald-200/70 hover:text-emerald-100 hover:bg-white/10 transition-colors cursor-pointer"
+            @click="goBackToStep1"
+          >
+            <span aria-hidden="true">⬅</span>
+            {{ t('wortartenSafari.step2.back') }}
+          </button>
         </div>
         <AppButton size="md" @click="goToStep3">
           {{ t('wortartenSafari.step2.next') }}
@@ -771,8 +794,18 @@ onUnmounted(() => {
 
       <!-- Step 3 Footer -->
       <template v-if="phase === 'step3'">
-        <div class="text-xs sm:text-sm text-emerald-200 font-medium">
-          {{ tokenWordClasses.size }} von {{ targetActiveTokensCount }} Wörtern markiert
+        <div class="flex flex-col items-start gap-1">
+          <div class="text-xs sm:text-sm text-emerald-200 font-medium">
+            {{ tokenWordClasses.size }} von {{ targetActiveTokensCount }} Wörtern markiert
+          </div>
+          <button
+            type="button"
+            class="inline-flex items-center gap-1.5 min-h-[44px] -ml-3 px-3 rounded-xl text-xs sm:text-sm font-semibold text-emerald-200/70 hover:text-emerald-100 hover:bg-white/10 transition-colors cursor-pointer"
+            @click="goBackToStep2"
+          >
+            <span aria-hidden="true">⬅</span>
+            {{ t('wortartenSafari.step3.back') }}
+          </button>
         </div>
         <AppButton size="md" @click="evaluateAndGoToStep4">
           {{ t('wortartenSafari.step3.finish') }}

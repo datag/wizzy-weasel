@@ -748,18 +748,21 @@
     },
     "step1": {
       "instruction": "Tap the gaps between words to mark the 5 sentence endings with a dot.",
+      "commaHint": "Tip: Commas can appear in some sentences – but they play no role in this exercise. They are hidden in this step, will show up from the next step on, and cannot be marked.",
       "endsFound": "Sentence ends marked: {count} of 5",
       "next": "Continue to Step 2: Capitalization ➔"
     },
     "step2": {
       "instruction": "Tap words that should be capitalized (sentence starts and German nouns).",
       "capitalizedCount": "Words capitalized: {count}",
+      "back": "Back: Find sentence ends",
       "next": "Continue to Step 3: Word Classes ➔"
     },
     "step3": {
       "instruction": "Pick a word class below and color matching words in the text.",
       "activeTool": "Selected word class:",
       "tapToUnset": "Tapping again removes the color.",
+      "back": "Back: Mark capitalization",
       "finish": "🔍 Evaluate Safari"
     },
     "step4": {

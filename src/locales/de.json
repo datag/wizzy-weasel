@@ -748,18 +748,21 @@
     },
     "step1": {
       "instruction": "Tippe auf die Lücken zwischen den Wörtern, um die 5 Satzenden mit einem Punkt zu markieren.",
+      "commaHint": "Tipp: In manchen Sätzen können Kommata (Kommas) vorkommen – in dieser Übung spielen sie aber keine Rolle. Sie sind hier ausgeblendet, werden erst im nächsten Schritt eingeblendet und können nicht markiert werden.",
       "endsFound": "Satzenden markiert: {count} von 5",
       "next": "Weiter zu Schritt 2: Großschreibung ➔"
     },
     "step2": {
       "instruction": "Tippe auf alle Wörter, die großgeschrieben werden müssen (Satzanfänge und Nomen).",
       "capitalizedCount": "Wörter großgeschrieben: {count}",
+      "back": "Zurück: Satzenden finden",
       "next": "Weiter zu Schritt 3: Wortarten ➔"
     },
     "step3": {
       "instruction": "Wähle unten eine Wortart aus und färbe die passenden Wörter im Text ein.",
       "activeTool": "Ausgewählte Wortart:",
       "tapToUnset": "Nochmaliges Tippen entfernt die Färbung.",
+      "back": "Zurück: Großschreibung markieren",
       "finish": "🔍 Safari auswerten"
     },
     "step4": {
