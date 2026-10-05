@@ -19,8 +19,8 @@ export const ROUND_LENGTH = 10
 
 /** G1: allowed question types per difficulty (spec FR-005). */
 export const TYPES_BY_DIFFICULTY: Record<PrefixDifficulty, PrefixQuestionType[]> = {
-  easy: ['prefix-choice', 'sentence-gap'],
-  medium: ['prefix-choice', 'meaning-match', 'prefix-in-word', 'sentence-gap', 'validity-verdict'],
+  easy: ['prefix-choice', 'prefix-in-word', 'sentence-gap'],
+  medium: ['meaning-match', 'sentence-gap', 'validity-verdict'],
   hard: ['meaning-match', 'sentence-gap', 'origin-assignment', 'validity-verdict'],
 }
 

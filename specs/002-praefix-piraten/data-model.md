@@ -38,8 +38,8 @@ Per-difficulty availability and option counts (spec FR-005/FR-006):
 
 | Difficulty | Allowed types | Options |
 |---|---|---|
-| `easy` (Leicht) | `prefix-choice`, `sentence-gap` | 2 |
-| `medium` (Mittel) | `prefix-choice`, `meaning-match`, `prefix-in-word`, `sentence-gap`, `validity-verdict` | 3 |
+| `easy` (Leicht) | `prefix-choice`, `prefix-in-word`, `sentence-gap` | 2 |
+| `medium` (Mittel) | `meaning-match`, `sentence-gap`, `validity-verdict` | 3 |
 | `hard` (Schwer) | `meaning-match`, `sentence-gap`, `origin-assignment`, `validity-verdict` | 4 |
 
 ### PrefixEntry

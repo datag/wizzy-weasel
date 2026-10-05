@@ -27,7 +27,7 @@ buildQuestion(opts: {
 | G6 | The returned `usedEntryIds` must grow monotonically and reset exactly on pool exhaustion | FR-007 |
 | G7 | Each `PrefixQuestion` references its source `entry` (or `pair`) so the explanation card (meaning, origin, example sentence) can be rendered | FR-008 |
 
-**Allowed types per difficulty** (`G1`): `easy` → `prefix-choice`, `sentence-gap`; `medium` → `prefix-choice`, `meaning-match`, `prefix-in-word`, `sentence-gap`, `validity-verdict`; `hard` → `meaning-match`, `sentence-gap`, `origin-assignment`, `validity-verdict`. (FR-005)
+**Allowed types per difficulty** (`G1`): `easy` → `prefix-choice`, `prefix-in-word`, `sentence-gap`; `medium` → `meaning-match`, `sentence-gap`, `validity-verdict`; `hard` → `meaning-match`, `sentence-gap`, `origin-assignment`, `validity-verdict`. (FR-005)
 
 **Language coupling**: the generator only sees the dataset for the round's language; it never mixes German and English content. (FR-011/FR-013)
 
