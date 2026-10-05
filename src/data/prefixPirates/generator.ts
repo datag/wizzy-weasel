@@ -69,9 +69,25 @@ function prefixWithoutDash(entry: PrefixEntry): string {
   return entry.prefix.replace(/-$/, '')
 }
 
+/** all spellings of the entry, without the trailing dash (canonical + variants) */
+function prefixSpellings(entry: PrefixEntry): string[] {
+  const variants = entry.variants?.map(v => v.replace(/-$/, '')) ?? []
+  return [prefixWithoutDash(entry), ...variants]
+}
+
+/** which spelling of the entry does the word start with (case-insensitive) */
+function matchedPrefix(word: string, entry: PrefixEntry): string | null {
+  const w = word.toLowerCase()
+  for (const spelling of prefixSpellings(entry)) {
+    if (w.startsWith(spelling)) return spelling
+  }
+  return null
+}
+
+/** strip the actually-matching prefix spelling (canonical or variant) from a word */
 function stripPrefix(word: string, entry: PrefixEntry): string {
-  const p = prefixWithoutDash(entry)
-  return word.toLowerCase().startsWith(p.toLowerCase()) ? word.slice(p.length) : word
+  const match = matchedPrefix(word, entry)
+  return match ? word.slice(match.length) : word
 }
 
 /** pick `count` distinct distractors for the correct value from the full dataset */
@@ -107,7 +123,9 @@ function buildSentenceGap(entry: PrefixEntry): string {
     const lowerWord = ex.word.toLowerCase()
     const idx = lowerSentence.indexOf(lowerWord)
     if (idx >= 0) {
-      const gappedWord = '___' + ex.word.slice(prefixWithoutDash(entry).length)
+      const match = matchedPrefix(ex.word, entry)
+      const prefixLen = match ? match.length : prefixWithoutDash(entry).length
+      const gappedWord = '___' + ex.word.slice(prefixLen)
       return ex.sentence.slice(0, idx) + gappedWord + ex.sentence.slice(idx + ex.word.length)
     }
   }
@@ -119,11 +137,19 @@ function buildSentenceGap(entry: PrefixEntry): string {
 function buildPrefixChoice(entry: PrefixEntry, dataset: PrefixDataset, count: number): PrefixQuestion {
   const root = stripPrefix(entry.examples[0].word, entry)
   const correctWord = entry.examples[0].word
+  const match = matchedPrefix(correctWord, entry)
   const options = withCorrect(
     distractors(dataset, correctWord, e => e.examples[0].word, count - 1),
     correctWord
   )
-  return { type: 'prefix-choice', root, options: options.options, correctIndex: options.correctIndex, entry }
+  return {
+    type: 'prefix-choice',
+    prefix: (match ?? prefixWithoutDash(entry)) + '-',
+    root,
+    options: options.options,
+    correctIndex: options.correctIndex,
+    entry,
+  }
 }
 
 function buildMeaningMatch(entry: PrefixEntry, dataset: PrefixDataset, count: number): PrefixQuestion {
@@ -190,13 +216,12 @@ function buildValidityVerdict(
   if (isReal) {
     const entry = pickRandom(pool)
     const word = entry.examples[0].word
-    const root = stripPrefix(word, entry)
-    const displayWord = prefixWithoutDash(entry) + root
     return {
       type: 'validity-verdict',
       prefix: prefixLabel(entry),
-      root,
-      displayWord,
+      root: stripPrefix(word, entry),
+      // Show the actual (real) word – the child just decides whether it exists.
+      displayWord: word,
       isReal: true,
       entry,
       pair: null,

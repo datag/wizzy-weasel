@@ -221,6 +221,7 @@ export interface PrefixDataset {
 export type PrefixQuestion =
   | {
       type: 'prefix-choice'
+      prefix: string
       root: string
       options: string[]
       correctIndex: number

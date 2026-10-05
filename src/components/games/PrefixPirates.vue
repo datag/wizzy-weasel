@@ -346,7 +346,7 @@ function verdictHighlight(correct: boolean): string {
 
         <!-- Type-specific display -->
         <div v-if="currentQuestion.type === 'prefix-choice'" class="flex items-center justify-center gap-3 my-2">
-          <span class="text-3xl font-extrabold text-cyan-300">{{ currentQuestion.entry.prefix }}</span>
+          <span class="text-3xl font-extrabold text-cyan-300">{{ currentQuestion.prefix }}</span>
           <span class="text-3xl font-extrabold text-amber-300">+</span>
           <span class="text-3xl font-extrabold text-white underline decoration-dotted">
             {{ currentQuestion.root || t('prefixPirates.question.placeholder') }}
