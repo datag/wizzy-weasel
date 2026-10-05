@@ -212,3 +212,12 @@ With multiple developers:
 - Commit after each task or logical group
 - Stop at any checkpoint to validate a story independently
 - Avoid: vague tasks, same-file conflicts (US2–US4 share `PrefixPirates.vue`), cross-story dependencies that break independence
+
+---
+
+## Phase 8: Convergence
+
+**Purpose**: Close gaps between spec/plan/tasks and the implemented code (output of `/speckit.converge`). Both items are low-risk consistency fixes on top of a fully implemented feature.
+
+- [x] T024 Add a generic, app-wide dataset self-check per FR-019: npm script `check:datasets` (add `tsx` as dev dependency; `scripts/check-datasets.ts`) that auto-discovers modules under `src/data/**/*.ts` exporting a `datasetCheck` object (`{ id: string; validate(): string[] }`), runs each `validate()`, prints per-dataset results with an optional positional `--<id>` filter, catches module import errors, and exits non-zero on any violation; wire the Präfix-Piraten check as the first consumer via a `datasetCheck` export that runs `validatePrefixDataset` for de and en plus `validateCrossDataset(DE, EN)` per plan: R8 / spec FR-019 / quickstart.md §Data-quality validation (missing)
+- [x] T025 Amend FR-006 in `specs/002-praefix-piraten/spec.md` (and mirror the exception in the allowed-types tables of `data-model.md` and `contracts/question-generation.md`) so the documented deviation is traceable: `origin-assignment` always shows exactly 3 options (the three families) and `validity-verdict` always 2 (yes/no), matching `src/data/prefixPirates/generator.ts` (partial)

@@ -108,7 +108,7 @@ During a round a child can pause via the pause icon or the Escape key, resume th
 - **FR-003**: The intro screen MUST offer an origin filter for the three families Germanic (Deutsch / native), Latin and Greek; all three MUST be active by default and at least one MUST remain active at all times.
 - **FR-004**: The game MUST provide six question types: prefix choice for a given root ("Schatzsucher-Wahl"), meaning match ("Bedeutungs-Juwel"), prefix-in-word recognition ("Wort-Schmiede"), sentence gap fill ("Satz-Schatz"), origin assignment ("Ursprungs-Inseln") and real-vs.-non-real word verdict ("Falschmünzer").
 - **FR-005**: The game MUST choose the question type uniformly at random per question from the types allowed for the active difficulty: Leicht = Schatzsucher-Wahl, Wort-Schmiede and Satz-Schatz; Mittel = Bedeutungs-Juwel, Satz-Schatz and Falschmünzer; Schwer = Bedeutungs-Juwel, Satz-Schatz, Ursprungs-Inseln and Falschmünzer.
-- **FR-006**: The number of answer options MUST be 2 at Leicht, 3 at Mittel and 4 at Schwer; every task MUST have exactly one correct answer and all options MUST be tappable touch targets.
+- **FR-006**: The number of answer options MUST be 2 at Leicht, 3 at Mittel and 4 at Schwer — with the exception that origin-assignment ("Ursprungs-Inseln") always presents exactly the 3 origin families and validity-verdict ("Falschmünzer") always exactly 2 options (Ja/Nein), because those types are inherently bounded (see FR-004); every task MUST have exactly one correct answer and all options MUST be tappable touch targets.
 - **FR-007**: Each question MUST draw from the entries matching the active origin filter; the entry used by the previous question MUST NOT be used again immediately, and once all matching entries have been used the selection MUST restart from the beginning.
 - **FR-008**: After an answer tap the game MUST immediately show the verdict — correct in green (with a treasure coin) or wrong in red revealing the correct option — and MUST then display a child-friendly explanation card (prefix, meaning, origin, example sentence) before the next question can start.
 - **FR-009**: A round MUST consist of exactly 10 questions. Each correct answer MUST award 10 XP and each wrong answer MUST reduce the boost by exactly 1 charge (minimum 0); XP and boost MUST be credited through the app's existing profile system.
@@ -121,6 +121,7 @@ During a round a child can pause via the pause icon or the Escape key, resume th
 - **FR-016**: The summary MUST offer the actions "play again" and "back to menu", and the intro and summary screens MUST NOT offer the pause dialog.
 - **FR-017**: All game content and both datasets MUST be bundled with the app and remain fully playable without an internet connection.
 - **FR-018**: The project's game list documentation (the Games table in the README) MUST be updated to include the new game.
+- **FR-019**: The game's dataset self-check MUST be part of a generic, app-wide dataset-check mechanism: a runnable npm script (`check:datasets`) that auto-discovers every game dataset module under `src/data/` which exports a `datasetCheck` object (`{ id: string; validate(): string[] }`), calls each `validate()`, reports problems, and exits non-zero on any violation or module import error. Präfix-Piraten MUST contribute its check (per-language `validatePrefixDataset` plus `validateCrossDataset` for DE/EN) as the first consumer, so dataset quality is verifiable headless in CI/build without opening the browser.
 
 ### Key Entities *(include if feature involves data)*
 
@@ -156,3 +157,4 @@ During a round a child can pause via the pause icon or the Escape key, resume th
 - Ambiguous combinations (e.g. German words with both separable and inseparable readings such as "umfahren") are excluded from the dataset so every task has exactly one intended answer.
 - The six question types (FR-004) are confirmed for v1; every allowed type has equal probability (uniform random selection).
 - Content volume target: at least 25 curated entries per origin family per language (≥ 75 per language) at launch.
+- The headless dataset check (FR-019) is a supplement to the module-load assertions (`assertDatasetValid`): both reuse the same `validate…` functions as a single source of truth, giving runtime safety in the browser plus CI/build-time safety without one.

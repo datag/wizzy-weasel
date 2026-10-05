@@ -39,7 +39,7 @@ Play through the scenarios below (browser at `/`, navigate to the game card "Pr�
 
 ## Data-quality validation
 
-- Run the dataset self-check (npm script added with the feature, `contracts/dataset.md` §Validation):
+- Run the dataset self-check via the generic app-wide npm script: `pnpm run check:datasets` (spec FR-019, `contracts/dataset.md` §Validation):
   - ≥ 25 entries per origin family per language (≥ 75/language), ≥ 10 invalid pairs/language, non-empty fields, unique ids, example words vs. invalid pairs disjoint, no identical sentences across languages.
 - Spot-check a sample of `validity-verdict` "no" cases and all distractors against a dictionary (`contracts/dataset.md` invariants 4 & 6).
 

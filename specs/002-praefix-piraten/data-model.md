@@ -42,6 +42,8 @@ Per-difficulty availability and option counts (spec FR-005/FR-006):
 | `medium` (Mittel) | `meaning-match`, `sentence-gap`, `validity-verdict` | 3 |
 | `hard` (Schwer) | `meaning-match`, `sentence-gap`, `origin-assignment`, `validity-verdict` | 4 |
 
+Option-count exception (FR-006): `origin-assignment` always presents exactly the 3 origin families and `validity-verdict` always exactly 2 options (yes/no), because those types are inherently bounded.
+
 ### PrefixEntry
 
 One curated prefix of a dataset.

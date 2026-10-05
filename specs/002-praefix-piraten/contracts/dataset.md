@@ -68,5 +68,5 @@ entriesByOrigin(dataset, origins: PrefixOrigin[]): PrefixEntry[]
 
 ## Validation
 
-- Dev-time self-check script asserts all invariants; run via the documented npm script (see `quickstart.md` / `research.md` R8).
+- Dev-time self-check script asserts all invariants; run via the generic app-wide npm script `pnpm run check:datasets` (spec FR-019, auto-discovery of `datasetCheck` exports under `src/data/`).
 - Behavioral guarantees derived from this contract map to spec acceptance criteria in `quickstart.md` (scenarios B1–B8).
