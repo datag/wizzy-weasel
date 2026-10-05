@@ -174,9 +174,13 @@ function buildPrefixInWord(entry: PrefixEntry, dataset: PrefixDataset, count: nu
 }
 
 function buildSentenceGapQuestion(entry: PrefixEntry, dataset: PrefixDataset, count: number): PrefixQuestion {
+  // Show the full spelling set on the answer tile ("syn-/sym-"), because the
+  // gapped word may contain an assimilated variant ("___metrie" needs "sym-",
+  // not the canonical "syn-") – prefixLabel matches the earlier Varianten-Fix.
+  const correct = prefixLabel(entry)
   const options = withCorrect(
-    distractors(dataset, entry.prefix, prefixLabel, count - 1),
-    entry.prefix
+    distractors(dataset, correct, prefixLabel, count - 1),
+    correct
   )
   return {
     type: 'sentence-gap',
