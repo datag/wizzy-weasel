@@ -39,6 +39,7 @@ function toggleOrigin(origin: PrefixOrigin) {
 const round = ref<PrefixRound | null>(null)
 const answered = ref(false)
 const selectedIndex = ref<number | null>(null)
+const selectedVerdict = ref<boolean | null>(null)
 const isCorrect = ref(false)
 const newBest = ref(false)
 
@@ -58,6 +59,7 @@ function startRound() {
   round.value = buildRound(dataset, difficulty.value, [...activeOrigins.value])
   answered.value = false
   selectedIndex.value = null
+  selectedVerdict.value = null
   isCorrect.value = false
   newBest.value = false
   gameStore.startGame(GAME_ID)
@@ -78,6 +80,7 @@ function submitVerdict(isReal: boolean) {
   if (answered.value || !round.value || !currentQuestion.value) return
   const q = currentQuestion.value
   if (q.type !== 'validity-verdict') return
+  selectedVerdict.value = isReal
   resolveAnswer(isReal === q.isReal)
 }
 
@@ -103,6 +106,7 @@ function nextQuestion() {
   if (!round.value) return
   answered.value = false
   selectedIndex.value = null
+  selectedVerdict.value = null
   isCorrect.value = false
   if (round.value.index >= ROUND_LENGTH - 1) {
     finishRound()
@@ -231,13 +235,27 @@ function optionHighlight(index: number): string {
   return 'bg-black/30 border-white/10 text-white/60'
 }
 
-function verdictHighlight(correct: boolean): string {
-  if (!answered.value) return 'bg-emerald-800/50 border-emerald-400 text-white hover:bg-emerald-700/60'
-  if (correct === isCorrect.value) {
-    return correct ? 'bg-emerald-500 text-white border-emerald-300' : 'bg-rose-600 text-white border-rose-400'
+/**
+ * Verdict buttons: after answering, the button matching the word's reality
+ * (q.isReal) is highlighted green; a wrong tap is highlighted red.
+ * `value` is the boolean of this button (true = "Yes"/"Ja").
+ */
+function verdictHighlight(value: boolean): string {
+  const q = currentQuestion.value
+  if (!answered.value || !q || q.type !== 'validity-verdict') {
+    return 'bg-emerald-800/50 border-emerald-400 text-white hover:bg-emerald-700/60'
+  }
+  const isCorrectAnswer = value === q.isReal
+  if (value === selectedVerdict.value) {
+    return isCorrectAnswer
+      ? 'bg-emerald-500 text-white border-emerald-300 scale-[0.98]'
+      : 'bg-rose-600 text-white border-rose-400 scale-[0.98]'
+  }
+  if (isCorrectAnswer) {
+    return 'border-emerald-400/80 bg-emerald-900/30 text-white'
   }
   return 'bg-black/30 border-white/10 text-white/60'
-  }
+}
 </script>
 
 <template>
