@@ -175,7 +175,8 @@ function buildPrefixInWord(entry: PrefixEntry, pool: PrefixEntry[], count: numbe
   const word = entry.examples[0].word
   const prefixPart = prefixLabel(entry)
   const rest = stripPrefix(word, entry)
-  // Ensure the "rest" part does not collide with any prefix option.
+  // The word's remaining part ("spielen" in "mitspielen") is always a real option,
+  // so even Leicht (2 options) offers a real choice: prefix vs. rest.
   const base = [prefixPart, rest]
   const extra = shuffle(
     pool
@@ -183,7 +184,7 @@ function buildPrefixInWord(entry: PrefixEntry, pool: PrefixEntry[], count: numbe
       .map(prefixLabel)
       .filter(label => label !== rest && !base.includes(label))
   ).slice(0, Math.max(0, count - 2))
-  const options = withCorrect(extra, prefixPart)
+  const options = withCorrect([rest, ...extra], prefixPart)
   return { type: 'prefix-in-word', word, options: options.options, correctIndex: options.correctIndex, entry }
 }
 
