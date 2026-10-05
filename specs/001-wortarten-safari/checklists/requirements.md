@@ -31,6 +31,7 @@
 
 ## Notes
 
-- Reverse-Spezifikation: Die Anforderungen beschreiben 1:1 das Ist-Verhalten des bereits implementierten Spiels (Quelle: `src/components/games/WortartenSafari.vue`, `src/data/wortartenSafari.ts`).
-- Keine `[NEEDS CLARIFICATION]`-Marker nötig: Das Verhalten ist durch die bestehende Implementierung vollständig determiniert.
-- FR-011 definiert die Punkteformel (10/5/8) in verhaltensorientierter, messbarer Form ohne konkrete Technologie.
+- Reverse specification: The requirements describe the current behavior of the already implemented game 1:1 (source: `src/components/games/WortartenSafari.vue`, `src/data/wortartenSafari.ts`).
+- No `[NEEDS CLARIFICATION]` markers needed: The behavior is fully determined by the existing implementation.
+- FR-011 defines the point formula (10/5/8) in behavior-oriented, measurable terms without concrete technology.
+- German terms (word classes, verbatim UI labels such as "Safari starten", "Neue Safari starten", "Forscher-Regel", and the grade "3. Klasse") are intentionally kept as they are domain/UI-specific to the German learning game.
