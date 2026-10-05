@@ -63,7 +63,13 @@ function prefixWithoutDash(entry: PrefixEntry): string {
 /** all spellings of the entry, without the trailing dash (canonical + variants) */
 function prefixSpellings(entry: PrefixEntry): string[] {
   const variants = entry.variants?.map(v => v.replace(/-$/, '')) ?? []
-  return [prefixWithoutDash(entry), ...variants]
+  const spellings = [prefixWithoutDash(entry), ...variants]
+  // Match the LONGEST spelling first so assimilated forms split correctly:
+  // "anonymous" must be matched by "an-" (not the shorter "a-"); this fixes
+  // both languages at once (de "anonym", en "anonymous"). Order is stable for
+  // equal lengths. Note: entries must not own a word identical to a spelling
+  // (empty root) – the dataset validator enforces this.
+  return spellings.sort((a, b) => b.length - a.length)
 }
 
 /** which spelling of the entry does the word start with (case-insensitive) */

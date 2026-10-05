@@ -29,6 +29,8 @@ buildQuestion(opts: {
 
 **Allowed types per difficulty** (`G1`): `easy` → `prefix-choice`, `prefix-in-word`, `sentence-gap`; `medium` → `meaning-match`, `sentence-gap`, `validity-verdict`; `hard` → `meaning-match`, `sentence-gap`, `origin-assignment`, `validity-verdict`. (FR-005)
 
+**Spelling matching**: within a prefix family the **longest** spelling is matched first (`an-` before `a-`), so assimilated forms split correctly in both languages (`anonymous` → `an-` + `onymous`, `anonym` → `an-` + `onym`); entries must not own an example word identical to a spelling (empty root – enforced by the dataset validator).
+
 **Language coupling**: the generator only sees the dataset for the round's language; it never mixes German and English content. (FR-011/FR-013)
 
 ## 2. Game component contract

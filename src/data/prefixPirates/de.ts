@@ -284,7 +284,7 @@ export const DE_DATASET: PrefixDataset = {
       { word: 'Distanz', sentence: 'Wir halten etwas Distanz.' },
       { word: 'Diskussion', sentence: 'Die Diskussion dauert lange.' },
     ] },
-    { id: 'lat-du', prefix: 'du-', variants: ['duo-'], origin: 'latin', meaning: 'zwei', examples: [
+    { id: 'lat-du', prefix: 'du-', origin: 'latin', meaning: 'zwei', examples: [
       { word: 'Duell', sentence: 'Die Ritter kämpfen in einem Duell.' },
       { word: 'Duo', sentence: 'Das Duo singt ein Lied.' },
     ] },
