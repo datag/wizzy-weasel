@@ -35,7 +35,7 @@ entriesByOrigin(dataset, origins: PrefixOrigin[]): PrefixEntry[]
 ## Invariants (MUST hold; enforced by the dataset self-check, see `research.md` R8)
 
 1. **Volume**: `entries` ≥ 75 with ≥ 25 per `origin`; `invalidPairs` ≥ 10. (FR-012)
-2. **Integrity**: every required field non-empty; `meaning` ≤ ~6 words; `examples` ≥ 2 per entry, each with a non-empty sentence. (FR-012)
+2. **Integrity**: every required field non-empty; `meaning` ≤ ~6 words; `examples` ≥ 2 per entry; each example word MUST start with one spelling of the entry's prefix (canonical or variant) and MUST NOT equal that spelling (non-empty root, e.g. no `zoo-` → `Zoo`); each example sentence MUST contain the example word verbatim (case-insensitive). (FR-012, edge cases – enforced by `validatePrefixDataset`)
 3. **Uniqueness**: entry ids and invalid-pair ids are unique within the language. (V6)
 4. **Disjointness**: no example `word` of any entry appears as `prefix + root` of an invalid pair, and no invalid-pair combination is a real word. (FR-014, edge case "Invalid pairs must not be real words")
 5. **Non-translation**: the German and English datasets share no identical example sentences; identical Latin/Greek prefixes (e.g. `tele-`, `re-`) appear independently with language-appropriate examples. (FR-011/FR-013)

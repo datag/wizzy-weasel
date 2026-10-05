@@ -55,11 +55,31 @@ export function validatePrefixDataset(dataset: PrefixDataset): string[] {
     if (entry.examples.length < 2) {
       problems.push(`${label} entry "${entry.id}" needs ≥ 2 examples`)
     }
+    const spellings = [
+      entry.prefix.replace(/-$/, ''),
+      ...(entry.variants?.map(v => v.replace(/-$/, '')) ?? []),
+    ]
     for (const ex of entry.examples) {
       if (!ex.word || !ex.sentence) {
         problems.push(`${label} entry "${entry.id}" has an empty example`)
       }
-      exampleWords.add(ex.word.toLowerCase())
+      const lowerWord = ex.word.toLowerCase()
+      const matched = spellings.find(s => lowerWord.startsWith(s))
+      if (!matched) {
+        problems.push(
+          `${label} entry "${entry.id}" example word "${ex.word}" does not start with a prefix spelling (${spellings.join('/')})`
+        )
+      } else if (ex.word.slice(matched.length) === '') {
+        problems.push(
+          `${label} entry "${entry.id}" example word "${ex.word}" equals the prefix spelling (root must not be empty)`
+        )
+      }
+      if (!ex.sentence.toLowerCase().includes(lowerWord)) {
+        problems.push(
+          `${label} entry "${entry.id}" example sentence must contain the word "${ex.word}" verbatim (needed for Lückensatz)`
+        )
+      }
+      exampleWords.add(lowerWord)
     }
   }
 
