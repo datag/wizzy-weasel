@@ -178,3 +178,117 @@ export interface SafariWordClassConfig {
   defaultActive: boolean
 }
 
+// Präfix-Piraten (Prefix Pirates)
+export type PrefixLanguage = 'de' | 'en'
+export type PrefixOrigin = 'germanic' | 'latin' | 'greek'
+export type PrefixDifficulty = 'easy' | 'medium' | 'hard'
+
+export type PrefixQuestionType =
+  | 'prefix-choice'
+  | 'meaning-match'
+  | 'prefix-in-word'
+  | 'sentence-gap'
+  | 'origin-assignment'
+  | 'validity-verdict'
+
+export interface PrefixExample {
+  word: string
+  sentence: string
+}
+
+/** Word-pool complexity of an entry: 1 = everyday (all rounds), 3 = rare/abstract (hard only). */
+export type PrefixTier = 1 | 2 | 3
+
+export interface PrefixEntry {
+  id: string
+  prefix: string
+  variants?: string[]
+  origin: PrefixOrigin
+  meaning: string
+  examples: PrefixExample[]
+  /** earliest difficulty that uses this entry; defaults to 1 */
+  tier?: PrefixTier
+}
+
+export interface PrefixInvalidPair {
+  id: string
+  prefix: string
+  root: string
+  explanation: string
+}
+
+export interface PrefixDataset {
+  language: PrefixLanguage
+  entries: PrefixEntry[]
+  invalidPairs: PrefixInvalidPair[]
+}
+
+export type PrefixQuestion =
+  | {
+      type: 'prefix-choice'
+      prefix: string
+      root: string
+      options: string[]
+      correctIndex: number
+      entry: PrefixEntry
+    }
+  | {
+      type: 'meaning-match'
+      prefix: string
+      options: string[]
+      correctIndex: number
+      entry: PrefixEntry
+    }
+  | {
+      type: 'prefix-in-word'
+      word: string
+      options: string[]
+      correctIndex: number
+      entry: PrefixEntry
+    }
+  | {
+      type: 'sentence-gap'
+      sentenceWithGap: string
+      options: string[]
+      correctIndex: number
+      entry: PrefixEntry
+    }
+  | {
+      type: 'origin-assignment'
+      prefix: string
+      options: string[]
+      correctIndex: number
+      entry: PrefixEntry
+    }
+  | {
+      type: 'validity-verdict'
+      prefix: string
+      root: string
+      displayWord: string
+      isReal: boolean
+      entry: PrefixEntry | null
+      pair: PrefixInvalidPair | null
+    }
+
+export interface PrefixRound {
+  language: PrefixLanguage
+  difficulty: PrefixDifficulty
+  activeOrigins: PrefixOrigin[]
+  questions: PrefixQuestion[]
+  index: number
+  correctCount: number
+  score: number
+  coinChain: number
+  longestChain: number
+}
+
+// Generic dataset self-check contract (spec FR-019): every datastore module that
+// wants to be validated headless exports a `datasetCheck` object which the
+// generic `pnpm run check:datasets` script discovers and executes.
+export interface DatasetCheck {
+  /** stable id used for output and the optional `--<id>` filter */
+  id: string
+  /** returns human-readable problems; an empty array means the dataset is healthy */
+  validate: () => string[]
+}
+

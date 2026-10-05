@@ -22,6 +22,7 @@ A browser-based learning game app for primary-school children. Offline-first, ta
 | 🕵️ Language Detective | Identify the language of a sentence |
 | 🚂 Sequence Train | Continue number and shape sequences |
 | 🦁 Wortarten-Safari | German sentence endings, capitalization, and word classes |
+| 🏴‍☠️ Präfix-Piraten | Prefix guessing game — German, Latin, Greek prefixes (DE/EN datasets) |
 
 
 ---

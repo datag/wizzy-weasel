@@ -92,5 +92,14 @@ export const GAMES: GameConfig[] = [
     path: '/game/wortarten-safari',
     component: defineAsyncComponent(() => import('@/components/games/WortartenSafari.vue')),
   },
+  {
+    id: 'praefix-piraten',
+    titleKey: 'prefixPirates.title',
+    descriptionKey: 'prefixPirates.description',
+    icon: '🏴‍☠️',
+    color: 'from-cyan-500 to-blue-700',
+    path: '/game/praefix-piraten',
+    component: defineAsyncComponent(() => import('@/components/games/PrefixPirates.vue')),
+  },
 ]
 

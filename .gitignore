@@ -3,3 +3,10 @@ dist
 *.local
 
 /.idea/
+
+# Logs & dotenv
+*.log
+.env*
+
+# Editors / OS
+.vscode/

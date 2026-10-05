@@ -799,6 +799,63 @@
       "backToMenu": "Zurück zum Menü"
     }
   },
+  "prefixPirates": {
+    "title": "Präfix-Piraten",
+    "description": "Segel über das Wortmeer: Finde Vorsilben, ihre Bedeutung und Herkunft – mit lateinischen und griechischen Schätzen!",
+    "intro": {
+      "subtitle": "Setze die Segel und finde die Vorsilben-Wörter! Wähle die Schwierigkeit und welche Schatzinseln (Ursprung) du erkunden willst.",
+      "difficultyTitle": "Schwierigkeit",
+      "difficulty": {
+        "easy": "Leicht (Schiffsjunge)",
+        "medium": "Mittel (Kapitän)",
+        "hard": "Schwer (Piratenkönig)"
+      },
+      "options": "Antworten",
+      "originsTitle": "Schatzinseln (Ursprung)",
+      "start": "Segel setzen"
+    },
+    "origins": {
+      "germanic": "Deutsch",
+      "latin": "Lateinisch",
+      "greek": "Griechisch"
+    },
+    "hud": {
+      "question": "Frage {current} von {total}"
+    },
+    "question": {
+      "prefixChoice": "Welches Wort entsteht?",
+      "meaningMatch": "Was bedeutet das Präfix {prefix}?",
+      "prefixInWord": "Welches Wortteil ist die Vorsilbe in {word}?",
+      "sentenceGap": "Welches Präfix fehlt in diesem Satz?",
+      "originAssignment": "Von welcher Schatzinsel stammt das Präfix {prefix}?",
+      "validityVerdict": "Gibt es dieses Wort?",
+      "placeholder": "…"
+    },
+    "answer": {
+      "yes": "Ja",
+      "no": "Nein"
+    },
+    "feedback": {
+      "correct": "Schatz gefunden! +{xp} XP",
+      "wrong": "Falsch!",
+      "correctWas": "Richtig wäre gewesen:",
+      "continue": "Weiter"
+    },
+    "expl": {
+      "meaning": "Bedeutung",
+      "origin": "Herkunft",
+      "example": "Beispiel",
+      "pairWhy": "Warum kein Wort?"
+    },
+    "summary": {
+      "title": "Schatzkarte",
+      "correct": "Richtige Antworten",
+      "score": "Punkte",
+      "best": "Beste Punktzahl",
+      "newBest": "Neue Bestleistung!",
+      "chain": "Längste Schatzkette"
+    }
+  },
   "notFound": {
     "title": "Seite nicht gefunden",
     "message": "Hoppla, diese Seite gibt es nicht.",

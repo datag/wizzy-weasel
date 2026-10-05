@@ -799,6 +799,63 @@
       "backToMenu": "Back to menu"
     }
   },
+  "prefixPirates": {
+    "title": "Prefix Pirates",
+    "description": "Sail the word sea: find prefixes, their meaning and origin – including Latin and Greek treasures!",
+    "intro": {
+      "subtitle": "Set sail and find the prefix words! Pick the difficulty and which treasure islands (origins) you want to explore.",
+      "difficultyTitle": "Difficulty",
+      "difficulty": {
+        "easy": "Easy (Cabin Boy)",
+        "medium": "Medium (Captain)",
+        "hard": "Hard (Pirate King)"
+      },
+      "options": "answers",
+      "originsTitle": "Treasure Islands (Origin)",
+      "start": "Set sail"
+    },
+    "origins": {
+      "germanic": "Germanic",
+      "latin": "Latin",
+      "greek": "Greek"
+    },
+    "hud": {
+      "question": "Question {current} of {total}"
+    },
+    "question": {
+      "prefixChoice": "Which word is formed?",
+      "meaningMatch": "What does the prefix {prefix} mean?",
+      "prefixInWord": "Which part is the prefix in {word}?",
+      "sentenceGap": "Which prefix is missing in this sentence?",
+      "originAssignment": "Which treasure island does the prefix {prefix} come from?",
+      "validityVerdict": "Is this a real word?",
+      "placeholder": "…"
+    },
+    "answer": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "feedback": {
+      "correct": "Treasure found! +{xp} XP",
+      "wrong": "Wrong!",
+      "correctWas": "The correct answer was:",
+      "continue": "Next"
+    },
+    "expl": {
+      "meaning": "Meaning",
+      "origin": "Origin",
+      "example": "Example",
+      "pairWhy": "Why is it not a word?"
+    },
+    "summary": {
+      "title": "Treasure Map",
+      "correct": "Correct answers",
+      "score": "Score",
+      "best": "Best score",
+      "newBest": "New best score!",
+      "chain": "Longest coin chain"
+    }
+  },
   "notFound": {
     "title": "Page not found",
     "message": "Oops, this page does not exist.",
