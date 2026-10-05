@@ -3,6 +3,9 @@
 ## Project Overview
 Browser-based SPA learning app for primary-school children. Key priorities: gamification, Offline-First via LocalStorage, and tablet-optimised touch UI.
 
+## Language
+Code, commit messages, and specs (Spec Kit) are written in **English**. German terms are kept only where it makes sense: user-facing UI strings (localized via i18n, default `de`) and German learning content (e.g. word class names like "Nomen", grade "3. Klasse").
+
 ## Tech Stack
 - **Vue.js 3** (Composition API + `<script setup>`)
 - **Vite 6** with `@tailwindcss/vite`, `vite-svg-loader` (SVGs imported as components, SVGO disabled)
