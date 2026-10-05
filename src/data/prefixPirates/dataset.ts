@@ -92,6 +92,28 @@ export function validatePrefixDataset(dataset: PrefixDataset): string[] {
     problems.push(`${label} total entries ${dataset.entries.length} (< 75)`)
   }
 
+  // FR-020 tier coverage: every (difficulty × origin) combination needs at least
+  // one full round (ROUND_LENGTH = 10) of entries, otherwise random rounds starve.
+  for (const origin of ['germanic', 'latin', 'greek'] as PrefixOrigin[]) {
+    let tier1 = 0
+    let tier2 = 0
+    for (const entry of dataset.entries) {
+      if (entry.origin !== origin) continue
+      const tier = entry.tier ?? 1
+      if (tier < 1 || tier > 3) {
+        problems.push(`${label} entry "${entry.id}" has invalid tier ${tier} (must be 1–3)`)
+      }
+      if (tier <= 1) tier1++
+      if (tier <= 2) tier2++
+    }
+    if (tier1 < 10) {
+      problems.push(`${label} origin "${origin}" has only ${tier1} tier‑1 entries (< 10) – easy rounds would starve`)
+    }
+    if (tier2 < 10) {
+      problems.push(`${label} origin "${origin}" has only ${tier2} entries with tier ≤ 2 (< 10) – medium rounds would starve`)
+    }
+  }
+
   if (dataset.invalidPairs.length < 10) {
     problems.push(`${label} invalid pairs ${dataset.invalidPairs.length} (< 10)`)
   }

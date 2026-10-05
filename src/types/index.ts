@@ -196,6 +196,9 @@ export interface PrefixExample {
   sentence: string
 }
 
+/** Word-pool complexity of an entry: 1 = everyday (all rounds), 3 = rare/abstract (hard only). */
+export type PrefixTier = 1 | 2 | 3
+
 export interface PrefixEntry {
   id: string
   prefix: string
@@ -203,6 +206,8 @@ export interface PrefixEntry {
   origin: PrefixOrigin
   meaning: string
   examples: PrefixExample[]
+  /** earliest difficulty that uses this entry; defaults to 1 */
+  tier?: PrefixTier
 }
 
 export interface PrefixInvalidPair {

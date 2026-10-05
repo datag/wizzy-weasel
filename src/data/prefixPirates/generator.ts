@@ -6,6 +6,7 @@ import type {
   PrefixQuestion,
   PrefixQuestionType,
   PrefixRound,
+  PrefixTier,
 } from '@/types'
 import { entriesByOrigin } from './dataset'
 
@@ -34,6 +35,13 @@ export const OPTION_COUNTS: Record<PrefixDifficulty, number> = {
 }
 
 export const ORIGIN_ORDER: PrefixOrigin[] = ['germanic', 'latin', 'greek']
+
+/** FR-020 word-pool limit: rounds only draw entries with tier ≤ the difficulty level. */
+export const TIER_LIMIT: Record<PrefixDifficulty, PrefixTier> = {
+  easy: 1,
+  medium: 2,
+  hard: 3,
+}
 
 function pickRandom<T>(items: T[]): T {
   return items[Math.floor(Math.random() * items.length)]
@@ -87,16 +95,16 @@ function stripPrefix(word: string, entry: PrefixEntry): string {
   return match ? word.slice(match.length) : word
 }
 
-/** pick `count` distinct distractors for the correct value from the full dataset */
+/** pick `count` distinct distractors for the correct value from the pool (origin + tier filtered) */
 function distractors(
-  dataset: PrefixDataset,
+  pool: PrefixEntry[],
   correct: string,
   map: (entry: PrefixEntry) => string,
   count: number
 ): string[] {
   const seen = new Set<string>([correct])
   const result: string[] = []
-  const candidates = shuffle(dataset.entries)
+  const candidates = shuffle(pool)
   for (const entry of candidates) {
     if (result.length >= count) break
     const value = map(entry)
@@ -131,12 +139,12 @@ function buildSentenceGap(entry: PrefixEntry): string {
   return '___' + stripPrefix(word, entry)
 }
 
-function buildPrefixChoice(entry: PrefixEntry, dataset: PrefixDataset, count: number): PrefixQuestion {
+function buildPrefixChoice(entry: PrefixEntry, pool: PrefixEntry[], count: number): PrefixQuestion {
   const root = stripPrefix(entry.examples[0].word, entry)
   const correctWord = entry.examples[0].word
   const match = matchedPrefix(correctWord, entry)
   const options = withCorrect(
-    distractors(dataset, correctWord, e => e.examples[0].word, count - 1),
+    distractors(pool, correctWord, e => e.examples[0].word, count - 1),
     correctWord
   )
   return {
@@ -149,9 +157,9 @@ function buildPrefixChoice(entry: PrefixEntry, dataset: PrefixDataset, count: nu
   }
 }
 
-function buildMeaningMatch(entry: PrefixEntry, dataset: PrefixDataset, count: number): PrefixQuestion {
+function buildMeaningMatch(entry: PrefixEntry, pool: PrefixEntry[], count: number): PrefixQuestion {
   const options = withCorrect(
-    distractors(dataset, entry.meaning, e => e.meaning, count - 1),
+    distractors(pool, entry.meaning, e => e.meaning, count - 1),
     entry.meaning
   )
   return {
@@ -163,14 +171,14 @@ function buildMeaningMatch(entry: PrefixEntry, dataset: PrefixDataset, count: nu
   }
 }
 
-function buildPrefixInWord(entry: PrefixEntry, dataset: PrefixDataset, count: number): PrefixQuestion {
+function buildPrefixInWord(entry: PrefixEntry, pool: PrefixEntry[], count: number): PrefixQuestion {
   const word = entry.examples[0].word
   const prefixPart = prefixLabel(entry)
   const rest = stripPrefix(word, entry)
   // Ensure the "rest" part does not collide with any prefix option.
   const base = [prefixPart, rest]
   const extra = shuffle(
-    dataset.entries
+    pool
       .filter(e => e.id !== entry.id)
       .map(prefixLabel)
       .filter(label => label !== rest && !base.includes(label))
@@ -179,13 +187,13 @@ function buildPrefixInWord(entry: PrefixEntry, dataset: PrefixDataset, count: nu
   return { type: 'prefix-in-word', word, options: options.options, correctIndex: options.correctIndex, entry }
 }
 
-function buildSentenceGapQuestion(entry: PrefixEntry, dataset: PrefixDataset, count: number): PrefixQuestion {
+function buildSentenceGapQuestion(entry: PrefixEntry, pool: PrefixEntry[], count: number): PrefixQuestion {
   // Show the full spelling set on the answer tile ("syn-/sym-"), because the
   // gapped word may contain an assimilated variant ("___metrie" needs "sym-",
   // not the canonical "syn-") – prefixLabel matches the earlier Varianten-Fix.
   const correct = prefixLabel(entry)
   const options = withCorrect(
-    distractors(dataset, correct, prefixLabel, count - 1),
+    distractors(pool, correct, prefixLabel, count - 1),
     correct
   )
   return {
@@ -263,13 +271,13 @@ function buildOneQuestion(
 
   switch (type) {
     case 'prefix-choice':
-      return buildPrefixChoice(entry, dataset, count)
+      return buildPrefixChoice(entry, pool, count)
     case 'meaning-match':
-      return buildMeaningMatch(entry, dataset, count)
+      return buildMeaningMatch(entry, pool, count)
     case 'prefix-in-word':
-      return buildPrefixInWord(entry, dataset, count)
+      return buildPrefixInWord(entry, pool, count)
     case 'sentence-gap':
-      return buildSentenceGapQuestion(entry, dataset, count)
+      return buildSentenceGapQuestion(entry, pool, count)
     case 'origin-assignment':
       return buildOriginAssignment(entry)
     case 'validity-verdict':
@@ -283,15 +291,25 @@ function pickPoolEntry(pool: PrefixEntry[], entryIdBlacklist: readonly string[])
   return pickRandom(available.length > 0 ? available : pool)
 }
 
+/** entries matching the origin filter AND the tier limit of the difficulty (FR-020) */
+function poolEntries(
+  dataset: PrefixDataset,
+  difficulty: PrefixDifficulty,
+  activeOrigins: PrefixOrigin[]
+): PrefixEntry[] {
+  const limit = TIER_LIMIT[difficulty]
+  return entriesByOrigin(dataset, activeOrigins).filter(e => (e.tier ?? 1) <= limit)
+}
+
 export function buildQuestion(opts: {
   dataset: PrefixDataset
   difficulty: PrefixDifficulty
   activeOrigins: PrefixOrigin[]
   usedEntryIds: string[]
 }): { question: PrefixQuestion; usedEntryIds: string[] } {
-  const pool = entriesByOrigin(opts.dataset, opts.activeOrigins)
+  const pool = poolEntries(opts.dataset, opts.difficulty, opts.activeOrigins)
   if (pool.length === 0) {
-    throw new Error('[prefixPirates] No entries match the active origins.')
+    throw new Error('[prefixPirates] No entries match the selected origins and difficulty tier.')
   }
   const used = [...opts.usedEntryIds]
   if (used.length >= pool.length) {

@@ -20,7 +20,7 @@ buildQuestion(opts: {
 | Rule | Behaviour | Spec |
 |---|---|---|
 | G1 | Question type is drawn **uniformly at random** from the types allowed for the difficulty | FR-005 |
-| G2 | Entry pool = entries whose `origin ∈ activeOrigins`; the previous question's entry is excluded from the immediate next draw; when the whole pool has been used, the draw **restarts** from the beginning | FR-007 |
+| G2 | Entry pool = entries whose `origin ∈ activeOrigins` **and** `tier ≤ difficulty` (easy 1, medium 2, hard 3, FR-020); the previous question's entry is excluded from the immediate next draw; when the whole pool has been used, the draw **restarts** from the beginning. Distractor options are drawn from the same (origin + tier filtered) pool | FR-007, FR-020 |
 | G3 | Option count = 2 (`easy`) / 3 (`medium`) / 4 (`hard`); exactly one option is correct. Exception per FR-006: `origin-assignment` always presents exactly the 3 origin families and `validity-verdict` always exactly 2 options (yes/no) | FR-006 |
 | G4 | Distractors come from the same language pool per type and must not create a second valid answer (e.g. for `prefix-choice`, a distractor prefix + root must not form a real word; for `meaning-match`, distractor meanings must not match the prefix) | FR-014 |
 | G5 | `validity-verdict` questions draw "yes" cases from `entries` (a real example word) and "no" cases from `invalidPairs`; the pair's `prefix + root` must not be a word | FR-012 + clarification |

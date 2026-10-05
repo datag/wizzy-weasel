@@ -122,6 +122,7 @@ During a round a child can pause via the pause icon or the Escape key, resume th
 - **FR-017**: All game content and both datasets MUST be bundled with the app and remain fully playable without an internet connection.
 - **FR-018**: The project's game list documentation (the Games table in the README) MUST be updated to include the new game.
 - **FR-019**: The game's dataset self-check MUST be part of a generic, app-wide dataset-check mechanism: a runnable npm script (`check:datasets`) that auto-discovers every game dataset module under `src/data/` which exports a `datasetCheck` object (`{ id: string; validate(): string[] }`), calls each `validate()`, reports problems, and exits non-zero on any violation or module import error. Präfix-Piraten MUST contribute its check (per-language `validatePrefixDataset` plus `validateCrossDataset` for DE/EN) as the first consumer, so dataset quality is verifiable headless in CI/build without opening the browser.
+- **FR-020**: Prefixes MUST be classified into word-pool complexity tiers (`tier` 1 = everyday/transparent, 2 = common in general language use, 3 = rare/abstract). Rounds MUST draw entries by origin AND tier: leicht only tier 1, mittel tiers 1–2, schwer all tiers; question types and option counts per difficulty (FR-005/FR-006) remain unchanged. Every (difficulty × origin) combination MUST retain at least 10 entries so random rounds never starve.
 
 ### Key Entities *(include if feature involves data)*
 

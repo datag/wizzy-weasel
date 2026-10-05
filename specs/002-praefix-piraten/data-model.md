@@ -54,6 +54,7 @@ One curated prefix of a dataset.
 - `origin` — `PrefixOrigin`.
 - `meaning` — child-friendly meaning, at most a few words (spec FR-012).
 - `examples` — at least 2 `PrefixExample`: each carries a `word` (prefix+root combination) and a short `sentence` using that word.
+- `tier` — word-pool complexity `1|2|3` (default 1, spec FR-020): rounds only draw entries with `tier` ≤ difficulty level (leicht 1, mittel 2, schwer 3).
 - `poolIndex` (derived) — assigned by the generator to enable origin filtering and pool bookkeeping; not part of the authored data.
 
 ### PrefixExample
@@ -133,5 +134,6 @@ question → (pause ⏸ / Esc) → pause dialog → resume | exit to menu
 | V6 | All entry fields non-empty (prefix, origin, meaning, ≥ 2 examples with sentences); ids unique; example words and invalid pairs disjoint | FR-012, edge cases |
 | V7 | Round = 10 questions; correct = +10 XP; wrong = −1 boost (min 0); chain purely visual | FR-009/FR-010 |
 | V8 | At least one origin active; identical Latin/Greek prefixes (e.g. tele-, re-) exist independently in both datasets | FR-003, assumptions |
+| V9 | Tier coverage (FR-020): every tier is 1–3; per origin family ≥ 10 entries with tier 1 and ≥ 10 with tier ≤ 2, so easy/medium origin combinations never starve | FR-020 |
 
 Referenced by: [contracts/dataset.md](./contracts/dataset.md), [contracts/question-generation.md](./contracts/question-generation.md).
