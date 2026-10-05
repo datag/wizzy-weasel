@@ -277,3 +277,13 @@ export interface PrefixRound {
   longestChain: number
 }
 
+// Generic dataset self-check contract (spec FR-019): every datastore module that
+// wants to be validated headless exports a `datasetCheck` object which the
+// generic `pnpm run check:datasets` script discovers and executes.
+export interface DatasetCheck {
+  /** stable id used for output and the optional `--<id>` filter */
+  id: string
+  /** returns human-readable problems; an empty array means the dataset is healthy */
+  validate: () => string[]
+}
+
