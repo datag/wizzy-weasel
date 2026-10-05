@@ -260,7 +260,7 @@ function verdictHighlight(value: boolean): string {
 
 <template>
   <div
-    class="w-full min-h-[100dvh] flex flex-col select-none bg-gradient-to-br from-cyan-950 via-sky-950 to-indigo-950 text-white overflow-y-auto"
+    class="w-full h-full flex flex-col select-none bg-gradient-to-br from-cyan-950 via-sky-950 to-indigo-950 text-white overflow-y-auto"
   >
     <!-- ═════════ INTRO / CONFIG ═════════ -->
     <Transition name="fade">
