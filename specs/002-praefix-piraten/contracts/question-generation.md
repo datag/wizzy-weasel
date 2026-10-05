@@ -27,7 +27,7 @@ buildQuestion(opts: {
 | G6 | The returned `usedEntryIds` must grow monotonically and reset exactly on pool exhaustion | FR-007 |
 | G7 | Each `PrefixQuestion` references its source `entry` (or `pair`) so the explanation card (meaning, origin, example sentence) can be rendered | FR-008 |
 
-**Allowed types per difficulty** (`G1`): `easy` → `prefix-choice`, `sentence-gap`; `medium` → `prefix-choice`, `meaning-match`, `prefix-in-word`, `sentence-gap`; `hard` → all six. (FR-005)
+**Allowed types per difficulty** (`G1`): `easy` → `prefix-choice`, `sentence-gap`; `medium` → `prefix-choice`, `meaning-match`, `prefix-in-word`, `sentence-gap`, `validity-verdict`; `hard` → `meaning-match`, `sentence-gap`, `origin-assignment`, `validity-verdict`. (FR-005)
 
 **Language coupling**: the generator only sees the dataset for the round's language; it never mixes German and English content. (FR-011/FR-013)
 
@@ -51,7 +51,7 @@ intro ──▶ (question[i] ──▶ feedback ──▶ question[i+1]) ×10 �
 
 | Phase | Behaviour | Spec |
 |---|---|---|
-| intro | difficulty + origin selection, defaults Leicht / all origins, last origin cannot be deselected, "Segel setzen" | FR-002/FR-003 |
+| intro | difficulty + origin selection, defaults Mittel / all origins, last origin cannot be deselected, "Segel setzen" | FR-002/FR-003 |
 | question | renders current `PrefixQuestion`, tappable options (≥ 44×44 px), one answer lock (further taps ignored, feedback shown) | FR-006/FR-008, edge case "Rapid double-tapping" |
 | feedback | verdict (green + coin / red + reveal) then explanation card; advance only via explicit action; coin chain increases/decreases visually | FR-008/FR-010 |
 | summary | X/10, score, longest chain (visual), new-best indicator from `gameStore.bestScore`, "play again", "back to menu"; no pause here | FR-010/FR-016 |

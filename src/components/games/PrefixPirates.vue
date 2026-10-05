@@ -22,7 +22,7 @@ const isPaused = ref(false)
 
 // ─── Config (intro) ────────────────────────────────────────────
 const GAME_ID = 'praefix-piraten'
-const difficulty = ref<PrefixDifficulty>('easy')
+const difficulty = ref<PrefixDifficulty>('medium')
 const activeOrigins = ref<Set<PrefixOrigin>>(new Set(ORIGIN_ORDER))
 
 function toggleOrigin(origin: PrefixOrigin) {

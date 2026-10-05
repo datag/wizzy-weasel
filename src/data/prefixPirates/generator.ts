@@ -17,20 +17,11 @@ import { entriesByOrigin } from './dataset'
 
 export const ROUND_LENGTH = 10
 
-const ALL_TYPES: PrefixQuestionType[] = [
-  'prefix-choice',
-  'meaning-match',
-  'prefix-in-word',
-  'sentence-gap',
-  'origin-assignment',
-  'validity-verdict',
-]
-
 /** G1: allowed question types per difficulty (spec FR-005). */
 export const TYPES_BY_DIFFICULTY: Record<PrefixDifficulty, PrefixQuestionType[]> = {
   easy: ['prefix-choice', 'sentence-gap'],
-  medium: ['prefix-choice', 'meaning-match', 'prefix-in-word', 'sentence-gap'],
-  hard: ALL_TYPES,
+  medium: ['prefix-choice', 'meaning-match', 'prefix-in-word', 'sentence-gap', 'validity-verdict'],
+  hard: ['meaning-match', 'sentence-gap', 'origin-assignment', 'validity-verdict'],
 }
 
 /** FR-006: option counts. Origin assignment always shows the 3 families and the
