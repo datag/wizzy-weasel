@@ -219,11 +219,22 @@ function buildValidityVerdict(
     }
   }
   const pair = pickRandom(dataset.invalidPairs)
+  const joined = pair.prefix.replace(/-$/, '') + pair.root
+  // If the root is a noun (starts uppercase), present the compound the way German
+  // orthography would write it if it existed ("Abhimbeere"), so the child has to
+  // judge by vocabulary and not by the casing (e.g. "abHimbeere" would be an
+  // instant tell). For English roots this never triggers (nouns are lowercase).
+  const rootUpcased = pair.root.length > 0 && pair.root[0] === pair.root[0].toUpperCase()
+  // German compounds lowercase the second part ("Fahrkarte", "Unfähigkeit") –
+  // so a plausible non-word from ab- + Himbeere is written "Abhimbeere".
+  const displayWord = rootUpcased
+    ? joined.charAt(0).toUpperCase() + joined.slice(1).toLowerCase()
+    : joined
   return {
     type: 'validity-verdict',
     prefix: pair.prefix,
     root: pair.root,
-    displayWord: pair.prefix.replace(/-$/, '') + pair.root,
+    displayWord,
     isReal: false,
     entry: null,
     pair,
