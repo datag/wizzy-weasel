@@ -178,3 +178,101 @@ export interface SafariWordClassConfig {
   defaultActive: boolean
 }
 
+// Präfix-Piraten (Prefix Pirates)
+export type PrefixLanguage = 'de' | 'en'
+export type PrefixOrigin = 'germanic' | 'latin' | 'greek'
+export type PrefixDifficulty = 'easy' | 'medium' | 'hard'
+
+export type PrefixQuestionType =
+  | 'prefix-choice'
+  | 'meaning-match'
+  | 'prefix-in-word'
+  | 'sentence-gap'
+  | 'origin-assignment'
+  | 'validity-verdict'
+
+export interface PrefixExample {
+  word: string
+  sentence: string
+}
+
+export interface PrefixEntry {
+  id: string
+  prefix: string
+  variants?: string[]
+  origin: PrefixOrigin
+  meaning: string
+  examples: PrefixExample[]
+}
+
+export interface PrefixInvalidPair {
+  id: string
+  prefix: string
+  root: string
+  explanation: string
+}
+
+export interface PrefixDataset {
+  language: PrefixLanguage
+  entries: PrefixEntry[]
+  invalidPairs: PrefixInvalidPair[]
+}
+
+export type PrefixQuestion =
+  | {
+      type: 'prefix-choice'
+      root: string
+      options: string[]
+      correctIndex: number
+      entry: PrefixEntry
+    }
+  | {
+      type: 'meaning-match'
+      prefix: string
+      options: string[]
+      correctIndex: number
+      entry: PrefixEntry
+    }
+  | {
+      type: 'prefix-in-word'
+      word: string
+      options: string[]
+      correctIndex: number
+      entry: PrefixEntry
+    }
+  | {
+      type: 'sentence-gap'
+      sentenceWithGap: string
+      options: string[]
+      correctIndex: number
+      entry: PrefixEntry
+    }
+  | {
+      type: 'origin-assignment'
+      prefix: string
+      options: string[]
+      correctIndex: number
+      entry: PrefixEntry
+    }
+  | {
+      type: 'validity-verdict'
+      prefix: string
+      root: string
+      displayWord: string
+      isReal: boolean
+      entry: PrefixEntry | null
+      pair: PrefixInvalidPair | null
+    }
+
+export interface PrefixRound {
+  language: PrefixLanguage
+  difficulty: PrefixDifficulty
+  activeOrigins: PrefixOrigin[]
+  questions: PrefixQuestion[]
+  index: number
+  correctCount: number
+  score: number
+  coinChain: number
+  longestChain: number
+}
+
