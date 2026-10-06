@@ -124,7 +124,7 @@ function startGame() {
   activePopover.value = null
   activeWordClassBrush.value = activeWordClassConfigs.value[0]?.key ?? 'noun'
 
-  gameStore.startGame('wortarten-safari')
+  gameStore.startGame('word-class-safari')
   phase.value = 'step1'
   scrollToTop()
 }

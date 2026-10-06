@@ -21,7 +21,7 @@ const phase = ref<Phase>('intro')
 const isPaused = ref(false)
 
 // ─── Config (intro) ────────────────────────────────────────────
-const GAME_ID = 'praefix-piraten'
+const GAME_ID = 'prefix-pirates'
 const difficulty = ref<PrefixDifficulty>('medium')
 const activeOrigins = ref<Set<PrefixOrigin>>(new Set(ORIGIN_ORDER))
 

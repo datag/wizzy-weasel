@@ -108,7 +108,7 @@ function startGame() {
   correctCount.value = 0
   wrongCount.value = 0
   selectedSvgId.value = null
-  gameStore.startGame('bundeslaender-quiz')
+  gameStore.startGame('german-states-quiz')
   phase.value = 'playing'
   nextTick(() => applyQuestionHighlight())
 }

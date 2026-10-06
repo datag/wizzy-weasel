@@ -5,6 +5,7 @@ Browser-based SPA learning app for primary-school children. Key priorities: gami
 
 ## Language
 Code, commit messages, and specs (Spec Kit) are written in **English**. German terms are kept only where it makes sense: user-facing UI strings (localized via i18n, default `de`) and German learning content (e.g. word class names like "Nomen", grade "3. Klasse").
+Game ids and route slugs (`/game/:id`) are always **English** kebab-case (e.g. `/game/german-states-quiz`, `/game/word-class-safari`), even when the game's learning content is German — German terms belong in UI strings and content only.
 
 ## Tech Stack
 - **Vue.js 3** (Composition API + `<script setup>`)
@@ -32,7 +33,7 @@ No test suite exists yet.
 
 ### Adding a New Game
 Games are registered in **`src/games/index.ts`** as `GameConfig[]`. Each entry has:
-- `id`: kebab-case string, also the URL segment (`/game/:id`)
+- `id`: **English** kebab-case string, also the URL segment (`/game/:id`) — never German (e.g. `german-states-quiz`, not `bundeslaender-quiz`)
 - `titleKey` / `descriptionKey`: i18n keys
 - `icon`: emoji, `color`: Tailwind gradient classes (`from-X to-Y`)
 - `component`: lazy-loaded via `defineAsyncComponent`
