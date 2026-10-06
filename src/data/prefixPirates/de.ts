@@ -15,24 +15,24 @@ export const DE_DATASET: PrefixDataset = {
   entries: [
     // ─── Germanisch (deutsche Erbpräfixe und Partikel) ───────────────────
     { id: 'ab', prefix: 'ab-', origin: 'germanic', tier: 1, meaning: 'weg, fort', examples: [
-      { word: 'abfahren', sentence: 'Wir wollen gleich abfahren.' },
+      { word: 'abfahren', sentence: 'Wir wollen gleich abfahren.', conflictsWith: ['weg-', 'auto-', 'mit-', 'weiter-', 'zurück-', 'nach-', 'um-', 'aus-', 'ein-'] },
       { word: 'abholen', sentence: 'Ich will dich am Bahnhof abholen.' },
     ] },
     { id: 'an', prefix: 'an-', origin: 'germanic', tier: 1, meaning: 'hin, dazu', examples: [
       { word: 'ankommen', sentence: 'Der Zug soll gleich ankommen.' },
-      { word: 'anziehen', sentence: 'Ich will die Jacke anziehen.' },
+      { word: 'anziehen', sentence: 'Ich will die Jacke anziehen.', conflictsWith: ['aus-'] },
     ] },
     { id: 'auf', prefix: 'auf-', origin: 'germanic', tier: 1, meaning: 'nach oben, offen', examples: [
       { word: 'aufstehen', sentence: 'Ich muss morgen früh aufstehen.' },
       { word: 'aufmachen', sentence: 'Kannst du das Fenster aufmachen?' },
     ] },
     { id: 'aus', prefix: 'aus-', origin: 'germanic', tier: 1, meaning: 'heraus', examples: [
-      { word: 'auspacken', sentence: 'Wir wollen die Geschenke auspacken.' },
+      { word: 'auspacken', sentence: 'Wir wollen die Geschenke auspacken.', conflictsWith: ['ein-'] },
       { word: 'ausgehen', sentence: 'Heute Abend will ich gerne ausgehen.' },
     ] },
     { id: 'be', prefix: 'be-', origin: 'germanic', tier: 1, meaning: 'macht etwas zu', examples: [
       { word: 'bemalen', sentence: 'Ich will das Blatt bunt bemalen.' },
-      { word: 'beladen', sentence: 'Wir wollen den Wagen beladen.' },
+      { word: 'beladen', sentence: 'Wir wollen den Wagen beladen.', conflictsWith: ['ent-', 'um-', 'auf-'] },
     ] },
     { id: 'bei', prefix: 'bei-', origin: 'germanic', tier: 1, meaning: 'dazu, heran', examples: [
       { word: 'beibringen', sentence: 'Ich will dir etwas beibringen.' },
@@ -43,8 +43,8 @@ export const DE_DATASET: PrefixDataset = {
       { word: 'durchlesen', sentence: 'Ich will das Buch durchlesen.' },
     ] },
     { id: 'ein', prefix: 'ein-', origin: 'germanic', tier: 1, meaning: 'hinein', examples: [
-      { word: 'einsteigen', sentence: 'Wir wollen schnell einsteigen.' },
-      { word: 'einkaufen', sentence: 'Wir wollen heute einkaufen.' },
+      { word: 'einsteigen', sentence: 'Wir wollen schnell einsteigen.', conflictsWith: ['um-', 'aus-'] },
+      { word: 'einkaufen', sentence: 'Wir wollen heute einkaufen.', conflictsWith: ['ver-'] },
     ] },
     { id: 'emp', prefix: 'emp-', origin: 'germanic', tier: 2, meaning: 'aufnehmen, entgegen', examples: [
       { word: 'empfangen', sentence: 'Wir wollen die Gäste empfangen.' },
@@ -83,8 +83,8 @@ export const DE_DATASET: PrefixDataset = {
       { word: 'Gebirge', sentence: 'Das Gebirge hat hohe Berge.' },
     ] },
     { id: 'heim', prefix: 'heim-', origin: 'germanic', tier: 1, meaning: 'nach Hause', examples: [
-      { word: 'heimkehren', sentence: 'Die Matrosen wollen bald heimkehren.' },
-      { word: 'heimfahren', sentence: 'Nach dem Training wollen wir heimfahren.' },
+      { word: 'heimkehren', sentence: 'Die Matrosen wollen bald heimkehren.', conflictsWith: ['zurück-'] },
+      { word: 'heimfahren', sentence: 'Nach dem Training wollen wir heimfahren.', conflictsWith: ['weg-', 'auto-', 'mit-', 'weiter-', 'zurück-'] },
     ] },
     { id: 'her', prefix: 'her-', origin: 'germanic', tier: 1, meaning: 'hierher, zu mir', examples: [
       { word: 'herkommen', sentence: 'Du kannst einfach herkommen.' },
@@ -120,10 +120,10 @@ export const DE_DATASET: PrefixDataset = {
     ] },
     { id: 'hinaus', prefix: 'hinaus-', origin: 'germanic', tier: 1, meaning: 'nach draußen weg', examples: [
       { word: 'hinausgehen', sentence: 'Wir wollen in den Hof hinausgehen.' },
-      { word: 'hinauswerfen', sentence: 'Niemand soll den Ball hinauswerfen.' },
+      { word: 'hinauswerfen', sentence: 'Niemand soll den Ball hinauswerfen.', conflictsWith: ['weg-'] },
     ] },
     { id: 'hinein', prefix: 'hinein-', origin: 'germanic', tier: 1, meaning: 'in etwas hinein', examples: [
-      { word: 'hineinlegen', sentence: 'Ich will den Brief hineinlegen.' },
+      { word: 'hineinlegen', sentence: 'Ich will den Brief hineinlegen.', conflictsWith: ['weg-'] },
       { word: 'hineinschauen', sentence: 'Darf ich kurz in die Kiste hineinschauen?' },
     ] },
     { id: 'hinter', prefix: 'hinter-', origin: 'germanic', tier: 1, meaning: 'hinter, nach hinten', examples: [
@@ -135,7 +135,7 @@ export const DE_DATASET: PrefixDataset = {
       { word: 'hochspringen', sentence: 'Der Hund kann hochspringen.' },
     ] },
     { id: 'los', prefix: 'los-', origin: 'germanic', tier: 1, meaning: 'beginnt, löst sich', examples: [
-      { word: 'losfahren', sentence: 'Wir wollen bald losfahren.' },
+      { word: 'losfahren', sentence: 'Wir wollen bald losfahren.', conflictsWith: ['weg-', 'auto-', 'mit-', 'weiter-', 'zurück-'] },
       { word: 'loslassen', sentence: 'Du sollst nicht loslassen.' },
     ] },
     { id: 'miss', prefix: 'miss-', variants: ['miß-'], origin: 'germanic', tier: 2, meaning: 'falsch, schlecht', examples: [
@@ -143,8 +143,8 @@ export const DE_DATASET: PrefixDataset = {
       { word: 'misslingen', sentence: 'Der Kuchen kann leicht misslingen.' },
     ] },
     { id: 'mit', prefix: 'mit-', origin: 'germanic', tier: 1, meaning: 'zusammen, dabei', examples: [
-      { word: 'mitspielen', sentence: 'Darf ich auch mitspielen?' },
-      { word: 'mitgehen', sentence: 'Willst du mitgehen?' },
+      { word: 'mitspielen', sentence: 'Darf ich auch mitspielen?', conflictsWith: ['vor-'] },
+      { word: 'mitgehen', sentence: 'Willst du mitgehen?', conflictsWith: ['weg-'] },
     ] },
     { id: 'nach', prefix: 'nach-', origin: 'germanic', tier: 1, meaning: 'hinterher, danach', examples: [
       { word: 'nachsehen', sentence: 'Ich will kurz nachsehen.' },
@@ -195,11 +195,11 @@ export const DE_DATASET: PrefixDataset = {
       { word: 'voraussagen', sentence: 'Die Zukunft kann niemand voraussagen.' },
     ] },
     { id: 'vorbei', prefix: 'vorbei-', origin: 'germanic', tier: 1, meaning: 'an etwas entlang, vorüber', examples: [
-      { word: 'vorbeifahren', sentence: 'Wir wollen am Schloss vorbeifahren.' },
+      { word: 'vorbeifahren', sentence: 'Wir wollen am Schloss vorbeifahren.', conflictsWith: ['mit-', 'weiter-'] },
       { word: 'vorbeigehen', sentence: 'Der Schmerz wird bald vorbeigehen.' },
     ] },
     { id: 'weg', prefix: 'weg-', origin: 'germanic', tier: 1, meaning: 'weg, fort', examples: [
-      { word: 'weglaufen', sentence: 'Ich will nicht weglaufen.' },
+      { word: 'weglaufen', sentence: 'Ich will nicht weglaufen.', conflictsWith: ['mit-', 'fort-', 'los-'] },
       { word: 'wegnehmen', sentence: 'Du sollst das Spielzeug nicht wegnehmen.' },
     ] },
     { id: 'weiter', prefix: 'weiter-', origin: 'germanic', tier: 1, meaning: 'fort, noch mehr', examples: [
@@ -227,7 +227,7 @@ export const DE_DATASET: PrefixDataset = {
       { word: 'zurechtlegen', sentence: 'Ich will mir meine Stifte zurechtlegen.' },
     ] },
     { id: 'zurueck', prefix: 'zurück-', origin: 'germanic', tier: 1, meaning: 'wieder nach hinten', examples: [
-      { word: 'zurückkommen', sentence: 'Wann wirst du nach Hause zurückkommen?' },
+      { word: 'zurückkommen', sentence: 'Wann wirst du nach Hause zurückkommen?', conflictsWith: ['heim-'] },
       { word: 'zurückgeben', sentence: 'Ich will dir dein Buch zurückgeben.' },
     ] },
     { id: 'zusammen', prefix: 'zusammen-', origin: 'germanic', tier: 1, meaning: 'gemeinsam, zusammen', examples: [

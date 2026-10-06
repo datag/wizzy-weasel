@@ -61,6 +61,7 @@ One curated prefix of a dataset.
 
 - `word` — a real word formed with the prefix.
 - `sentence` — a short, child-appropriate example sentence containing the word.
+- `conflictsWith` — optional array of prefix strings (e.g. `['weg-', 'auto-']`) that must not appear as distractors in `sentence-gap` because they would form a second valid word or context match (FR-014 / Option A1 collision prevention).
 
 ### PrefixInvalidPair
 

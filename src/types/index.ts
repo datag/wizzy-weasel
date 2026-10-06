@@ -194,6 +194,12 @@ export type PrefixQuestionType =
 export interface PrefixExample {
   word: string
   sentence: string
+  /**
+   * Additional prefixes that form a valid word with this example's root or fit the
+   * sentence context and must therefore NOT be drawn as distractors in sentence-gap
+   * questions (FR-014 single-choice purity / Option A1).
+   */
+  conflictsWith?: string[]
 }
 
 /** Word-pool complexity of an entry: 1 = everyday (all rounds), 3 = rare/abstract (hard only). */

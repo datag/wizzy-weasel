@@ -79,6 +79,15 @@ export function validatePrefixDataset(dataset: PrefixDataset): string[] {
           `${label} entry "${entry.id}" example sentence must contain the word "${ex.word}" verbatim (needed for Lückensatz)`
         )
       }
+      if (ex.conflictsWith) {
+        for (const c of ex.conflictsWith) {
+          if (!c || !c.endsWith('-')) {
+            problems.push(
+              `${label} entry "${entry.id}" example "${ex.word}" conflictsWith entry "${c}" must end with "-"`
+            )
+          }
+        }
+      }
       exampleWords.add(lowerWord)
     }
   }

@@ -25,7 +25,7 @@ entriesByOrigin(dataset, origins: PrefixOrigin[]): PrefixEntry[]
 | Type | Fields | Constraints |
 |---|---|---|
 | `PrefixOrigin` | `'germanic' \| 'latin' \| 'greek'` | display labels come from i18n, not the dataset |
-| `PrefixExample` | `word: string`, `sentence: string` | word must contain the entry's prefix; sentence ≤ ~12 words, child-appropriate |
+| `PrefixExample` | `word: string`, `sentence: string`, `conflictsWith?: string[]` | word must contain the entry's prefix; sentence ≤ ~12 words, child-appropriate; `conflictsWith` lists prefixes that must not be drawn as distractors in sentence-gap (Option A1) |
 | `PrefixEntry` | `id: string`, `prefix: string`, `variants?: string[]`, `origin: PrefixOrigin`, `meaning: string`, `examples: PrefixExample[]`, `tier?: 1 \| 2 \| 3` | id unique per language; meaning ≤ ~6 words; examples.length ≥ 2; tier defaults to 1 (spec FR-020) |
 | `PrefixInvalidPair` | `id: string`, `prefix: string`, `root: string`, `explanation: string` | id unique per language; `prefix + root` must NOT be a word |
 | `PrefixDataset` | `language: 'de' \| 'en'`, `entries: PrefixEntry[]`, `invalidPairs: PrefixInvalidPair[]` | language matches the file; counts per invariants |

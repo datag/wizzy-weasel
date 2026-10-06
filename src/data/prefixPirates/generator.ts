@@ -2,6 +2,7 @@ import type {
   PrefixDataset,
   PrefixDifficulty,
   PrefixEntry,
+  PrefixExample,
   PrefixOrigin,
   PrefixQuestion,
   PrefixQuestionType,
@@ -121,8 +122,14 @@ function withCorrect(options: string[], correct: string): { options: string[]; c
   return { options: pool, correctIndex: pool.findIndex(v => v === correct) }
 }
 
+interface GapTarget {
+  sentenceWithGap: string
+  example: PrefixExample
+  root: string
+}
+
 /** G4-relevant gap: find the example whose word appears verbatim in its sentence */
-function buildSentenceGap(entry: PrefixEntry): string {
+function findGapTarget(entry: PrefixEntry): GapTarget {
   for (const ex of entry.examples) {
     const lowerSentence = ex.sentence.toLowerCase()
     const lowerWord = ex.word.toLowerCase()
@@ -131,12 +138,68 @@ function buildSentenceGap(entry: PrefixEntry): string {
       const match = matchedPrefix(ex.word, entry)
       const prefixLen = match ? match.length : prefixWithoutDash(entry).length
       const gappedWord = '___' + ex.word.slice(prefixLen)
-      return ex.sentence.slice(0, idx) + gappedWord + ex.sentence.slice(idx + ex.word.length)
+      const sentenceWithGap = ex.sentence.slice(0, idx) + gappedWord + ex.sentence.slice(idx + ex.word.length)
+      const root = ex.word.slice(prefixLen).toLowerCase()
+      return { sentenceWithGap, example: ex, root }
     }
   }
   // Fallback: show the word with its prefix gapped off.
-  const word = entry.examples[0].word
-  return '___' + stripPrefix(word, entry)
+  const ex = entry.examples[0]
+  const root = stripPrefix(ex.word, entry).toLowerCase()
+  return {
+    sentenceWithGap: '___' + stripPrefix(ex.word, entry),
+    example: ex,
+    root,
+  }
+}
+
+function getEntryRoot(word: string, entry: PrefixEntry): string {
+  const match = matchedPrefix(word, entry)
+  const prefixLen = match ? match.length : prefixWithoutDash(entry).length
+  return word.slice(prefixLen).toLowerCase()
+}
+
+/**
+ * G4 collision filter for sentence-gap questions (FR-014 Option A1):
+ * returns all prefix spellings that must NOT be drawn as distractors because
+ * they share the same word root in the dataset or are explicitly marked in conflictsWith.
+ */
+export function getConflictingPrefixes(
+  dataset: PrefixDataset,
+  entry: PrefixEntry,
+  target: GapTarget
+): Set<string> {
+  const conflicts = new Set<string>()
+
+  // 1. Own prefix and spellings
+  for (const sp of prefixSpellings(entry)) {
+    conflicts.add(sp.toLowerCase())
+  }
+  conflicts.add(prefixWithoutDash(entry).toLowerCase())
+
+  // 2. Automatic: any entry in dataset that has an example sharing the same root
+  if (target.root.length > 0) {
+    for (const other of dataset.entries) {
+      for (const otherEx of other.examples) {
+        if (getEntryRoot(otherEx.word, other) === target.root) {
+          conflicts.add(prefixWithoutDash(other).toLowerCase())
+          for (const sp of prefixSpellings(other)) {
+            conflicts.add(sp.toLowerCase())
+          }
+          break
+        }
+      }
+    }
+  }
+
+  // 3. Explicit: curated collisions in example.conflictsWith
+  if (target.example.conflictsWith) {
+    for (const p of target.example.conflictsWith) {
+      conflicts.add(p.replace(/-$/, '').toLowerCase())
+    }
+  }
+
+  return conflicts
 }
 
 function buildPrefixChoice(entry: PrefixEntry, pool: PrefixEntry[], count: number): PrefixQuestion {
@@ -188,18 +251,42 @@ function buildPrefixInWord(entry: PrefixEntry, pool: PrefixEntry[], count: numbe
   return { type: 'prefix-in-word', word, options: options.options, correctIndex: options.correctIndex, entry }
 }
 
-function buildSentenceGapQuestion(entry: PrefixEntry, pool: PrefixEntry[], count: number): PrefixQuestion {
+function buildSentenceGapQuestion(
+  dataset: PrefixDataset,
+  entry: PrefixEntry,
+  pool: PrefixEntry[],
+  count: number
+): PrefixQuestion {
   // Show the full spelling set on the answer tile ("syn-/sym-"), because the
   // gapped word may contain an assimilated variant ("___metrie" needs "sym-",
   // not the canonical "syn-") – prefixLabel matches the earlier Varianten-Fix.
+  const target = findGapTarget(entry)
   const correct = prefixLabel(entry)
+  const conflicts = getConflictingPrefixes(dataset, entry, target)
+
+  // Filter candidate pool to exclude conflicting prefixes (Option A1)
+  const safePool = pool.filter(c => {
+    if (c.id === entry.id) return false
+    const label = prefixLabel(c)
+    if (label === correct) return false
+    const cleanPrefix = prefixWithoutDash(c).toLowerCase()
+    if (conflicts.has(cleanPrefix)) return false
+    for (const sp of prefixSpellings(c)) {
+      if (conflicts.has(sp.toLowerCase())) return false
+    }
+    return true
+  })
+
+  // Fallback to pool if safePool has fewer entries than needed (safeguard)
+  const candidatePool = safePool.length >= count - 1 ? safePool : pool
+
   const options = withCorrect(
-    distractors(pool, correct, prefixLabel, count - 1),
+    distractors(candidatePool, correct, prefixLabel, count - 1),
     correct
   )
   return {
     type: 'sentence-gap',
-    sentenceWithGap: buildSentenceGap(entry),
+    sentenceWithGap: target.sentenceWithGap,
     options: options.options,
     correctIndex: options.correctIndex,
     entry,
@@ -278,7 +365,7 @@ function buildOneQuestion(
     case 'prefix-in-word':
       return buildPrefixInWord(entry, pool, count)
     case 'sentence-gap':
-      return buildSentenceGapQuestion(entry, pool, count)
+      return buildSentenceGapQuestion(dataset, entry, pool, count)
     case 'origin-assignment':
       return buildOriginAssignment(entry)
     case 'validity-verdict':
