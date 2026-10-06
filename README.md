@@ -4,7 +4,7 @@
 
 A browser-based learning game app for primary-school children. Offline-first, tablet-friendly, and gamified — kids earn XP, level up, and lose boost charges when they make mistakes.
 
-**Live demo:** https://datag.github.io/wizzy-weasel/
+**Live demo:** https://datag.is-a.dev/wizzy-weasel/
 
 ---
 
