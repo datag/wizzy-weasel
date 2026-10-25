@@ -52,8 +52,11 @@ All user data lives in **LocalStorage via Pinia stores** — no backend.
 | `settings` | locale, sound, optional OpenAI API key | — |
 | `mysticalTimesTable` | game-specific progress | separate store |
 | `mysticalDivisionOracle` | game-specific progress | separate store |
+| `sequenceTrain` | game-specific progress | separate store |
 
 Always pass `{ persist: true }` as the third argument to `defineStore` for stores that must survive page reload.
+
+**Storage keys:** Every persisted store writes its **own** prefixed localStorage key `wizzyweasel.<storeId>` — each game's store is prefixed individually (e.g. `wizzyweasel.user`, `wizzyweasel.settings`, `wizzyweasel.mysticalTimesTable`). There is **no single global storage key**; the prefix is applied centrally via the persistedstate `key` generator in `src/main.ts` (`STORAGE_KEY_PREFIX`), so new stores with `persist: true` are prefixed automatically — never hardcode storage keys.
 
 ### Routes
 - Use `createWebHistory(import.meta.env.BASE_URL)` — base URL can be `/` or `/wizzy-weasel/`.

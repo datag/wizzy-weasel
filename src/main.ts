@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { createPersistedState } from 'pinia-plugin-persistedstate'
 import { createI18n } from 'vue-i18n'
 import App from './App.vue'
 import './assets/main.css'
@@ -19,9 +19,18 @@ const i18n = createI18n({
   messages: { de, en },
 })
 
+/** Prefix for every persisted localStorage key (`wizzyweasel.<storeId>`). */
+const STORAGE_KEY_PREFIX = 'wizzyweasel.'
+
 // Pinia
 const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
+// Every persisted store (`persist: true`) is stored under its own prefixed
+// localStorage key — applied per store, not globally.
+pinia.use(
+  createPersistedState({
+    key: storeId => `${STORAGE_KEY_PREFIX}${storeId}`,
+  }),
+)
 
 const app = createApp(App)
 app.use(pinia)
