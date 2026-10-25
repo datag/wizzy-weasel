@@ -56,6 +56,32 @@ pnpm run lint       # ESLint (auto-fix)
 
 ---
 
+## Configuration
+
+The footer (contact address and links to the privacy policy) is controlled by
+build-time environment variables. Both are optional — the corresponding part of
+the footer is only rendered when its variable is set.
+
+| Variable | Purpose | Example |
+|---|---|---|
+| `APP_OPERATOR_MAIL` | Contact address of the operator, rendered as a `mailto:` link | `operator@example.com` |
+| `APP_PRIVACY_POLICY_URL` | Base URL of the bilingual privacy policy; the footer links to the language sections via the anchors `#de` and `#en` | `https://www.example.com/privacy` |
+
+The privacy policy page must provide both anchors (`#de` and `#en`).
+
+**Locally:** copy the example file and adjust the values — `.env.local` is git-ignored.
+
+```bash
+cp .env.example .env.local
+```
+
+**In CI:** the values come from the repository variables
+(*Settings → Secrets and variables → Actions → Variables*). They are public
+values, so they are stored as variables and not as secrets.
+`.github/workflows/gh-pages.yml` passes them to the build step.
+
+---
+
 ## Deployment
 
 Pushes to `main` automatically build and deploy to GitHub Pages. The build passes `--base=/<repo-name>/` so the app works under the GitHub Pages subdirectory. A `404.html` is generated to handle direct URL access.

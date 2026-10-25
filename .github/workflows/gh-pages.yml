@@ -47,6 +47,13 @@ jobs:
       run: pnpm run typecheck
 
     - name: Build the project
+      # Optional build-time configuration for the app footer. Both variables are
+      # public (a mail address and a URL), so they are stored as repository
+      # variables, not secrets. Unset variables simply hide the corresponding
+      # part of the footer.
+      env:
+        APP_OPERATOR_MAIL: ${{ vars.APP_OPERATOR_MAIL }}
+        APP_PRIVACY_POLICY_URL: ${{ vars.APP_PRIVACY_POLICY_URL }}
       run: pnpm exec vite build --base=/${{ github.event.repository.name }}/
 
     - name: Create 404.html

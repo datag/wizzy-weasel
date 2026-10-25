@@ -5,6 +5,10 @@
     "fullscreen": "Fullscreen",
     "exitFullscreen": "Exit Fullscreen"
   },
+  "footer": {
+    "privacyPolicyEn": "Privacy Policy",
+    "privacyPolicyDe": "Datenschutzerklärung"
+  },
   "dashboard": {
     "greeting": "Hello, {name}! 👋",
     "level": "Level {level}",

@@ -7,6 +7,7 @@ dist
 # Logs & dotenv
 *.log
 .env*
+!.env.example
 
 # Editors / OS
 .vscode/

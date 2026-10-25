@@ -78,6 +78,14 @@ SVGs are imported as Vue components via `vite-svg-loader` (SVGO disabled to pres
 ### Path Alias
 `@` resolves to `src/`. Always use `@/` for imports within `src/`.
 
+### Build-time configuration (footer)
+- The app footer (`src/components/layout/AppFooter.vue`) is controlled by optional env vars, read in `src/config/app.ts`:
+  - `APP_OPERATOR_MAIL` — operator contact address (mailto link)
+  - `APP_PRIVACY_POLICY_URL` — base URL of the bilingual privacy policy; the footer appends `#de` / `#en`
+- They are exposed via `envPrefix: ['VITE_', 'APP_']` in `vite.config.ts` and come from `.env.local` locally or from GitHub Actions repository variables in CI.
+- Unset variables hide the corresponding section — the footer only renders if at least one variable is set.
+- Never put secrets in these variables: they are baked into the client bundle.
+
 ## Test with browser automation
 
 * You may use MCP for Chrome-Devtools (preferred) or Playwright.

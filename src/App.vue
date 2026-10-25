@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import Navbar from '@/components/layout/Navbar.vue'
+import AppFooter from '@/components/layout/AppFooter.vue'
 import { useFullscreen } from '@/composables/useFullscreen'
 import { useUpdateCheck } from '@/composables/useUpdateCheck'
 import UpdateOverlay from '@/components/ui/UpdateOverlay.vue'
@@ -85,11 +86,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen">
+  <div class="flex min-h-screen flex-col">
     <Navbar v-if="!isGameView" />
-    <main>
+    <main class="flex-1">
       <RouterView />
     </main>
+    <AppFooter v-if="!isGameView" />
 
     <!-- Long-press fullscreen ripple feedback -->
     <Transition name="ripple-fade">
